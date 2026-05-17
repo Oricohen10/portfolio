@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUX 2.0 Docs</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: #0d1117;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+    color: #c9d1d9; }
+
+  .shell { display: flex; height: 100%; }
+
+  /* ── NAV ── */
+  .nav {
+    width: 186px; flex-shrink: 0;
+    border-right: 1px solid #1a2030;
+    overflow-y: auto; padding: 16px 0;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-group { margin-bottom: 4px; }
+  .nav-group-label {
+    font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #2d3444; padding: 10px 16px 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 6px 16px; font-size: 12.5px; color: #586069;
+    cursor: pointer; border-left: 2px solid transparent;
+    transition: color 0.12s, background 0.12s; user-select: none;
+  }
+  .nav-item:hover { color: #c9d1d9; background: rgba(255,255,255,0.025); }
+  .nav-item.active {
+    color: #e2e8f0; background: rgba(124,58,237,0.1);
+    border-left-color: #7c3aed;
+    font-weight: 500;
+  }
+  .nav-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.35; flex-shrink: 0; }
+  .nav-item.active .nav-dot { opacity: 1; background: #9d71f8; }
+
+  /* ── DOC PANEL ── */
+  .doc {
+    flex: 1; overflow-y: auto; padding: 0;
+    scrollbar-width: thin; scrollbar-color: #1e2636 transparent;
+  }
+  .doc::-webkit-scrollbar { width: 3px; }
+  .doc::-webkit-scrollbar-thumb { background: #1e2636; border-radius: 3px; }
+
+  /* Header band */
+  .doc-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid #1a2030;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--hue, rgba(124,58,237,0.04));
+    pointer-events: none;
+  }
+  .doc-meta {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .doc-badge {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 4px;
+    background: var(--badge-bg, rgba(124,58,237,0.15));
+    color: var(--badge-fg, #9d71f8);
+  }
+  .doc-breadcrumb { font-size: 11px; color: #3d444d; }
+  .doc-title {
+    font-size: 21px; font-weight: 700;
+    color: #f0f6fc; letter-spacing: -0.025em;
+    line-height: 1.2; margin-bottom: 10px;
+  }
+  .doc-desc {
+    font-size: 12.5px; line-height: 1.75;
+    color: #6e7681; max-width: 480px;
+  }
+
+  /* Body */
+  .doc-body { padding: 20px 28px 28px; }
+
+  .doc-section { margin-bottom: 22px; }
+  .doc-section-label {
+    font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #3d444d; margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #1a2030;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* Anatomy */
+  .anatomy-list { display: flex; flex-direction: column; gap: 3px; }
+  .anatomy-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 12px; color: #8b949e; padding: 6px 0;
+    border-bottom: 1px solid #10161e;
+  }
+  .anatomy-item:last-child { border-bottom: none; }
+  .anatomy-num {
+    font-size: 10px; font-weight: 600; color: #3d444d;
+    background: #161b22; border: 1px solid #30363d;
+    width: 18px; height: 18px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .anatomy-name { color: #c9d1d9; font-weight: 500; }
+  .anatomy-sep { color: #4a5568; margin: 0 4px; }
+
+  /* States */
+  .states-row { display: flex; flex-wrap: wrap; gap: 5px; }
+  .state-chip {
+    font-size: 11px; padding: 3px 9px; border-radius: 5px;
+    background: #161b22; border: 1px solid #21262d;
+    color: #6e7681;
+  }
+
+  /* Behavior */
+  .behavior-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 12px; line-height: 1.7;
+    color: #8b949e; padding: 7px 0;
+    border-bottom: 1px solid #10161e;
+  }
+  .behavior-item:last-child { border-bottom: none; }
+  .behavior-icon { color: #9d71f8; flex-shrink: 0; margin-top: 3px; font-size: 8px; opacity: 0.6; }
+
+  /* Tokens */
+  .token-list { display: flex; flex-direction: column; gap: 0; }
+  .token-row {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #10161e;
+    font-size: 11.5px;
+  }
+  .token-row:last-child { border-bottom: none; }
+  .token-name {
+    font-family: ui-monospace, 'Fira Code', monospace;
+    font-size: 10.5px; color: #79c0ff;
+    background: rgba(56, 139, 253, 0.06);
+    border: 1px solid rgba(56, 139, 253, 0.1);
+    padding: 1px 6px; border-radius: 4px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .token-desc { color: #6e7681; line-height: 1.5; }
+
+  /* Do / Don't grid — interleaved pairs */
+  .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .rule {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 9px 11px; border-radius: 7px;
+    font-size: 11.5px; line-height: 1.5;
+  }
+  .rule.do   { background: rgba(35,134,54,0.08); border: 1px solid rgba(35,134,54,0.12); color: #7ee787; }
+  .rule.dont { background: rgba(218,54,51,0.08); border: 1px solid rgba(218,54,51,0.12); color: #ffa198; }
+  .rule-icon { font-size: 10px; flex-shrink: 0; margin-top: 2px; font-weight: 700; }
+  .rule.do   .rule-icon { color: #2ea043; }
+  .rule.dont .rule-icon { color: #cf222e; }
+
+  /* Keyboard */
+  .key-table { width: 100%; border-collapse: collapse; }
+  .key-table tr { border-bottom: 1px solid #10161e; }
+  .key-table tr:last-child { border-bottom: none; }
+  .key-table td { padding: 6px 0; font-size: 11.5px; vertical-align: top; }
+  .key-table td:first-child { width: 44%; padding-right: 12px; }
+  .kbd {
+    display: inline-flex; align-items: center;
+    background: #161b22; border: 1px solid #30363d;
+    border-bottom-width: 2px; border-radius: 4px;
+    padding: 1px 6px; font-size: 10.5px; color: #8b949e;
+    font-family: ui-monospace, monospace; white-space: nowrap;
+    margin-right: 3px;
+  }
+  .key-desc { color: #6e7681; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav">
+    <div class="nav-group">
+      <div class="nav-group-label">Foundations</div>
+      <div class="nav-item" data-id="layout"><div class="nav-dot"></div>Layout</div>
+      <div class="nav-item" data-id="container"><div class="nav-dot"></div>Container</div>
+      <div class="nav-item" data-id="text-content"><div class="nav-dot"></div>Text Content</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Components</div>
+      <div class="nav-item active" data-id="action-menu"><div class="nav-dot"></div>Action Menu</div>
+      <div class="nav-item" data-id="buttons"><div class="nav-dot"></div>Buttons</div>
+      <div class="nav-item" data-id="form-inputs"><div class="nav-dot"></div>Form Inputs</div>
+      <div class="nav-item" data-id="message-bar"><div class="nav-dot"></div>Message Bar</div>
+      <div class="nav-item" data-id="snackbar"><div class="nav-dot"></div>Snackbar</div>
+      <div class="nav-item" data-id="tabs"><div class="nav-dot"></div>Tabs</div>
+      <div class="nav-item" data-id="tooltips"><div class="nav-dot"></div>Tooltips</div>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-label">Patterns</div>
+      <div class="nav-item" data-id="data-table"><div class="nav-dot"></div>Data Table</div>
+      <div class="nav-item" data-id="filter-bar"><div class="nav-dot"></div>Filter Bar</div>
+      <div class="nav-item" data-id="left-nav"><div class="nav-dot"></div>Left Navigation</div>
+      <div class="nav-item" data-id="wizard"><div class="nav-dot"></div>Wizard</div>
+    </div>
+  </nav>
+
+  <div class="doc" id="doc"></div>
+</div>
+
+<script>
+const CATS = {
+  Foundations: { hue:'rgba(96,165,250,0.05)', badgeBg:'rgba(96,165,250,0.12)', badgeFg:'#60a5fa' },
+  Components:  { hue:'rgba(124,58,237,0.05)', badgeBg:'rgba(124,58,237,0.15)', badgeFg:'#9d71f8' },
+  Patterns:    { hue:'rgba(52,211,153,0.05)', badgeBg:'rgba(52,211,153,0.12)', badgeFg:'#34d399' },
+};
+
+const DATA = {
+  'action-menu': {
+    section: 'Components', title: 'Action Menu',
+    desc: 'A contextual set of actions related to a specific element, component, or screen area. Appears on demand and never visible by default. Reduces interface clutter by surfacing options only when they are relevant.',
+    anatomy: [
+      ['Container', 'Floating surface that holds the action list, always elevated above page content'],
+      ['Action item', 'Text label with an optional leading icon, written as a clear verb phrase'],
+      ['Divider', 'Visually separates groups of related actions without adding scrollable distance'],
+      ['Toggle item', 'Checkable action that retains its on/off state across interactions'],
+      ['Submenu arrow', 'Indicates a nested group; expands inline on hover or keyboard focus'],
+    ],
+    states: ['Default', 'Hover', 'Selected', 'Disabled', 'Focused', 'Submenu open'],
+    behavior: [
+      'Triggered by clicking a dedicated icon, right-clicking, or selecting text.',
+      'Floats above the page; content behind it is obscured, not shifted.',
+      'Positions to the right or left of its trigger depending on available space.',
+      'Closes on outside click, Escape key, or after an action is taken.',
+      'Disabled items remain visible but greyed out so users understand what is unavailable.',
+    ],
+    keyboard: [
+      [['↑','↓'], 'Navigate between items'],
+      [['Enter','Space'], 'Apply the focused action'],
+      [['→'], 'Open a focused submenu'],
+      [['Esc'], 'Close without acting'],
+    ],
+    tokens: [
+      ['--lux-menu-surface-bg', 'Menu panel background color'],
+      ['--lux-menu-surface-border', 'Border around the floating panel'],
+      ['--lux-menu-item-height', 'Height of a single action row (36px default)'],
+      ['--lux-menu-item-padding-x', 'Horizontal padding inside each item'],
+      ['--lux-menu-item-hover-bg', 'Background on item hover'],
+      ['--lux-menu-divider-color', 'Color of the group separator line'],
+    ],
+    do: ['Use for a focused set of actions tied to one element.', 'Sort options by importance or usage frequency.'],
+    dont: ['Use if there are more than 10 options; use a toolbar instead.', 'Mix selection values with actions in the same menu.'],
+  },
+  'buttons': {
+    section: 'Components', title: 'Buttons',
+    desc: 'Buttons initiate actions. The button type signals the importance and role of the action in context. One clear hierarchy ensures users know exactly what happens before they click.',
+    anatomy: [
+      ['Label', 'Describes the action; verb + noun preferred, e.g. "Save changes"'],
+      ['Leading icon', 'Optional; clarifies the action type when text alone is ambiguous'],
+      ['Container', 'Size (sm / md / lg) and style (filled / outlined / ghost) define the variant'],
+      ['Spinner', 'Replaces label during loading state; container retains its dimensions'],
+    ],
+    states: ['Default', 'Hover', 'Active', 'Focused', 'Disabled', 'Loading'],
+    behavior: [
+      'Primary button represents the single most important action per screen or dialog.',
+      'Secondary button is used alongside Primary for supporting or alternative actions.',
+      'Ghost button for low-emphasis, tertiary, or potentially destructive actions.',
+      'Loading state disables interaction and replaces the label with a spinner.',
+      'Icon-only buttons always carry a tooltip as their accessible label.',
+      'Disabled buttons have no tooltip; if the reason is non-obvious, use a different pattern.',
+    ],
+    keyboard: [
+      [['Enter','Space'], 'Trigger the button action'],
+      [['Tab'], 'Move focus to the next interactive element'],
+    ],
+    tokens: [
+      ['--lux-btn-height-sm', 'Height of the small button (28px)'],
+      ['--lux-btn-height-md', 'Height of the medium button (36px)'],
+      ['--lux-btn-height-lg', 'Height of the large button (44px)'],
+      ['--lux-btn-radius', 'Border radius shared across all button sizes (6px)'],
+      ['--lux-btn-primary-bg', 'Fill color for the Primary variant'],
+      ['--lux-btn-primary-fg', 'Label color for the Primary variant'],
+      ['--lux-btn-ghost-hover-bg', 'Background on ghost button hover'],
+    ],
+    do: ['Use exactly one primary button per view.', 'Keep labels concise, e.g. "Save changes".'],
+    dont: ['Place two primary buttons side by side.', 'Use a button where a link is semantically correct.'],
+  },
+  'form-inputs': {
+    section: 'Components', title: 'Form Inputs',
+    desc: 'Text-based inputs for entering and editing data. Used in forms, dialogs, and inline editing contexts. Consistent structure and clear error messaging reduce entry mistakes and re-work.',
+    anatomy: [
+      ['Label', 'Always visible, positioned above the field and never inside it'],
+      ['Required marker', 'Asterisk (*) appended to the label when the field is mandatory'],
+      ['Input field', 'The editable area; height varies by type (single or multi-line)'],
+      ['Helper text', 'Guidance shown below the field in its default state'],
+      ['Error message', 'Replaces helper text on validation failure; includes a fix instruction'],
+      ['Character counter', 'Appears in the lower-right when a maxLength is set'],
+    ],
+    states: ['Default', 'Focus', 'Filled', 'Error', 'Disabled', 'Read-only'],
+    behavior: [
+      'Labels are always visible and never used inside the field as placeholder-only text.',
+      'Validation fires on blur, not on every keystroke.',
+      'Error state highlights the border in semantic red and surfaces the message below the field.',
+      'Disabled fields carry no tab stop and are excluded from form submission.',
+      'Read-only fields are focusable and selectable but not editable.',
+      'Multi-line inputs auto-grow up to a configurable max height before scrolling.',
+    ],
+    keyboard: [
+      [['Tab'], 'Enter or leave the field'],
+      [['Shift+Tab'], 'Move focus backwards through the form'],
+      [['Esc'], 'Clear value and restore previous (where applicable)'],
+    ],
+    tokens: [
+      ['--lux-input-height', 'Default single-line input height (36px)'],
+      ['--lux-input-border', 'Default border color'],
+      ['--lux-input-border-focus', 'Border color when field is focused'],
+      ['--lux-input-border-error', 'Border color in error state'],
+      ['--lux-input-bg', 'Input background color'],
+      ['--lux-input-radius', 'Border radius of the input field'],
+      ['--lux-input-label-size', 'Font size of the field label (13px)'],
+    ],
+    do: ['Pair every input with a visible label above it.', 'Write error messages that explain how to fix the issue.'],
+    dont: ['Use placeholder text as the only label.', 'Validate while the user is still typing.'],
+  },
+  'message-bar': {
+    section: 'Components', title: 'Message Bar',
+    desc: 'Communicates important status information tied to the current page or section. Persists until the condition changes or the user dismisses it. Not intended for transient action feedback.',
+    anatomy: [
+      ['Icon', 'Signals severity: info, success, warning, or error'],
+      ['Title', 'One-line summary of the status in bold'],
+      ['Message', 'Optional supporting detail explaining the cause or next step'],
+      ['Action link', 'Optional; single inline action for recovery or navigation'],
+      ['Dismiss button', 'Optional; available only on info and success variants'],
+    ],
+    states: ['Info', 'Success', 'Warning', 'Error'],
+    behavior: [
+      'Placed at the top of the page or directly above the related content area.',
+      'Warning and Error variants cannot be dismissed; the underlying issue must be resolved.',
+      'Only one message bar should appear at a time per content region.',
+      'Does not auto-dismiss; it persists until the condition is resolved.',
+      'When a page has both a page-level and section-level issue, only the page-level bar is shown.',
+    ],
+    keyboard: [
+      [['Tab'], 'Focus the action link or dismiss button'],
+      [['Enter'], 'Trigger the action or dismiss'],
+    ],
+    tokens: [
+      ['--lux-msgbar-info-bg', 'Background color for the info variant'],
+      ['--lux-msgbar-success-bg', 'Background color for the success variant'],
+      ['--lux-msgbar-warning-bg', 'Background color for the warning variant'],
+      ['--lux-msgbar-error-bg', 'Background color for the error variant'],
+      ['--lux-msgbar-icon-size', 'Size of the leading severity icon (18px)'],
+      ['--lux-msgbar-padding', 'Internal padding of the bar (12px 16px)'],
+    ],
+    do: ['Use for system-level or page-level status.', 'Write a clear message with a next step where possible.'],
+    dont: ['Show more than one message bar simultaneously.', 'Use for post-action feedback; use Snackbar for that.'],
+  },
+  'snackbar': {
+    section: 'Components', title: 'Snackbar',
+    desc: 'A brief, temporary notification confirming a completed action. Appears at the edge of the screen and disappears automatically. The only feedback pattern that is both non-blocking and self-dismissing.',
+    anatomy: [
+      ['Message', 'One line, written in past tense, e.g. "Item deleted"'],
+      ['Action', 'Optional; single short verb such as "Undo". Pauses the dismiss timer on hover.'],
+      ['Close button', 'Optional manual dismiss; visible for longer messages'],
+    ],
+    states: ['Default', 'With action', 'Dismissible', 'Queued (waiting)'],
+    behavior: [
+      'Appears at the bottom-right corner; bottom-center on narrow viewports.',
+      'Auto-dismisses after 4 to 5 seconds by default.',
+      'The action button pauses the dismiss timer while hovered or focused.',
+      'Only one snackbar is shown at a time; queued messages appear after the current one exits.',
+      'Not used for errors that require the user to take action; use a Dialog or Message Bar instead.',
+      'Animation is a short upward slide-in; exit is a fade-out.',
+    ],
+    keyboard: [
+      [['Tab'], 'Focus the action or close button'],
+      [['Esc'], 'Dismiss immediately'],
+    ],
+    tokens: [
+      ['--lux-snackbar-bg', 'Snackbar surface background'],
+      ['--lux-snackbar-fg', 'Message text color'],
+      ['--lux-snackbar-action-fg', 'Color of the action link'],
+      ['--lux-snackbar-radius', 'Border radius (8px)'],
+      ['--lux-snackbar-max-width', 'Maximum width before truncation (480px)'],
+      ['--lux-snackbar-duration', 'Auto-dismiss duration (4500ms)'],
+    ],
+    do: ['Use for brief feedback after a user-triggered action.', 'Keep the message to a single short line.'],
+    dont: ['Use for errors requiring a user response; use a Dialog instead.', 'Stack or show more than one snackbar at a time.'],
+  },
+  'tabs': {
+    section: 'Components', title: 'Tabs',
+    desc: 'Tabs organize sibling views at the same hierarchy level. Switching tabs changes the content below without navigating away from the page or triggering a reload.',
+    anatomy: [
+      ['Tab bar', 'Container holding all tab labels; scrollable when overflow occurs'],
+      ['Tab label', 'Text, optionally paired with a count badge or leading icon'],
+      ['Active indicator', 'Animated underline marking the currently selected tab'],
+      ['Content panel', 'The view associated with the active tab; others are unmounted by default'],
+    ],
+    states: ['Default', 'Active', 'Hover', 'Focused', 'Disabled', 'Overflow (scroll)'],
+    behavior: [
+      'Only one tab is active at a time; selection is mutually exclusive.',
+      'Switching does not trigger a page reload or browser navigation.',
+      'Content panels are lazy-loaded unless prefetch is configured explicitly.',
+      'Tab count badges update reactively and do not require a reload.',
+      'When the tab bar overflows its container, it becomes horizontally scrollable with fade indicators.',
+    ],
+    keyboard: [
+      [['← →'], 'Move focus between tabs'],
+      [['Enter','Space'], 'Activate the focused tab'],
+      [['Tab'], 'Move focus out of the tab bar into the active panel'],
+    ],
+    tokens: [
+      ['--lux-tab-height', 'Height of the tab bar (44px)'],
+      ['--lux-tab-label-size', 'Font size of tab labels (13px)'],
+      ['--lux-tab-indicator-color', 'Color of the active underline'],
+      ['--lux-tab-indicator-height', 'Thickness of the active underline (2px)'],
+      ['--lux-tab-gap', 'Spacing between individual tab labels'],
+    ],
+    do: ['Use to switch between sibling views of the same context.', 'Keep labels to 1 or 2 words.'],
+    dont: ['Use tabs as top-level page navigation.', 'Exceed 7 tabs without an overflow or condensed variant.'],
+  },
+  'tooltips': {
+    section: 'Components', title: 'Tooltips',
+    desc: 'Short, contextual labels that appear on hover or keyboard focus. Used to reveal meaning for icon-only controls, truncated text, or abbreviated information that cannot fit inline.',
+    anatomy: [
+      ['Trigger', 'The element that activates the tooltip on hover or focus'],
+      ['Container', 'Pill-shaped surface holding the label; max-width 260px'],
+      ['Arrow', 'Points back toward the trigger element'],
+    ],
+    states: ['Top', 'Bottom', 'Left', 'Right', 'Auto (repositioned)'],
+    behavior: [
+      'Appears after a 300ms hover delay to prevent flicker on fast mouse movement.',
+      'Disappears instantly when the cursor leaves the trigger or focus shifts away.',
+      'Auto-repositions to stay fully within the visible viewport.',
+      'Never contains interactive elements; use a Popover for rich content.',
+      'Long tooltip text wraps to two lines maximum before truncating with ellipsis.',
+    ],
+    keyboard: [
+      [['Tab'], 'Focus the trigger, making the tooltip visible'],
+      [['Esc'], 'Hide the tooltip while keeping focus on the trigger'],
+    ],
+    tokens: [
+      ['--lux-tooltip-bg', 'Tooltip surface background (dark neutral)'],
+      ['--lux-tooltip-fg', 'Label text color'],
+      ['--lux-tooltip-radius', 'Border radius (5px)'],
+      ['--lux-tooltip-max-width', 'Maximum width before text wraps (260px)'],
+      ['--lux-tooltip-delay', 'Hover delay before showing (300ms)'],
+      ['--lux-tooltip-font-size', 'Font size of tooltip text (12px)'],
+    ],
+    do: ['Use to name icon-only buttons.', 'Keep text under 60 characters.'],
+    dont: ['Place essential information only inside a tooltip.', 'Attach tooltips to disabled elements.'],
+  },
+  'layout': {
+    section: 'Foundations', title: 'Layout',
+    desc: 'The spatial system that defines how content, panels, and regions are arranged across the screen. Every spacing decision traces back to a single 8px base unit, keeping the grid consistent at any viewport width.',
+    anatomy: [
+      ['Grid', '12-column grid with 16px gutters and fluid outer margins'],
+      ['Spacing scale', 'Multiples of 8px: 4, 8, 12, 16, 24, 32, 48, 64, 96'],
+      ['Shell', 'Top navigation bar and left navigation; always fixed in place'],
+      ['Content area', 'Fills remaining space; scrolls independently of the shell'],
+      ['Side panels', 'Fixed-width panels that push or overlay the content area'],
+    ],
+    states: ['Fixed width', 'Fluid', 'Split view', 'Full bleed', 'Overlay panel open'],
+    behavior: [
+      'All spacing and sizing values are derived from the 8px base unit.',
+      'Content area max-width is 1280px on wide screens; centered with auto margins.',
+      'Side panels use fixed widths; the content area takes up the remaining space.',
+      'Responsive breakpoints at 768px (tablet) and 1024px (desktop) adjust column counts.',
+    ],
+    keyboard: [],
+    tokens: [
+      ['--lux-grid-columns', 'Number of grid columns (12)'],
+      ['--lux-grid-gutter', 'Space between columns (16px)'],
+      ['--lux-space-1', 'Base unit (4px)'],
+      ['--lux-space-2', '8px, default component inner padding'],
+      ['--lux-space-4', '16px, default section spacing'],
+      ['--lux-content-max-width', 'Maximum content area width (1280px)'],
+    ],
+    do: ['Use the 8px grid for all spacing.', 'Respect the max-width container on large screens.'],
+    dont: ['Mix fluid and fixed columns in the same row.', 'Use arbitrary spacing values outside the scale.'],
+  },
+  'container': {
+    section: 'Foundations', title: 'Container',
+    desc: 'A surface that groups related content and actions into a visually distinct unit with consistent padding and elevation. Containers define the visual hierarchy of the page by separating logical groups.',
+    anatomy: [
+      ['Header', 'Optional; holds a title and container-level actions such as "Edit" or "More"'],
+      ['Body', 'Content area with consistent 16px internal padding'],
+      ['Footer', 'Optional; holds confirmation actions or pagination controls'],
+      ['Skeleton', 'Loading placeholder matching the expected content layout'],
+    ],
+    states: ['Default', 'Scrollable', 'Collapsed', 'Loading', 'Empty'],
+    behavior: [
+      'Body scrolls independently when content overflows the container height.',
+      'Collapsible containers toggle via the header chevron icon.',
+      'Loading state renders a skeleton that matches the expected content structure.',
+      'Empty state includes an illustration, message, and optional primary action.',
+    ],
+    keyboard: [],
+    tokens: [
+      ['--lux-container-bg', 'Container surface background color'],
+      ['--lux-container-border', 'Border color for the container outline'],
+      ['--lux-container-radius', 'Border radius (8px)'],
+      ['--lux-container-padding', 'Internal body padding (16px)'],
+      ['--lux-container-header-height', 'Height of the container header row (48px)'],
+      ['--lux-container-shadow', 'Box shadow for elevated containers'],
+    ],
+    do: ['Group logically related content in one container.', 'Use consistent internal padding across all containers.'],
+    dont: ['Nest containers more than 2 levels deep.', 'Use containers as pure visual decoration without semantic grouping.'],
+  },
+  'text-content': {
+    section: 'Foundations', title: 'Text Content',
+    desc: 'The typographic hierarchy defines every text role in the product, from page titles to inline captions. A consistent type system lets users scan and process information faster.',
+    anatomy: [
+      ['Heading 1 to 4', 'Page, section, sub-section, and card titles'],
+      ['Body', 'Default reading text at 14px with a 1.6 line-height'],
+      ['Label', 'Form labels, table headers, and metadata at 13px medium weight'],
+      ['Caption', 'Supporting detail for timestamps and counts at 12px muted color'],
+      ['Code', 'Inline code spans and code blocks rendered in monospace'],
+    ],
+    states: ['Heading 1', 'Heading 2', 'Heading 3', 'Body', 'Small', 'Label', 'Caption', 'Link'],
+    behavior: [
+      'Heading levels must not be skipped for accessibility and document outline correctness.',
+      'Line length is capped at 72 characters for optimal reading comfort.',
+      'Use sentence case for body text; title case only for navigation items.',
+      'Links within body text always have an underline, never color alone as the only differentiator.',
+    ],
+    keyboard: [],
+    tokens: [
+      ['--lux-font-family', 'Primary typeface (Inter, system-ui)'],
+      ['--lux-font-size-h1', 'Page heading size (28px)'],
+      ['--lux-font-size-h2', 'Section heading size (22px)'],
+      ['--lux-font-size-body', 'Default body text (14px)'],
+      ['--lux-font-size-label', 'Label and metadata text (13px)'],
+      ['--lux-font-size-caption', 'Supporting detail text (12px)'],
+      ['--lux-line-height-body', 'Body line height (1.6)'],
+    ],
+    do: ['Use the predefined type scale for every text element.', 'Maintain heading hierarchy within each page.'],
+    dont: ['Use more than 3 type sizes in a single card or section.', 'Drop body text below 13px.'],
+  },
+  'data-table': {
+    section: 'Patterns', title: 'Data Table',
+    desc: 'A dense, structured view for comparing rows of data across multiple attributes. Designed for scanning, sorting, and acting on large datasets with minimal cognitive load.',
+    anatomy: [
+      ['Column header', 'Label and sort control; click to cycle sort ascending, descending, or off'],
+      ['Row', 'One record; left checkbox enables multi-select'],
+      ['Cell', 'Single value: text, badge, icon, or inline action'],
+      ['Inline actions', 'Appear on row hover in the last column; max 3 visible icons'],
+      ['Pagination', 'Page size selector and navigation in the table footer'],
+      ['Empty state', 'Shown when the dataset is empty or filtered to zero results'],
+    ],
+    states: ['Default', 'Loading', 'Empty', 'Row hover', 'Row selected', 'Sorted asc', 'Sorted desc'],
+    behavior: [
+      'Column click sorts ascending; second click sorts descending; third click resets to default.',
+      'Multi-select via checkbox column; header checkbox selects all rows on the current page.',
+      'Inline row actions appear on hover; overflow actions collapse into a menu.',
+      'Sticky header stays in view while the user scrolls through long lists.',
+      'Column widths can be resized by dragging the divider in the header row.',
+    ],
+    keyboard: [
+      [['Tab'], 'Move focus between interactive cells and controls'],
+      [['Space'], 'Toggle the focused row checkbox'],
+      [['Enter'], 'Trigger the focused row action'],
+    ],
+    tokens: [
+      ['--lux-table-header-bg', 'Background of the sticky header row'],
+      ['--lux-table-row-height', 'Default row height (40px)'],
+      ['--lux-table-row-hover-bg', 'Row background on hover'],
+      ['--lux-table-row-selected-bg', 'Row background when checkbox is checked'],
+      ['--lux-table-border-color', 'Row separator and header border color'],
+      ['--lux-table-cell-padding', 'Horizontal cell padding (12px)'],
+    ],
+    do: ['Use for structured, comparable data with multiple attributes.', 'Show a skeleton loader while data is fetched.'],
+    dont: ['Display more than 8 columns without horizontal scroll support.', 'Use for single-attribute lists; use a List component instead.'],
+  },
+  'filter-bar': {
+    section: 'Patterns', title: 'Filter Bar',
+    desc: 'A persistent control surface for narrowing a dataset in real time. Filters apply immediately with no submit step required. The active state of each filter is visible at a glance via chips.',
+    anatomy: [
+      ['Filter controls', 'Dropdowns, date pickers, and search inputs for each filter dimension'],
+      ['Active chips', 'One chip per active filter, each showing the value and an inline remove button'],
+      ['Clear all', 'Removes every active filter in one action; appears only when filters are active'],
+      ['Result count', 'Optional label showing how many records match the current filter set'],
+    ],
+    states: ['Empty', 'Active filters', 'Collapsed', 'Loading'],
+    behavior: [
+      'Filters are applied on change; results update in real time without a submit.',
+      'Each active filter is represented as a chip with an inline remove button.',
+      '"Clear all" appears only when at least one filter is active.',
+      'On narrow viewports, the bar collapses to a summary row of chips.',
+      'When a filter combination yields zero results, the empty state is shown immediately.',
+    ],
+    keyboard: [
+      [['Tab'], 'Move focus between filter controls and chips'],
+      [['Delete'], 'Remove the focused active chip'],
+    ],
+    tokens: [
+      ['--lux-filter-bar-height', 'Height of the filter bar row (48px)'],
+      ['--lux-filter-chip-bg', 'Background of an active filter chip'],
+      ['--lux-filter-chip-border', 'Border color of active filter chips'],
+      ['--lux-filter-chip-fg', 'Text color inside active chips'],
+      ['--lux-filter-gap', 'Spacing between filter controls (8px)'],
+    ],
+    do: ['Show active filter count when the bar is collapsed.', 'Apply filters immediately without a submit button.'],
+    dont: ['Allow combinations that silently produce zero results without feedback.', 'Hide the filter bar entirely when the result set is empty.'],
+  },
+  'left-nav': {
+    section: 'Patterns', title: 'Left Navigation',
+    desc: 'The primary wayfinding structure. Organizes top-level application destinations into a persistent vertical menu anchored to the left edge of the shell.',
+    anatomy: [
+      ['App logo', 'Top of the nav; always links to the home or dashboard view'],
+      ['Nav group', 'Labeled section that clusters related destinations'],
+      ['Nav item', 'Single destination with an icon, a label, and an optional badge'],
+      ['Sub-items', 'Second-level destinations indented beneath a parent; expand on click'],
+      ['Collapse toggle', 'Shrinks the nav to icon-only mode to maximize content area width'],
+    ],
+    states: ['Expanded', 'Collapsed (icon only)', 'Item default', 'Item hover', 'Item active', 'Item with badge', 'Item disabled'],
+    behavior: [
+      'The active item is always visible, even when its sub-menu is collapsed.',
+      'In icon-only mode, item labels appear as tooltips on hover.',
+      'Sub-menus expand inline without flyouts.',
+      'Scroll position within the nav is preserved when the user navigates between destinations.',
+      'Badge counts update in real time without reloading the nav.',
+    ],
+    keyboard: [
+      [['↑','↓'], 'Move focus between visible items'],
+      [['Enter'], 'Navigate to the focused destination or toggle a sub-menu'],
+      [['→'], 'Expand a collapsed sub-menu group'],
+    ],
+    tokens: [
+      ['--lux-nav-width-expanded', 'Width when nav is fully expanded (220px)'],
+      ['--lux-nav-width-collapsed', 'Width in icon-only mode (56px)'],
+      ['--lux-nav-bg', 'Navigation panel background'],
+      ['--lux-nav-item-height', 'Height of a single nav item (40px)'],
+      ['--lux-nav-item-active-bg', 'Background of the currently active item'],
+      ['--lux-nav-item-active-indicator', 'Left border color for the active item'],
+    ],
+    do: ['Group destinations by workflow with clear section labels.', 'Keep top-level item count between 5 and 9.'],
+    dont: ['Exceed 2 levels of nesting.', 'Use the left nav for in-page or contextual navigation.'],
+  },
+  'wizard': {
+    section: 'Patterns', title: 'Wizard',
+    desc: 'A step-by-step flow that breaks a complex task into focused, sequential decisions. Each step is self-contained and validates before the user can advance, reducing errors and abandonment.',
+    anatomy: [
+      ['Step indicator', 'Horizontal or vertical progress bar showing all steps and current position'],
+      ['Step content', 'The form, decision, or information for the current step'],
+      ['Back / Next', 'Navigation controls; Back is always available, Next validates before advancing'],
+      ['Summary', 'Optional final review step showing all entered values before submission'],
+      ['Cancel', 'Exits the wizard and discards unsaved changes after a confirmation prompt'],
+    ],
+    states: ['Step default', 'Step active', 'Step completed', 'Step with error', 'Step disabled'],
+    behavior: [
+      'Steps are sequential; the user cannot skip ahead to a later step.',
+      'Back is always available; revisiting a step preserves all previously entered values.',
+      'Validation runs on Next; errors are shown inline before the step advances.',
+      'The step indicator updates immediately as steps are completed.',
+      'Destructive actions such as deletions are always placed on the final step.',
+    ],
+    keyboard: [
+      [['Tab'], 'Move focus through fields within the current step'],
+      [['Enter'], 'Advance to the next step when Next button is focused'],
+      [['Esc'], 'Prompt a cancel dialog if unsaved changes exist'],
+    ],
+    tokens: [
+      ['--lux-wizard-indicator-size', 'Size of each step circle (28px)'],
+      ['--lux-wizard-indicator-active', 'Fill color for the current step circle'],
+      ['--lux-wizard-indicator-done', 'Fill color for completed step circles'],
+      ['--lux-wizard-connector-color', 'Color of the line between step indicators'],
+      ['--lux-wizard-content-padding', 'Padding inside the step content area (24px)'],
+    ],
+    do: ['Use for tasks with 3 or more sequential steps.', 'Show total step count so users know how long the flow is.'],
+    dont: ['Use for simple tasks that fit on a single screen.', 'Allow the user to complete steps out of order.'],
+  },
+};
+
+function kbdHtml(keys) {
+  return keys.map(k => `<span class="kbd">${k}</span>`).join('');
+}
+
+function render(id) {
+  const d = DATA[id];
+  if (!d) return;
+  const cat = CATS[d.section] || CATS.Components;
+
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelector(`.nav-item[data-id="${id}"]`).classList.add('active');
+
+  const keyboardSection = d.keyboard.length ? `
+    <div class="doc-section">
+      <div class="doc-section-label">Keyboard</div>
+      <table class="key-table">
+        ${d.keyboard.map(([keys, desc]) => `
+          <tr>
+            <td>${kbdHtml(keys)}</td>
+            <td class="key-desc">${desc}</td>
+          </tr>`).join('')}
+      </table>
+    </div>` : '';
+
+  // Interleave do/don't so they appear as pairs: [do, dont] per row
+  const maxRules = Math.max(d.do.length, d.dont.length);
+  let usageRows = '';
+  for (let i = 0; i < maxRules; i++) {
+    usageRows += d.do[i]   ? `<div class="rule do"><span class="rule-icon">✓</span><span>${d.do[i]}</span></div>` : '<div></div>';
+    usageRows += d.dont[i] ? `<div class="rule dont"><span class="rule-icon">✕</span><span>${d.dont[i]}</span></div>` : '<div></div>';
+  }
+
+  document.getElementById('doc').innerHTML = `
+    <div class="doc-header" style="--hue:${cat.hue};">
+      <div class="doc-meta">
+        <span class="doc-badge" style="--badge-bg:${cat.badgeBg};--badge-fg:${cat.badgeFg};">${d.section}</span>
+        <span class="doc-breadcrumb">LUX 2.0 / ${d.section} / ${d.title}</span>
+      </div>
+      <div class="doc-title">${d.title}</div>
+      <div class="doc-desc">${d.desc}</div>
+    </div>
+    <div class="doc-body">
+
+      <div class="doc-section">
+        <div class="doc-section-label">Anatomy</div>
+        <div class="anatomy-list">
+          ${d.anatomy.map(([name, desc], i) => `
+            <div class="anatomy-item">
+              <span class="anatomy-num">${i + 1}</span>
+              <span><span class="anatomy-name">${name}</span><span class="anatomy-sep"> — </span>${desc}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <div class="doc-section-label">States</div>
+        <div class="states-row">
+          ${d.states.map(s => `<span class="state-chip">${s}</span>`).join('')}
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <div class="doc-section-label">Behavior</div>
+        ${d.behavior.map(b => `
+          <div class="behavior-item">
+            <span class="behavior-icon">▸</span>
+            <span>${b}</span>
+          </div>`).join('')}
+      </div>
+
+      ${keyboardSection}
+
+      <div class="doc-section">
+        <div class="doc-section-label">Design Tokens</div>
+        <div class="token-list">
+          ${d.tokens.map(([name, desc]) => `
+            <div class="token-row">
+              <span class="token-name">${name}</span>
+              <span class="token-desc">${desc}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <div class="doc-section-label">Usage</div>
+        <div class="usage-grid">${usageRows}</div>
+      </div>
+
+    </div>`;
+  document.getElementById('doc').scrollTop = 0;
+}
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => render(item.dataset.id));
+});
+render('action-menu');
+</script>
+</body>
+</html>
