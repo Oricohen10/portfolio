@@ -89,7 +89,7 @@ img{max-width:100%;display:block;}
 .reveal-scale.visible{opacity:1;transform:none;}
 .reveal-blur{opacity:0;transform:translateY(16px);filter:blur(10px);transition:opacity .85s var(--ease-emphasized),transform .85s var(--ease-emphasized),filter .85s var(--ease-emphasized);}
 .reveal-blur.visible{opacity:1;transform:none;filter:none;}
-/* Stagger delay classes — applied to children by stagger observer */
+/* Stagger delay classes - applied to children by stagger observer */
 .sd1{transition-delay:.06s!important}.sd2{transition-delay:.13s!important}.sd3{transition-delay:.20s!important}
 .sd4{transition-delay:.27s!important}.sd5{transition-delay:.34s!important}.sd6{transition-delay:.41s!important}
 
@@ -101,7 +101,7 @@ img{max-width:100%;display:block;}
 /* Nav entrance on load */
 .case-nav{animation:navSlideIn .55s var(--ease-emphasized) both;}
 
-/* Browser mockup float — desktop */
+/* Browser mockup float - desktop */
 @media(min-width:769px){
   .browser-frame{animation:floatBrowser 5.5s cubic-bezier(0.45,0,0.55,1) infinite;}
 }
@@ -389,7 +389,7 @@ img{max-width:100%;display:block;}
 /* ── Viewer card: mobile responsive ── */
 @media(max-width:640px){
   .viewer-preview-card{padding:18px;}
-  /* Hide the decorative sidebar list — too tall & redundant on mobile */
+  /* Hide the decorative sidebar list - too tall & redundant on mobile */
   .vpc-sidebar{display:none;}
   /* Stats row: compress slightly */
   .vpc-stats{padding:10px 12px;}
@@ -693,16 +693,12 @@ section{padding:96px 0;}
   font-size:14px;color:var(--ink-2);line-height:1.75;max-width:800px;
 }
 .grad-text{
-  background:linear-gradient(135deg,#66AFFF 10%,#66E2B0 50%,#66AFFF 90%);
-  background-size:300% auto;
+  background:linear-gradient(135deg,#66AFFF 10%,#66E2B0 90%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:gradShimmer 7s linear infinite;
 }
 .purple-text{
-  background:linear-gradient(135deg,#C4B5FD 0%,#a78bfa 50%,#C4B5FD 100%);
-  background-size:300% auto;
+  background:linear-gradient(135deg,#C4B5FD 0%,#a78bfa 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:gradShimmer 9s linear infinite reverse;
 }
 
 /* ══════════════ CONTEXT ══════════════ */
@@ -1017,7 +1013,7 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 }
 .pf-arrow.lit{opacity:1;}
 
-/* Pipeline step — clickable + active state */
+/* Pipeline step - clickable + active state */
 .pf-step{cursor:pointer;transition:opacity .5s var(--ease),transform .5s var(--ease);}
 .pf-step.active .pf-icon{
   border-color:rgba(102,175,255,.9) !important;
@@ -1549,6 +1545,27 @@ body.edit-active .impact-sub:hover{
 .case-footer a{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);transition:color .15s;}
 .case-footer a:hover{color:var(--ink);}
 .case-footer span{font-size:11px;color:var(--ink-3);}
+
+/* ══════════════ MOBILE SPACING ══════════════ */
+@media(max-width:640px){
+  #hero { padding: 72px 0 40px; }
+  section { padding: 40px 0; }
+  #documentation { padding: 40px 0; }
+
+  .hero-grid { gap: 32px; }
+  #context .context-grid { gap: 32px; }
+
+  .plugins-grid { gap: 16px; }
+  .comp-showcase { gap: 16px; }
+  .comp-categories { gap: 24px; margin-top: 24px; }
+  .comp-numbers { gap: 16px; }
+  .decision-grid { gap: 16px; }
+
+  .impact-grid { gap: 24px; }
+  .impact-statement { margin-top: 32px; padding: 0 16px; }
+
+  .case-footer { padding: 40px 0; }
+}
 </style>
 </head>
 <body>
@@ -1873,7 +1890,7 @@ body.edit-active .impact-sub:hover{
           </div>
           <span class="code-file">primitives.css → semanticsLight.ts → button.style.ts</span>
         </div>
-        <pre class="token-code"><span class="c-comment">/* 01 — primitives.css (96 tokens, auto-generated) */</span>
+        <pre class="token-code"><span class="c-comment">/* 01 - primitives.css (96 tokens, auto-generated) */</span>
 :root {
   <span class="c-key">--lux-color-blue-500</span>: <span class="c-val">#66AFFF</span>;
   <span class="c-key">--lux-color-blue-600</span>: <span class="c-val">#2563EB</span>;
@@ -1881,13 +1898,13 @@ body.edit-active .impact-sub:hover{
   <span class="c-key">--lux-radius-md</span>: <span class="c-val">8px</span>;
 }
 
-<span class="c-comment">/* 02 — semanticsLight.ts */</span>
+<span class="c-comment">/* 02 - semanticsLight.ts */</span>
 <span class="c-dim">export const</span> semanticsLight = {
   <span class="c-key">colorInteractiveDefault</span>: <span class="c-ref">var(--lux-color-blue-500)</span>,
   <span class="c-key">colorSurfaceRaised</span>: <span class="c-ref">var(--lux-color-gray-900)</span>,
 };
 
-<span class="c-comment">/* 03 — button.style.ts (no hardcoded hex) */</span>
+<span class="c-comment">/* 03 - button.style.ts (no hardcoded hex) */</span>
 <span class="c-dim">export const</span> buttonStyles = {
   primary: {
     <span class="c-key">background</span>: <span class="c-ref">semanticsLight.colorInteractiveDefault</span>,
@@ -2136,11 +2153,6 @@ body.edit-active .impact-sub:hover{
   <span>Ori Cohen · Product Designer · Verint</span>
 </footer>
 
-<!-- EDIT FAB -->
-<div id="editFab">
-  <button class="edit-fab-btn edit-fab-save" id="editSaveBtn" style="display:none;" onclick="downloadHTML()">↓ Save HTML</button>
-  <button class="edit-fab-btn edit-fab-main" id="editToggleBtn" onclick="toggleEditMode()">✏ Edit</button>
-</div>
 
 <script>
 // Video modal
@@ -2217,7 +2229,7 @@ const _ro = new IntersectionObserver(es => es.forEach(e => {
   if(e.isIntersecting){ e.target.classList.add("visible"); _ro.unobserve(e.target); }
 }), {threshold:0.08, rootMargin:"0px 0px -48px 0px"});
 document.querySelectorAll(".reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-blur").forEach(el => _ro.observe(el));
-// Stagger groups — children reveal sequentially when container enters view
+// Stagger groups - children reveal sequentially when container enters view
 const _staggerObs = new IntersectionObserver(es => es.forEach(e => {
   if(!e.isIntersecting) return;
   [...e.target.children].forEach((child, i) => {

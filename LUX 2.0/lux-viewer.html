@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>LUX 2.0 — Design System Viewer</title>
+<title>LUX 2.0 - Design System Viewer</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;font-family:-apple-system,'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
@@ -455,7 +455,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Inter',sans-ser
   .theme-btn { padding: 4px 8px; font-size: 10px; }
   #main-header { padding: 0 12px; gap: 8px; }
 
-  /* Hide desktop controls — moved to floating toolbar */
+  /* Hide desktop controls - moved to floating toolbar */
   #theme-toggle { display: none; }
   #zoom-controls { display: none; }
 
@@ -516,7 +516,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Inter',sans-ser
     </nav>
 
     <div id="sidebar-footer">
-      <span id="comp-count">— components</span>
+      <span id="comp-count">- components</span>
       <span>↑↓ navigate</span>
     </div>
   </aside>
@@ -587,7 +587,7 @@ html,body{height:100%;overflow:hidden;font-family:-apple-system,'Inter',sans-ser
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  DATA — add categories and components here
+//  DATA - add categories and components here
 //  Format: { id, label, file }
 //  file = the part before ' _ Dark.png' / ' _ Light.png'
 // ═══════════════════════════════════════════════════════
@@ -837,7 +837,7 @@ function loadImage(cat, comp) {
       img.src = img._encodedPath;
       return;
     }
-    // Both failed — show error with full URLs for debugging
+    // Both failed - show error with full URLs for debugging
     img.classList.remove('loading');
     img.style.display = 'none';
     const absRaw = new URL(img._rawPath, window.location.href).href;
@@ -885,7 +885,7 @@ function applyFitAll() {
 
   if (natW === 0 || natH === 0) return;
 
-  // Scale to fit both dimensions — whichever is the limiting one
+  // Scale to fit both dimensions - whichever is the limiting one
   const scale = Math.min(1, availW / natW, availH / natH);
 
   img.style.maxWidth  = 'none';
@@ -998,7 +998,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'd' || e.key === 'D') setTheme('Dark');
   if (e.key === 'l' || e.key === 'L') setTheme('Light');
 
-  // Zoom — always preventDefault so Cmd+/- never triggers browser zoom
+  // Zoom - always preventDefault so Cmd+/- never triggers browser zoom
   if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomIn(); }
   if (e.key === '-')                  { e.preventDefault(); zoomOut(); }
   if (e.key === '0')                  { e.preventDefault(); setZoomFit(); }

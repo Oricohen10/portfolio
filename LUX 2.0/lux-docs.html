@@ -152,7 +152,7 @@
   }
   .token-desc { color: #6e7681; line-height: 1.5; }
 
-  /* Do / Don't grid — interleaved pairs */
+  /* Do / Don't grid - interleaved pairs */
   .usage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .rule {
     display: flex; gap: 8px; align-items: flex-start;
@@ -727,7 +727,7 @@ function render(id) {
           ${d.anatomy.map(([name, desc], i) => `
             <div class="anatomy-item">
               <span class="anatomy-num">${i + 1}</span>
-              <span><span class="anatomy-name">${name}</span><span class="anatomy-sep"> — </span>${desc}</span>
+              <span><span class="anatomy-name">${name}</span><span class="anatomy-sep"> - </span>${desc}</span>
             </div>`).join('')}
         </div>
       </div>

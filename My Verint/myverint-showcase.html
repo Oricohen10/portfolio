@@ -55,7 +55,7 @@ img{max-width:100%;display:block;}
 .reveal-scale.visible{opacity:1;transform:none;}
 .reveal-blur{opacity:0;transform:translateY(16px);filter:blur(10px);transition:opacity .85s var(--ease-emphasized),transform .85s var(--ease-emphasized),filter .85s var(--ease-emphasized);}
 .reveal-blur.visible{opacity:1;transform:none;filter:none;}
-/* Stagger delay classes — applied to children by stagger observer */
+/* Stagger delay classes - applied to children by stagger observer */
 .sd1{transition-delay:.06s!important}.sd2{transition-delay:.13s!important}.sd3{transition-delay:.20s!important}
 .sd4{transition-delay:.27s!important}.sd5{transition-delay:.34s!important}.sd6{transition-delay:.41s!important}
 
@@ -68,9 +68,9 @@ img{max-width:100%;display:block;}
 /* Nav entrance on load */
 .case-nav{animation:navSlideIn .55s var(--ease-emphasized) both;}
 
-/* Gradient text shimmer — applied directly on .grad-text and .purple-text definitions below */
+/* Gradient text shimmer - applied directly on .grad-text and .purple-text definitions below */
 
-/* Phone ambient float — desktop only */
+/* Phone ambient float - desktop only */
 @media(min-width:769px){
   .sc-phone{animation:floatPhone 5s cubic-bezier(0.45,0,0.55,1) infinite;}
 }
@@ -107,8 +107,8 @@ img{max-width:100%;display:block;}
 .sec-tag::before{content:"";width:20px;height:1px;background:var(--border-b);}
 .sec-title{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;color:var(--ink);}
 .sec-body{font-size:14px;color:var(--ink-2);line-height:1.75;max-width:800px;}
-.grad-text{background:linear-gradient(135deg,#66AFFF 10%,#66E2B0 50%,#66AFFF 90%);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShimmer 7s linear infinite;}
-.purple-text{background:linear-gradient(135deg,#C4B5FD 0%,#a78bfa 50%,#C4B5FD 100%);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShimmer 9s linear infinite reverse;}
+.grad-text{background:linear-gradient(135deg,#66AFFF 10%,#66E2B0 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.purple-text{background:linear-gradient(135deg,#C4B5FD 0%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* STRIP */
 .strip-wrap{position:relative;overflow:hidden;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
@@ -216,7 +216,7 @@ img{max-width:100%;display:block;}
 /* Drag cursor hint on desktop */
 @media(hover:hover){.sc-tabs{cursor:grab;}.sc-tabs.dragging{cursor:grabbing;}}
 @media(max-width:860px){
-  /* Single column — mirrors ask-ai-demo mobile structure */
+  /* Single column - mirrors ask-ai-demo mobile structure */
   .showcase-inner{display:flex;flex-direction:column;gap:28px;align-items:stretch;margin-top:32px;}
   /* Fade on right edge to hint at horizontal scrollability */
   .sc-tabs-wrap::after{content:"";position:absolute;top:0;right:0;bottom:6px;width:52px;background:linear-gradient(to right,transparent,var(--bg-2) 80%);pointer-events:none;z-index:2;}
@@ -236,7 +236,7 @@ img{max-width:100%;display:block;}
 .sc-phone-screen{position:absolute;inset:10px;border-radius:41px;overflow:hidden;background:#000;}
 .sc-phone-island{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:100px;height:27px;background:#000;border-radius:18px;z-index:10;}
 .sc-screen-img{width:100%;height:100%;object-fit:cover;object-position:top;transition:opacity .35s var(--ease);}
-/* Video layout — visibility handled by crossfade rules above */
+/* Video layout - visibility handled by crossfade rules above */
 .sc-screen-vid{width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0;}
 /* Video mode: hide HTML island & img */
 .sc-phone-screen.has-video .sc-phone-island{display:none;}
@@ -249,9 +249,9 @@ img{max-width:100%;display:block;}
 .sc-phone-hint{display:none;}
 @media(max-width:860px){
   .sc-tab-info{display:none!important;}
-  /* Phone centered, full-column — mirrors ask-ai-demo phone treatment */
+  /* Phone centered, full-column - mirrors ask-ai-demo phone treatment */
   .sc-phone-col{flex-direction:column;align-items:center;justify-content:flex-start;}
-  /* Phone at 210px — prominent like the ask-ai phone */
+  /* Phone at 210px - prominent like the ask-ai phone */
   .sc-phone{width:210px;height:444px;border-radius:42px;cursor:pointer;}
   .sc-phone::before{top:86px;height:54px;}
   .sc-phone::after{top:70px;height:29px;box-shadow:0 40px 0 rgba(255,255,255,.11),0 75px 0 rgba(255,255,255,.11);}
@@ -259,7 +259,7 @@ img{max-width:100%;display:block;}
   .sc-phone-island{width:80px;height:21px;top:10px;border-radius:14px;}
   /* Tap hint */
   .sc-phone-hint{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);opacity:.5;margin-top:10px;}
-  /* Description below — full width, no sticky */
+  /* Description below - full width, no sticky */
   .sc-desc{display:flex;position:static;padding:0;}
 }
 /* Phone lightbox */
@@ -281,7 +281,7 @@ img{max-width:100%;display:block;}
 .sc-desc-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);opacity:.8;margin-bottom:2px;}
 .sc-desc-name{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.6px;line-height:1.2;}
 .sc-desc-body{font-size:13px;color:var(--ink-2);line-height:1.75;}
-/* BULLETS — two-line: title + description */
+/* BULLETS - two-line: title + description */
 .sc-bullets{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:16px;}
 .sc-bullets li{display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:2px solid rgba(102,175,255,.25);}
 .sc-bl-title{font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;}
@@ -307,7 +307,7 @@ img{max-width:100%;display:block;}
 .ai-phone::after{content:"";position:absolute;left:-4px;top:90px;width:3px;height:38px;background:rgba(255,255,255,.12);border-radius:4px 0 0 4px;box-shadow:0 52px 0 rgba(255,255,255,.12),0 98px 0 rgba(255,255,255,.12);}
 .ai-phone-screen{position:absolute;inset:10px;border-radius:44px;background:#000;overflow:hidden;display:flex;flex-direction:column;}
 .ai-phone-island{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:110px;height:30px;background:#000;border-radius:20px;z-index:20;}
-/* Demo video overlay — sits above the HTML chat animation */
+/* Demo video overlay - sits above the HTML chat animation */
 .ai-demo-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;z-index:15;opacity:0;transition:opacity .5s var(--ease-emphasized);}
 .ai-demo-vid.playing{opacity:1;}
 /* Hide the HTML island when real video (with its own status bar) is showing */
@@ -397,6 +397,52 @@ img{max-width:100%;display:block;}
 .case-footer a{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);transition:color .15s;}
 .case-footer a:hover{color:var(--ink);}
 .case-footer span{font-size:11px;color:var(--ink-3);}
+
+/* ══════════════════════════════════════════
+   MOBILE SPACING SYSTEM (≤640px)
+   Scale: 8 · 16 · 24 · 32 · 40 · 48 · 64
+══════════════════════════════════════════ */
+@media(max-width:640px){
+  /* Hero — 48px break */
+  #hero { padding: 72px 0 40px; }
+  .hero-grid { gap: 32px; }
+  .hero-meta { gap: 8px; margin-top: 20px; }
+
+  /* Major sections — 40px */
+  #overview    { padding: 40px 0; }
+  #problem     { padding: 40px 0; }
+  #showcase    { padding: 40px 0; }
+  #ask-ai-demo { padding: 40px 0; }
+  #impact      { padding: 40px 0; }
+
+  /* Section headers */
+  .sec-title { margin-bottom: 10px; }
+  .sec-body  { margin-top: 12px; }
+
+  /* Overview pipeline */
+  .ov-grid { gap: 32px; }
+  .ov-pipeline { gap: 0; }
+
+  /* Problem cards */
+  .prob-cards { gap: 16px; }
+  .prob-card  { padding: 20px 18px; }
+
+  /* Showcase */
+  .showcase-inner { gap: 20px; }
+
+  /* AI demo */
+  .ai-demo-wrap  { gap: 32px; }
+  .ai-steps-track { gap: 0; }
+  .ai-step { padding: 18px 0; }
+
+  /* Impact */
+  .impact-grid { gap: 24px; }
+  .impact-cell { padding: 0 16px; }
+  .impact-statement { margin-top: 32px; padding: 0 16px; }
+
+  /* Footer */
+  .case-footer { padding: 40px 0; gap: 12px; }
+}
 </style>
 </head>
 <body>
@@ -558,7 +604,7 @@ img{max-width:100%;display:block;}
     <div class="reveal">
       <div class="sec-tag">The App</div>
       <h2 class="sec-title">Five tabs.<br/><span class="grad-text">Every workflow.</span></h2>
-      <p class="sec-body">MyVerint organizes every workflow into five purpose-built tabs. Agents, managers, and back-office teams each get a view designed for their role — with an AI assistant that ties it all together.</p>
+      <p class="sec-body">MyVerint organizes every workflow into five purpose-built tabs. Agents, managers, and back-office teams each get a view designed for their role - with an AI assistant that ties it all together.</p>
     </div>
     <div class="showcase-inner reveal" style="transition-delay:.1s">
       <div class="sc-tabs-wrap">
@@ -779,7 +825,7 @@ const _ro = new IntersectionObserver(es => es.forEach(e => {
   if(e.isIntersecting){ e.target.classList.add("visible"); _ro.unobserve(e.target); }
 }), {threshold:0.08, rootMargin:"0px 0px -48px 0px"});
 document.querySelectorAll(".reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-blur").forEach(el => _ro.observe(el));
-// Stagger groups — children reveal sequentially when container enters view
+// Stagger groups - children reveal sequentially when container enters view
 const _staggerObs = new IntersectionObserver(es => es.forEach(e => {
   if(!e.isIntersecting) return;
   [...e.target.children].forEach((child, i) => {
@@ -790,7 +836,7 @@ const _staggerObs = new IntersectionObserver(es => es.forEach(e => {
 }), {threshold:0.08, rootMargin:"0px 0px -48px 0px"});
 document.querySelectorAll("[data-stagger]").forEach(el => _staggerObs.observe(el));
 
-// TAB SWITCHER — all videos play simultaneously in background; tab switch = visibility only
+// TAB SWITCHER - all videos play simultaneously in background; tab switch = visibility only
 const tabVideos = {
   "ask-ai":     "scScreenVid",
   "schedule":   "scScreenVid2",
@@ -803,7 +849,7 @@ let activeTabId = "ask-ai";
 
 // ── LAZY LOAD: when section enters viewport, load ALL videos and start them all ──
 // All play silently in background. Switching tab just changes which one is visible.
-// This guarantees zero restarts — there is no pause/play during tab switching at all.
+// This guarantees zero restarts - there is no pause/play during tab switching at all.
 let videosLoaded = false;
 const showcaseSection = document.getElementById("showcase");
 const lazyObs = new IntersectionObserver(entries => {
@@ -825,7 +871,7 @@ const lazyObs = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 lazyObs.observe(showcaseSection);
 
-// ── TAB SWITCHING: opacity crossfade only — no pause, no play, no restart ever ──
+// ── TAB SWITCHING: opacity crossfade only - no pause, no play, no restart ever ──
 document.querySelectorAll(".sc-tab").forEach(tab => {
   tab.addEventListener("click", () => {
     const id = tab.dataset.tab;
@@ -1026,7 +1072,7 @@ function runDemo(){
 })();
 
 // ── VIDEO-SYNCED STEP HIGHLIGHTS ──
-// Times (seconds) when each step activates — tweak to match video content
+// Times (seconds) when each step activates - tweak to match video content
 const AI_STEP_TIMES = [1.5, 6, 12, 19];
 let _syncLastT = 0, _syncCurStep = -1;
 
@@ -1068,7 +1114,7 @@ const aiObs = new IntersectionObserver(es => {
             syncStepsToVideo(demoVid);
           })
           .catch(() => {
-            // Autoplay blocked — show HTML chat demo as fallback
+            // Autoplay blocked - show HTML chat demo as fallback
             setTimeout(runDemo, 500);
           });
         demoVid.addEventListener("canplay", () => {
