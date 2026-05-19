@@ -4,6 +4,15 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LUX 2.0 · Ori Cohen</title>
+<meta name="description" content="Case study: LUX 2.0 — Verint's enterprise design system built from scratch. Fully accessible, token-based components. Product design by Ori Cohen."/>
+<meta property="og:title" content="LUX 2.0 · Ori Cohen"/>
+<meta property="og:description" content="Building Verint's enterprise design system from scratch — accessible, token-based, with a full motion library."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://oricohen10.github.io/portfolio/LUX 2.0/images/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="LUX 2.0 · Ori Cohen"/>
+<meta name="twitter:description" content="Building Verint's enterprise design system from scratch — accessible, token-based, with a full motion library."/>
+<meta name="twitter:image" content="https://oricohen10.github.io/portfolio/LUX 2.0/images/og-image.png"/>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -141,9 +150,9 @@ img{max-width:100%;display:block;}
   background:var(--card);border:1px solid var(--border-m);
   border-radius:var(--r-sm);padding:6px 12px;
 }
-.stat-num{font-size:11px;font-weight:700;color:var(--ink);}
+.stat-num{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.3px;}
 .stat-sep{width:1px;height:12px;background:var(--border-m);}
-.stat-lbl{font-size:11px;color:var(--ink-2);font-weight:600;}
+.stat-lbl{font-size:10px;color:var(--ink-3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;}
 
 /* ── HERO GRID (split) ── */
 .hero-grid{
@@ -533,7 +542,7 @@ img{max-width:100%;display:block;}
 .compare-container{
   position:relative;border-radius:var(--r-xl);overflow:hidden;
   border:1px solid var(--border-m);user-select:none;
-  box-shadow:0 32px 80px rgba(0,0,0,.6);height:460px;
+  box-shadow:0 32px 80px rgba(0,0,0,.6);height:clamp(280px,45vh,460px);
 }
 .compare-side{position:absolute;inset:0;overflow:hidden;}
 .compare-light{z-index:1;}
@@ -1584,6 +1593,11 @@ body.edit-active .impact-sub:hover{
   .docs-viewer-wrap { height: 320px; }
 }
 
+:focus{outline:none;}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px;}
+.pipe-step:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
+.pipe-modal-close:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
+.nav-back:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
@@ -1657,7 +1671,7 @@ body.edit-active .impact-sub:hover{
           <div class="browser-url">lux2.0storybook.com</div>
         </div>
         <div class="browser-body">
-          <video autoplay muted loop playsinline style="width:100%;height:100%;display:block;object-fit:cover;object-position:top center;">
+          <video autoplay muted loop playsinline preload="none" style="width:100%;height:100%;display:block;object-fit:cover;object-position:top center;">
             <source src="videos/hero.mp4" type="video/mp4">
           </video>
         </div>
@@ -1727,7 +1741,7 @@ body.edit-active .impact-sub:hover{
           </div>
         </div>
       </div>
-      <div class="viewer-preview-card reveal" role="link" tabindex="0" aria-label="Open LUX 2.0 component viewer" onclick="window.open('lux-viewer.html','_blank')" onkeydown="if(event.key==='Enter'||event.key===' ')window.open('lux-viewer.html','_blank')" style="cursor:pointer;margin-top:32px;">
+      <a href="lux-viewer.html" target="_blank" rel="noopener" class="viewer-preview-card reveal" aria-label="Open LUX 2.0 component viewer" style="cursor:pointer;margin-top:32px;display:flex;flex-direction:column;gap:16px;text-decoration:none;">
         <div class="vpc-header">
           <div class="vpc-logo-mark">LX</div>
           <div>
@@ -1761,7 +1775,7 @@ body.edit-active .impact-sub:hover{
           <span>Explore the design system</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -2133,7 +2147,7 @@ body.edit-active .impact-sub:hover{
         <p class="sec-body">Every component ships with the full picture: usage guidelines, visual do/don't examples, a token reference, accessibility notes, and code snippets.<br/>Simple rule: docs not done, component not done.</p>
       </div>
       <div class="docs-viewer-wrap">
-        <iframe src="lux-docs.html" title="LUX 2.0 Documentation Preview" scrolling="no"></iframe>
+        <iframe src="lux-docs.html" title="LUX 2.0 Documentation Preview" scrolling="no" sandbox="allow-scripts allow-same-origin" loading="lazy"></iframe>
         <div class="docs-interact-hint">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 9l4-4 4 4M8 15l4 4 4-4"/></svg>
           scroll · click to explore

@@ -4,6 +4,15 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>MyVerint · Ori Cohen</title>
+<meta name="description" content="Case study: MyVerint — the mobile-first workforce management app for every Verint employee. Product design by Ori Cohen."/>
+<meta property="og:title" content="MyVerint · Ori Cohen"/>
+<meta property="og:description" content="Designing the mobile home base for every contact center agent's daily work — schedule, performance, AI assistant."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://oricohen10.github.io/portfolio/My Verint/images/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="MyVerint · Ori Cohen"/>
+<meta name="twitter:description" content="Designing the mobile home base for every contact center agent's daily work."/>
+<meta name="twitter:image" content="https://oricohen10.github.io/portfolio/My Verint/images/og-image.png"/>
 <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -25,6 +34,11 @@ html{scroll-behavior:smooth;overflow-x:clip;}
 body{overflow-x:hidden;max-width:100vw;}
 body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
 a{text-decoration:none;color:inherit;}
+:focus{outline:none;}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:4px;}
+.sc-tab:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+.prob-card:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
+.nav-back:focus-visible{outline:2px solid var(--blue);outline-offset:3px;}
 img{max-width:100%;display:block;}
 
 /* NAV */
@@ -129,7 +143,7 @@ img{max-width:100%;display:block;}
 @keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
 /* HERO */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px;position:relative;overflow:hidden;}
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0;position:relative;overflow:hidden;}
 .hero-glow{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;}
 .hero-glow::after{content:"";position:absolute;top:-200px;right:-100px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(102,175,255,.04) 0%,transparent 70%);}
 .hero-chapter{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;margin-bottom:24px;}
@@ -181,7 +195,7 @@ img{max-width:100%;display:block;}
 /* ═══ PROBLEM SECTION ═══ */
 #problem{padding:120px 0;}
 .prob-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
-@media(max-width:860px){.prob-grid{grid-template-columns:1fr;}}
+@media(max-width:900px){.prob-grid{grid-template-columns:1fr;}}
 .prob-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-2xl);padding:28px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden;}
 .prob-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;}
 .prob-card.c-agent::before{background:linear-gradient(90deg,rgba(247,128,128,.6),transparent);}
@@ -208,7 +222,7 @@ img{max-width:100%;display:block;}
 #showcase>.wrap>.reveal .sec-body{margin:0 auto;}
 #showcase>.wrap>.reveal .sec-tag{justify-content:center;}
 #showcase>.wrap>.reveal .sec-tag::before{display:none;}
-@media(max-width:860px){
+@media(max-width:900px){
   #showcase>.wrap>.reveal{text-align:left;}
   #showcase>.wrap>.reveal .sec-body{margin:0;}
   #showcase>.wrap>.reveal .sec-tag{justify-content:flex-start;}
@@ -222,9 +236,9 @@ img{max-width:100%;display:block;}
 .sc-desc{text-align:left;}
 .sc-desc-body{max-width:none;}
 .sc-tabs{display:flex;flex-direction:column;gap:4px;position:sticky;top:100px;}
-.sc-tab{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);cursor:pointer;transition:background .15s,color .15s;color:var(--ink-3);}
+.sc-tab{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);cursor:pointer;transition:background .15s,color .15s,border-left-color .15s;color:var(--ink-3);border-left:2px solid transparent;}
 .sc-tab:hover{background:var(--surface);color:var(--ink-2);}
-.sc-tab.active{background:rgba(102,175,255,.1);color:var(--blue);}
+.sc-tab.active{background:rgba(102,175,255,.15);color:var(--blue);border-left:2px solid var(--blue);}
 .sc-tab-icon{font-size:18px;width:28px;text-align:center;}
 .sc-tab-label{font-size:13px;font-weight:600;}
 .sc-tab-badge{margin-left:0;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(102,175,255,.15);color:var(--blue);border-radius:var(--r-full);padding:2px 7px;}
@@ -232,7 +246,7 @@ img{max-width:100%;display:block;}
 .sc-tabs-wrap{position:relative;align-self:start;}
 /* Drag cursor hint on desktop */
 @media(hover:hover){.sc-tabs{cursor:grab;}.sc-tabs.dragging{cursor:grabbing;}}
-@media(max-width:860px){
+@media(max-width:900px){
   /* Single column - mirrors ask-ai-demo mobile structure */
   .showcase-inner{display:flex;flex-direction:column;gap:28px;align-items:stretch;margin-top:32px;}
   /* Fade on right edge to hint at horizontal scrollability */
@@ -264,7 +278,7 @@ img{max-width:100%;display:block;}
 /* MOBILE PHONE SCALING + DESCRIPTION */
 .sc-tab-info{display:none;}
 .sc-phone-hint{display:none;}
-@media(max-width:860px){
+@media(max-width:900px){
   .sc-tab-info{display:none!important;}
   /* Phone centered, full-column - mirrors ask-ai-demo phone treatment */
   .sc-phone-col{flex-direction:column;align-items:center;justify-content:flex-start;}
@@ -893,22 +907,32 @@ const lazyObs = new IntersectionObserver(entries => {
 lazyObs.observe(showcaseSection);
 
 // ── TAB SWITCHING: opacity crossfade only - no pause, no play, no restart ever ──
-document.querySelectorAll(".sc-tab").forEach(tab => {
-  tab.addEventListener("click", () => {
-    const id = tab.dataset.tab;
-    if (id === activeTabId) return;
+function activateTab(tab) {
+  const id = tab.dataset.tab;
+  if (id === activeTabId) return;
+  document.querySelectorAll(".sc-tab").forEach(t => t.classList.toggle("active", t === tab));
+  document.querySelectorAll(".sc-desc-tab").forEach(d => d.classList.toggle("active", d.dataset.for === id));
+  const prevVid = document.getElementById(tabVideos[activeTabId]);
+  if (prevVid) prevVid.classList.remove("vid-active");
+  activeTabId = id;
+  const nextVid = document.getElementById(tabVideos[id]);
+  if (nextVid) requestAnimationFrame(() => nextVid.classList.add("vid-active"));
+}
 
-    document.querySelectorAll(".sc-tab").forEach(t => t.classList.toggle("active", t === tab));
-    document.querySelectorAll(".sc-desc-tab").forEach(d => d.classList.toggle("active", d.dataset.for === id));
-
-    // Crossfade: fade out current, fade in next
-    const prevVid = document.getElementById(tabVideos[activeTabId]);
-    if (prevVid) prevVid.classList.remove("vid-active");
-
-    activeTabId = id;
-
-    const nextVid = document.getElementById(tabVideos[id]);
-    if (nextVid) requestAnimationFrame(() => nextVid.classList.add("vid-active"));
+const allTabs = Array.from(document.querySelectorAll(".sc-tab"));
+allTabs.forEach(tab => {
+  tab.addEventListener("click", () => activateTab(tab));
+  tab.addEventListener("keydown", e => {
+    const idx = allTabs.indexOf(tab);
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+      e.preventDefault();
+      const next = allTabs[(idx + 1) % allTabs.length];
+      next.focus(); activateTab(next);
+    } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+      e.preventDefault();
+      const prev = allTabs[(idx - 1 + allTabs.length) % allTabs.length];
+      prev.focus(); activateTab(prev);
+    }
   });
 });
 
