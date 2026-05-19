@@ -204,8 +204,8 @@ img{max-width:100%;display:block;}
 
 /* ═══ INTERACTIVE SHOWCASE ═══ */
 #showcase{background:var(--bg-2);padding:120px 0;}
-.showcase-inner{display:grid;grid-template-columns:200px 1fr 260px;gap:40px;align-items:start;margin-top:72px;}
-@media(max-width:1100px){.showcase-inner{grid-template-columns:170px 1fr 220px;gap:28px;}}
+.showcase-inner{display:grid;grid-template-columns:200px auto 1fr;gap:40px;align-items:center;margin-top:72px;}
+@media(max-width:1100px){.showcase-inner{grid-template-columns:170px auto 1fr;gap:28px;}}
 .sc-tabs{display:flex;flex-direction:column;gap:4px;position:sticky;top:100px;}
 .sc-tab{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);cursor:pointer;transition:background .15s,color .15s;color:var(--ink-3);}
 .sc-tab:hover{background:var(--surface);color:var(--ink-2);}
@@ -214,7 +214,7 @@ img{max-width:100%;display:block;}
 .sc-tab-label{font-size:13px;font-weight:600;}
 .sc-tab-badge{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(102,175,255,.15);color:var(--blue);border-radius:var(--r-full);padding:2px 7px;}
 /* Mobile tabs wrapper for scroll-fade effect */
-.sc-tabs-wrap{position:relative;}
+.sc-tabs-wrap{position:relative;align-self:start;}
 /* Drag cursor hint on desktop */
 @media(hover:hover){.sc-tabs{cursor:grab;}.sc-tabs.dragging{cursor:grabbing;}}
 @media(max-width:860px){
@@ -231,7 +231,7 @@ img{max-width:100%;display:block;}
   .sc-tab-label{font-size:12px;font-weight:600;white-space:nowrap;}
   .sc-tab-badge{display:none;}
 }
-.sc-phone-col{display:flex;justify-content:center;}
+.sc-phone-col{display:flex;justify-content:flex-start;}
 .sc-phone{width:264px;height:558px;border-radius:52px;background:linear-gradient(160deg,#222,#1A1A1A);border:2px solid rgba(255,255,255,.13);box-shadow:0 0 0 1px rgba(0,0,0,.9),0 40px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);position:relative;flex-shrink:0;}
 .sc-phone::before{content:"";position:absolute;right:-4px;top:108px;width:3px;height:68px;background:rgba(255,255,255,.14);border-radius:0 4px 4px 0;}
 .sc-phone::after{content:"";position:absolute;left:-4px;top:88px;width:3px;height:36px;background:rgba(255,255,255,.11);border-radius:4px 0 0 4px;box-shadow:0 50px 0 rgba(255,255,255,.11),0 94px 0 rgba(255,255,255,.11);}
@@ -243,7 +243,7 @@ img{max-width:100%;display:block;}
 /* Video mode: hide HTML island & img */
 .sc-phone-screen.has-video .sc-phone-island{display:none;}
 .sc-phone-screen.has-video .sc-screen-img{display:none;}
-.sc-desc{position:sticky;top:100px;display:flex;flex-direction:column;gap:20px;}
+.sc-desc{display:flex;flex-direction:column;gap:20px;align-self:start;}
 /* .sc-desc shown on mobile via the phone-scaling block below */
 
 /* MOBILE PHONE SCALING + DESCRIPTION */
@@ -282,7 +282,7 @@ img{max-width:100%;display:block;}
 .sc-desc-tab.active{display:flex;flex-direction:column;gap:14px;}
 .sc-desc-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);opacity:.8;margin-bottom:2px;}
 .sc-desc-name{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.6px;line-height:1.2;}
-.sc-desc-body{font-size:13px;color:var(--ink-2);line-height:1.75;}
+.sc-desc-body{font-size:13px;color:var(--ink-2);line-height:1.75;max-width:360px;}
 /* BULLETS - two-line: title + description */
 .sc-bullets{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:16px;}
 .sc-bullets li{display:flex;flex-direction:column;gap:3px;padding-left:14px;border-left:2px solid rgba(102,175,255,.25);}
@@ -443,7 +443,7 @@ img{max-width:100%;display:block;}
   .impact-statement { margin-top: 32px; padding: 0 16px; }
 
   /* Footer */
-  .case-footer { padding: 40px 0; gap: 12px; }
+  .case-footer { padding: 40px 0; gap: 12px; flex-direction: column-reverse; }
 }
 </style>
 </head>
@@ -467,7 +467,7 @@ img{max-width:100%;display:block;}
       <div class="hero-left reveal-left">
         <div class="hero-chapter">Mobile App &middot; iOS + Android</div>
         <h1 class="hero-title">My<span class="grad">Verint.</span></h1>
-        <p class="hero-sub">Schedule, performance, time-off requests, and an AI that answers in plain language. One app for every person in the Verint workforce.</p>
+        <p class="hero-sub">Schedule, performance, time-off requests, and an AI that just answers.<br/>One app for every person in the Verint workforce, on any device, anywhere.</p>
         <div class="hero-meta">
           <div class="meta-pill">Product Design</div>
           <div class="meta-pill">2024 &ndash; 2025</div>
@@ -497,8 +497,8 @@ img{max-width:100%;display:block;}
 
       <!-- Left: text -->
       <div>
-        <p class="ov-body">MyVerint is the mobile home base for contact center agents&rsquo; daily work. Schedule views, performance data, time-off requests, and AI answers, <strong>available without touching a desktop.</strong></p>
-        <p class="ov-body">Meet Matt. He&rsquo;s a contact center agent out with friends on his day off. His friends want to attend a concert next Wednesday. With MyVerint, Matt checks his schedule, walks through the time-off request in a few taps, submits it for approval. He&rsquo;s done. <strong>No desktop. No waiting. No back-and-forth.</strong></p>
+        <p class="ov-body">MyVerint is the mobile home base for every contact center agent&rsquo;s daily work. Schedule views, performance data, time-off requests, and AI answers, <strong>all without touching a desktop.</strong></p>
+        <p class="ov-body">Matt is a contact center agent out with friends on his day off. His friends want to catch a concert next Wednesday.<br/>He opens MyVerint, checks his shift, taps through a time-off request, and submits it before anyone finishes their drink. Done. <strong>No desktop. No waiting. No back-and-forth.</strong></p>
       </div>
 
       <!-- Right: vertical pipeline -->
@@ -510,7 +510,7 @@ img{max-width:100%;display:block;}
           </div>
           <div class="ov-pipe-body">
             <div class="ov-pipe-label">The moment</div>
-            <div class="ov-pipe-desc">Matt is out with friends when plans for a concert next Wednesday come up.</div>
+            <div class="ov-pipe-desc">Matt is out with friends when plans for next Wednesday come up.</div>
           </div>
         </div>
 
@@ -522,7 +522,7 @@ img{max-width:100%;display:block;}
           </div>
           <div class="ov-pipe-body">
             <div class="ov-pipe-label">The check</div>
-            <div class="ov-pipe-desc">He opens MyVerint, sees the shift on Wednesday, and taps to request time off.</div>
+            <div class="ov-pipe-desc">He opens MyVerint, sees the shift, and taps to request time off.</div>
           </div>
         </div>
 
@@ -534,7 +534,7 @@ img{max-width:100%;display:block;}
           </div>
           <div class="ov-pipe-body">
             <div class="ov-pipe-label">The outcome</div>
-            <div class="ov-pipe-desc">A few taps and he&rsquo;s all set. Manager gets notified automatically.</div>
+            <div class="ov-pipe-desc">A few taps and he&rsquo;s all set. His manager gets notified automatically.</div>
           </div>
         </div>
 
@@ -557,7 +557,7 @@ img{max-width:100%;display:block;}
     <div class="reveal">
       <div class="sec-tag">The Challenge</div>
       <h2 class="sec-title">The workforce had no<br/><span class="purple-text">unified mobile experience.</span></h2>
-      <p class="sec-body">Before MyVerint, each user type navigated a different set of tools. None of them mobile-first, none of them designed with the frontline employee in mind. The goal wasn&rsquo;t just consolidation. It was giving each role a tool that actually fit their workflow.</p>
+      <p class="sec-body">Before MyVerint, every role worked with a different set of tools. None of them mobile-first. None of them built with the frontline employee in mind. The goal was never just consolidation. It was giving each role something that actually fit how they work.</p>
     </div>
     <div class="prob-grid" data-stagger>
       <div class="prob-card c-agent">
@@ -566,11 +566,11 @@ img{max-width:100%;display:block;}
           <div><div class="prob-role-name">Frontline Agent</div><div class="prob-role-count">~7,000 people</div></div>
         </div>
         <div class="prob-pains">
-          <div class="prob-pain highlight"><div class="prob-pain-dot"></div><div>Checking the schedule meant logging into a desktop portal before every shift</div></div>
-          <div class="prob-pain highlight"><div class="prob-pain-dot"></div><div>Time-off requests meant navigating a multi-step HR form, available only on a computer</div></div>
-          <div class="prob-pain"><div class="prob-pain-dot"></div><div>No way to ask a quick question about leave balance or shift details on the go</div></div>
+          <div class="prob-pain highlight"><div class="prob-pain-dot"></div><div>Checking the schedule meant a desktop login before every shift</div></div>
+          <div class="prob-pain highlight"><div class="prob-pain-dot"></div><div>Time-off requests meant a multi-step HR form, on a computer only</div></div>
+          <div class="prob-pain"><div class="prob-pain-dot"></div><div>No way to check leave balance or shift details on the go</div></div>
         </div>
-        <div class="prob-bottom">No mobile access to daily tools</div>
+        <div class="prob-bottom">Daily tools simply did not exist on mobile</div>
       </div>
       <div class="prob-card c-manager">
         <div class="prob-role-head">
@@ -578,11 +578,11 @@ img{max-width:100%;display:block;}
           <div><div class="prob-role-name">Team Manager</div><div class="prob-role-count">~800 people</div></div>
         </div>
         <div class="prob-pains">
-          <div class="prob-pain highlight-a"><div class="prob-pain-dot"></div><div>Reviewing team performance required opening a dedicated desktop application</div></div>
-          <div class="prob-pain highlight-a"><div class="prob-pain-dot"></div><div>Approving time-off requests while away from the desk meant delays for the whole team</div></div>
-          <div class="prob-pain"><div class="prob-pain-dot"></div><div>No single view of team availability, pending requests, and performance in one place</div></div>
+          <div class="prob-pain highlight-a"><div class="prob-pain-dot"></div><div>Reviewing team performance meant opening a dedicated desktop app</div></div>
+          <div class="prob-pain highlight-a"><div class="prob-pain-dot"></div><div>Approving time-off requests while away from the desk created delays for the whole team</div></div>
+          <div class="prob-pain"><div class="prob-pain-dot"></div><div>No single view of availability, pending requests, and performance in one place</div></div>
         </div>
-        <div class="prob-bottom">Oversight tied to a fixed workstation</div>
+        <div class="prob-bottom">Oversight was tied to a fixed workstation</div>
       </div>
       <div class="prob-card c-analyst">
         <div class="prob-role-head">
@@ -590,11 +590,11 @@ img{max-width:100%;display:block;}
           <div><div class="prob-role-name">WFO Analyst</div><div class="prob-role-count">~200 people</div></div>
         </div>
         <div class="prob-pains">
-          <div class="prob-pain highlight-p"><div class="prob-pain-dot"></div><div>Real-time KPI monitoring only available through a desktop WFO dashboard</div></div>
-          <div class="prob-pain highlight-p"><div class="prob-pain-dot"></div><div>No mobile alerts when staffing levels dropped below threshold during critical hours</div></div>
-          <div class="prob-pain"><div class="prob-pain-dot"></div><div>AI-generated insights and forecasting data had no mobile delivery layer</div></div>
+          <div class="prob-pain highlight-p"><div class="prob-pain-dot"></div><div>Real-time KPI monitoring lived on a desktop dashboard and nowhere else</div></div>
+          <div class="prob-pain highlight-p"><div class="prob-pain-dot"></div><div>No mobile alerts when staffing dropped below threshold during critical hours</div></div>
+          <div class="prob-pain"><div class="prob-pain-dot"></div><div>AI insights and forecasting data had no mobile delivery layer</div></div>
         </div>
-        <div class="prob-bottom">Real-time data stuck on the desktop</div>
+        <div class="prob-bottom">Real-time data was stuck at the desk</div>
       </div>
     </div>
   </div>
@@ -606,7 +606,7 @@ img{max-width:100%;display:block;}
     <div class="reveal">
       <div class="sec-tag">The App</div>
       <h2 class="sec-title">Five tabs.<br/><span class="grad-text">Every workflow.</span></h2>
-      <p class="sec-body">MyVerint organizes every workflow into five purpose-built tabs. Agents, managers, and back-office teams each get a view designed for their role - with an AI assistant that ties it all together.</p>
+      <p class="sec-body">MyVerint organizes every workflow into five purpose-built tabs. Agents, managers, and back-office teams each get a view designed around their role, with an AI assistant that ties it all together.</p>
     </div>
     <div class="showcase-inner reveal" style="transition-delay:.1s">
       <div class="sc-tabs-wrap">
@@ -705,7 +705,7 @@ img{max-width:100%;display:block;}
     <div class="reveal">
       <div class="sec-tag">Ask AI</div>
       <h2 class="sec-title">The feature that<br/><span class="grad-text">changed everything.</span></h2>
-      <p class="sec-body">Ask AI was designed as a convenient shortcut. It became the primary way people use the app. Instead of navigating menus or calling HR, employees just ask. The AI understands intent, pulls live data, and completes the action in a single conversation.</p>
+      <p class="sec-body">Ask AI started as a convenient shortcut. It became the primary way people use the app. Instead of navigating menus or calling HR, employees just ask. The AI reads intent, pulls live data, and completes the action in a single conversation.</p>
     </div>
 
 
@@ -748,29 +748,29 @@ img{max-width:100%;display:block;}
           <div class="ai-step" id="aiStep1">
             <div class="ai-step-num">01</div>
             <div class="ai-step-body">
-              <div class="ai-step-title">Natural language input</div>
-              <div class="ai-step-desc">The employee asks anything in plain words. No forms, no navigation, no menu digging. Just a question, the way they would ask a colleague.</div>
+              <div class="ai-step-title">Just ask.</div>
+              <div class="ai-step-desc">No forms, no navigation, no menu digging. The employee types a question the way they would ask a colleague, and the conversation begins.</div>
             </div>
           </div>
           <div class="ai-step" id="aiStep2">
             <div class="ai-step-num">02</div>
             <div class="ai-step-body">
-              <div class="ai-step-title">Intent and context recognition</div>
-              <div class="ai-step-desc">The AI identifies the request type, the relevant data domain, and any parameters: which date, which leave type, which employee.</div>
+              <div class="ai-step-title">The AI knows what you mean.</div>
+              <div class="ai-step-desc">Intent, data domain, parameters. The AI figures out what is being asked, which date, which leave type, which employee, without the user having to spell it out.</div>
             </div>
           </div>
           <div class="ai-step" id="aiStep3">
             <div class="ai-step-num">03</div>
             <div class="ai-step-body">
-              <div class="ai-step-title">Live WFO data surfaced</div>
-              <div class="ai-step-desc">Real-time data is pulled from Verint&rsquo;s WFO platform: leave balances, schedules, and KPIs, presented inline in the conversation.</div>
+              <div class="ai-step-title">Live data, right in the conversation.</div>
+              <div class="ai-step-desc">Real-time data from Verint&rsquo;s WFO platform surfaces inline. Leave balances, schedules, KPIs, all presented exactly where they are needed.</div>
             </div>
           </div>
           <div class="ai-step" id="aiStep4">
             <div class="ai-step-num">04</div>
             <div class="ai-step-body">
-              <div class="ai-step-title">One tap to complete</div>
-              <div class="ai-step-desc">The AI proposes the action and surfaces a single chip to confirm. One tap submits the request, notifies the manager, and closes the loop.</div>
+              <div class="ai-step-title">One tap closes the loop.</div>
+              <div class="ai-step-desc">The AI proposes the action and surfaces a single confirmation chip. One tap submits the request, notifies the manager, and it is done.</div>
             </div>
           </div>
         </div>
@@ -785,7 +785,7 @@ img{max-width:100%;display:block;}
     <div class="reveal">
       <div class="sec-tag">Outcome</div>
       <h2 class="impact-title sec-title">MyVerint <span class="grad-text">shipped.</span></h2>
-      <p class="impact-sub sec-body">Deployed across the entire Verint workforce on iOS and Android. What used to require multiple desktop tools now lives in one app, with an AI assistant that handles the most common requests in seconds.</p>
+      <p class="impact-sub sec-body">Live across the entire Verint workforce on iOS and Android. Everything that used to require multiple desktop tools now lives in one app, with an AI assistant that handles the most common requests in seconds.</p>
     </div>
     <div class="impact-grid" data-stagger>
       <div class="impact-cell"><div class="impact-val">3</div><div class="impact-lbl">Distinct user roles served by a single product</div></div>

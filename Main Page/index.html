@@ -154,6 +154,38 @@
   }
 
   /* ══════════════════════════════════════════
+     TOP NAV (appears on scroll)
+  ══════════════════════════════════════════ */
+  .top-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 64px;
+    background: rgba(18,18,19,.92);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    transition: transform .4s var(--ease-emphasized);
+    animation: none;
+  }
+  .top-nav.nav-visible { transform: translateY(0); }
+  .top-nav-logo {
+    font-size: 15px; font-weight: 700; letter-spacing: -.4px; color: var(--ink);
+  }
+  .top-nav-pill {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: var(--green);
+    background: rgba(102,226,176,.07);
+    border: 1px solid rgba(102,226,176,.16);
+    padding: 5px 12px; border-radius: var(--r-full);
+  }
+  .top-nav-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green);
+    animation: breathe 2.5s ease-in-out infinite;
+  }
+  @media(max-width:768px){ .top-nav{ padding: 14px 24px; } }
+
+  /* ══════════════════════════════════════════
      DOCK NAV
   ══════════════════════════════════════════ */
   .dock {
@@ -270,6 +302,13 @@
     position: absolute; inset: 0;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
     pointer-events: none; z-index: 0; opacity: .35;
+  }
+  #hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 220px;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none; z-index: 2;
   }
 
   .hero-grid {
@@ -1125,6 +1164,15 @@
   </a>
 </nav>
 
+<!-- TOP NAV -->
+<nav class="top-nav" id="topNav" aria-label="Site navigation">
+  <div class="top-nav-logo">Ori <span class="grad-text">Cohen.</span></div>
+  <div class="top-nav-pill">
+    <span class="top-nav-dot" aria-hidden="true"></span>
+    Open to work
+  </div>
+</nav>
+
 <!-- ══════════════════════════════
      HERO
 ══════════════════════════════ -->
@@ -1741,10 +1789,12 @@ if (!isTouch) {
    2. SCROLL PROGRESS
 ══════════════════════════════ */
 const prog = document.getElementById('progress');
+const topNav = document.getElementById('topNav');
 window.addEventListener('scroll', () => {
   const s = document.documentElement.scrollTop;
   const h = document.documentElement.scrollHeight - window.innerHeight;
   prog.style.width = (s / h * 100) + '%';
+  topNav.classList.toggle('nav-visible', s > 80);
 }, { passive: true });
 
 /* ══════════════════════════════
