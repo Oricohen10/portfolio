@@ -893,9 +893,12 @@ const lazyObs = new IntersectionObserver(entries => {
   videosLoaded = true;
   lazyObs.disconnect();
 
+  const _canWebM = document.createElement("video").canPlayType('video/webm; codecs="vp9"') !== '';
+  const _webmSrc = src => _canWebM ? src.replace('.mp4', '.webm') : src;
+
   document.querySelectorAll(".sc-screen-vid").forEach(v => {
     if (!v.dataset.src) return;
-    v.src = v.dataset.src;
+    v.src = _webmSrc(v.dataset.src);
     // Stagger starts slightly so not all hit disk at the exact same frame
     v.load();
     v.play().catch(() => {});
@@ -1152,7 +1155,7 @@ const aiObs = new IntersectionObserver(es => {
       // Lazy-load and play the demo video
       const demoVid = document.getElementById("aiDemoVid");
       if (demoVid && demoVid.dataset.src) {
-        demoVid.src = demoVid.dataset.src;
+        demoVid.src = _webmSrc(demoVid.dataset.src);
         demoVid.load();
         demoVid.play()
           .then(() => {

@@ -800,14 +800,14 @@ function selectComp(catId, compId) {
 // ═══════════════════════════════════════════════════════
 function buildPath(cat, comp, theme) {
   const sub = comp.subfolder ? `/${comp.subfolder}` : '';
-  return `${cat.folder}${sub}/${comp.file} _ ${theme}.png`;
+  return `${cat.folder}${sub}/${comp.file} _ ${theme}.webp`;
 }
 
 function buildEncodedPath(cat, comp, theme) {
   const folderParts = cat.folder.split('/');
   let encoded = folderParts.map(p => encodeURIComponent(p)).join('/');
   if (comp.subfolder) encoded += '/' + encodeURIComponent(comp.subfolder);
-  encoded += '/' + encodeURIComponent(`${comp.file} _ ${theme}.png`);
+  encoded += '/' + encodeURIComponent(`${comp.file} _ ${theme}.webp`);
   return encoded;
 }
 
