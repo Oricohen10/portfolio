@@ -4,9 +4,10 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LUX 2.0 · Ori Cohen</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="preload" as="video" href="videos/hero.mp4"/>
 <style>
 :root {
@@ -36,8 +37,8 @@
   --dur-std: 500ms; --dur-slow: 700ms;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;overflow-x:hidden;}
-body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+html{scroll-behavior:smooth;overflow-x:clip;}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100vw;}
 a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 
@@ -95,7 +96,7 @@ img{max-width:100%;display:block;}
 
 /* ── AMBIENT ANIMATIONS ── */
 @keyframes gradShimmer{0%{background-position:0% center}100%{background-position:300% center}}
-@keyframes floatBrowser{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes floatBrowser{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-8px)}}
 @keyframes navSlideIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
 
 /* Nav entrance on load */
@@ -123,7 +124,7 @@ img{max-width:100%;display:block;}
 .hero-chapter::before{content:'';width:24px;height:1px;background:var(--blue);opacity:.5;}
 .hero-title{
   font-size:clamp(52px,8vw,88px);
-  font-weight:800;letter-spacing:-3px;line-height:.93;
+  font-weight:800;letter-spacing:-0.04em;line-height:.95;
   margin-bottom:20px;
 }
 .hero-title .grad{
@@ -664,9 +665,10 @@ img{max-width:100%;display:block;}
 .off .af-toggle-thumb{left:2px;}
 
 .theme-token-note{
-  display:flex;align-items:flex-start;gap:18px;margin-top:40px;
+  display:flex;align-items:flex-start;gap:18px;margin:40px auto 0;
   background:var(--card);border:1px solid var(--border-m);
   border-radius:var(--r-xl);padding:24px 28px;
+  width:fit-content;max-width:860px;
 }
 .ttn-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
 .ttn-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;}
@@ -692,6 +694,7 @@ section{padding:96px 0;}
 .sec-body{
   font-size:14px;color:var(--ink-2);line-height:1.75;max-width:800px;
 }
+.sec-body--spaced{margin-top:16px;}
 .grad-text{
   background:linear-gradient(135deg,#66AFFF 10%,#66E2B0 90%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -802,6 +805,9 @@ section{padding:96px 0;}
 }
 .code-header-dots{display:flex;gap:6px;}
 .code-dot{width:10px;height:10px;border-radius:50%;}
+.code-dot-red{background:#FF5F57;}
+.code-dot-yellow{background:#FEBC2E;}
+.code-dot-green{background:#28C840;}
 .code-file{font-size:10px;font-weight:600;color:var(--ink-3);font-family:'SF Mono','Fira Code',monospace;}
 pre.token-code{
   padding:22px 22px;font-size:12px;line-height:1.8;
@@ -872,7 +878,7 @@ pre.token-code{
 .pr-diff-icon{font-size:19px;}
 .pr-diff-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
 .pr-diff-meta{font-size:12px;color:var(--ink-3);}
-.pr-diff-badge-row{}
+.pr-diff-badge-row{display:flex;}
 .pr-state-badge{
   font-size:10px;font-weight:700;letter-spacing:.04em;
   background:rgba(102,226,176,.12);color:#66E2B0;
@@ -913,6 +919,11 @@ pre.token-code{
 .pr-reviewer{display:flex;align-items:center;gap:10px;}
 .pr-reviewer-avatar{font-size:18px;}
 .pr-reviewer-name{font-size:12px;color:var(--ink-3);}
+.pr-reviewer-name--accent{color:#a78bfa;}
+.pr-state-badge--merged{background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3);}
+.token-count-blue{font-size:10px;font-weight:800;color:#66AFFF;background:rgba(102,175,255,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(59,130,246,.2);}
+.token-count-purple{font-size:10px;font-weight:800;color:#C4B5FD;background:rgba(196,181,253,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(196,181,253,.2);}
+.token-count-green{font-size:10px;font-weight:800;color:#66E2B0;background:rgba(102,226,176,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(102,226,176,.2);}
 .pr-checks{display:flex;gap:12px;flex-wrap:wrap;}
 .pr-check{
   font-size:10px;font-weight:600;padding:3px 10px;
@@ -1274,7 +1285,7 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 .comp-chip.sub:hover{color:var(--ink-2);border-color:var(--border-m);background:var(--surface);}
 
 /* ══════════════ DECISION ══════════════ */
-#decision{}
+#decision{padding:96px 0;}
 .decision-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px;
 }
@@ -1434,7 +1445,7 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   display:flex;align-items:center;justify-content:center;gap:6px;
   letter-spacing:.04em;
 }
-.impact-attr::before{content:'·';}
+.impact-attr::before{content:'·';margin-right:4px;}
 
 /* ══════════════ EDIT MODE ══════════════ */
 #editFab{
@@ -1565,25 +1576,39 @@ body.edit-active .impact-sub:hover{
   .impact-statement { margin-top: 32px; padding: 0 16px; }
 
   .case-footer { padding: 40px 0; }
+
+  .pipeline-heading { margin-bottom: 40px; }
+  .browser-frame { transform: none; }
+  .browser-frame:hover { transform: translateY(-4px); }
+  .compare-container { height: 280px; }
+  .docs-viewer-wrap { height: 320px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
 </style>
 </head>
 <body>
 
 <!-- LIGHTBOX -->
-<div id="lightbox" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;" onclick="closeLightbox()">
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:24px;cursor:zoom-out;" onclick="closeLightbox()">
   <div style="position:relative;max-width:1200px;max-height:90vh;width:100%;">
     <img id="lightboxImg" src="" alt="" style="width:100%;height:auto;max-height:85vh;object-fit:contain;border-radius:12px;border:1px solid rgba(255,255,255,.1);display:block;"/>
     <div id="lightboxCaption" style="text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;font-family:'Inter',sans-serif;"></div>
-    <button onclick="closeLightbox();event.stopPropagation();" style="position:absolute;top:-12px;right:-12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+    <button onclick="closeLightbox();event.stopPropagation();" aria-label="Close lightbox" style="position:absolute;top:-12px;right:-12px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
   </div>
 </div>
 
 <!-- VIDEO MODAL -->
-<div id="videoModal" class="video-modal-wrap" onclick="closeVideoModal()">
+<div id="videoModal" class="video-modal-wrap" role="dialog" aria-modal="true" aria-label="Plugin demo video" onclick="closeVideoModal()">
   <div class="video-modal-inner" onclick="event.stopPropagation()">
     <video id="modalVideo" controls playsinline></video>
-    <button class="video-modal-close" onclick="closeVideoModal()">×</button>
+    <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video">×</button>
   </div>
 </div>
 
@@ -1611,7 +1636,7 @@ body.edit-active .impact-sub:hover{
       <div class="hero-left reveal-left">
         <div class="hero-chapter">Case Study · Design System</div>
         <h1 class="hero-title">LUX <span class="grad">2.0</span></h1>
-        <p class="hero-sub">Verint's design system, rebuilt from scratch. One token-driven system for all products, with dual themes, accessibility built in, and a Figma-to-Storybook pipeline that runs without a developer.</p>
+        <p class="hero-sub">Verint's design system, rebuilt from the foundation up.<br/>One token-driven system across all products, with light and dark themes, accessibility baked in from day one, and a Figma-to-Storybook pipeline that needs no developer to run.</p>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;">
           <div class="stat-pill"><span class="stat-num">42</span><span class="stat-sep"></span><span class="stat-lbl">Components</span></div>
           <div class="stat-pill"><span class="stat-num">13</span><span class="stat-sep"></span><span class="stat-lbl">Patterns</span></div>
@@ -1654,55 +1679,55 @@ body.edit-active .impact-sub:hover{
     <div class="reveal">
       <div class="sec-eyebrow">Context</div>
       <h2 class="sec-title">Built from <span class="grad-text">the ground up.</span></h2>
-      <p class="sec-body" style="margin-top:16px;">LUX 1.0 ran for seven years. Good run. LUX 2.0 was a full rebuild: a dedicated team, a one-year timeline, and one clear goal. Build a design system that designers and developers own together.</p>
+      <p class="sec-body sec-body--spaced">LUX 1.0 had a good seven-year run. But good enough stops being good enough.<br/>LUX 2.0 is a full rebuild: a dedicated team, a one-year timeline, and one goal that never moved. Build a system that designers and developers genuinely own together.</p>
     </div>
     <div class="context-grid">
       <div class="inc-block reveal">
-        <div class="inc-eyebrow">What LUX 2.0 includes</div>
+        <div class="inc-eyebrow">What went into it</div>
         <div class="inc-row">
           <div class="inc-num">01</div>
           <div class="inc-body">
             <div class="inc-title">A three-layer token architecture</div>
-            <div class="inc-desc">1,550 design tokens organized in three layers: primitives, semantics, and component scope. Every value is traceable, and any change flows through the whole system automatically.</div>
+            <div class="inc-desc">1,550 tokens. Three layers: primitives, semantics, and component scope. Every value is traceable, and a single change ripples through the entire system without touching a single file manually.</div>
           </div>
         </div>
         <div class="inc-row">
           <div class="inc-num">02</div>
           <div class="inc-body">
             <div class="inc-title">Figma connected to production code</div>
-            <div class="inc-desc">Figma variables connect directly to a live pipeline. One export triggers the GitHub Action and Storybook rebuilds, with no developer needed.</div>
+            <div class="inc-desc">Figma variables feed directly into a live pipeline. One export triggers the GitHub Action, Storybook rebuilds, and the update is live. No developer needed, no waiting.</div>
           </div>
         </div>
         <div class="inc-row">
           <div class="inc-num">03</div>
           <div class="inc-body">
             <div class="inc-title">Light and dark, built into the system</div>
-            <div class="inc-desc">The first Verint system to ship dark mode. Semantic tokens make it structural: swap the theme and every value updates automatically.</div>
+            <div class="inc-desc">The first Verint product to ship dark mode. Semantic tokens make theming structural rather than cosmetic. Swap the theme and every single value follows.</div>
           </div>
         </div>
         <div class="inc-row">
           <div class="inc-num">04</div>
           <div class="inc-body">
             <div class="inc-title">Motion as a first-class token</div>
-            <div class="inc-desc">Duration, easing, and animation curves are all defined in the token layer. Every component uses them consistently, with nothing hardcoded per team.</div>
+            <div class="inc-desc">Duration, easing, and animation curves live in the token layer alongside everything else. Every component pulls from the same values. Nothing is hardcoded, nothing drifts.</div>
           </div>
         </div>
         <div class="inc-row">
           <div class="inc-num">05</div>
           <div class="inc-body">
-            <div class="inc-title">Accessibility</div>
-            <div class="inc-desc">WCAG AA compliance baked in from the start. Contrast ratios, focus states, and keyboard navigation validated across both light and dark themes.</div>
+            <div class="inc-title">Accessibility, not an afterthought</div>
+            <div class="inc-desc">WCAG AA compliance built in from the start. Contrast ratios, focus states, and keyboard navigation validated across both themes, before anything ships.</div>
           </div>
         </div>
         <div class="inc-row">
           <div class="inc-num">06</div>
           <div class="inc-body">
-            <div class="inc-title">Documentation</div>
-            <div class="inc-desc">Every component comes with usage guidelines, do/don't examples, a token reference, and code snippets. Nothing ships without complete docs.</div>
+            <div class="inc-title">Documentation with no exceptions</div>
+            <div class="inc-desc">Every component ships with usage guidelines, do/don't examples, a token reference, and code snippets. If the docs aren't ready, the component isn't ready.</div>
           </div>
         </div>
       </div>
-      <div class="viewer-preview-card reveal" onclick="window.open('lux-viewer.html','_blank')" style="cursor:pointer;">
+      <div class="viewer-preview-card reveal" role="link" tabindex="0" aria-label="Open LUX 2.0 component viewer" onclick="window.open('lux-viewer.html','_blank')" onkeydown="if(event.key==='Enter'||event.key===' ')window.open('lux-viewer.html','_blank')" style="cursor:pointer;margin-top:32px;">
         <div class="vpc-header">
           <div class="vpc-logo-mark">LX</div>
           <div>
@@ -1742,7 +1767,7 @@ body.edit-active .impact-sub:hover{
 </section>
 
 <!-- ══════════════ STRIP ══════════════ -->
-<div class="strip-wrap">
+<div class="strip-wrap" aria-hidden="true">
   <div class="strip" id="strip">
     <span class="strip-item">Buttons</span>
     <span class="strip-item">Form Inputs</span>
@@ -1789,7 +1814,7 @@ body.edit-active .impact-sub:hover{
     <div class="reveal">
       <div class="sec-eyebrow">Dark Theme</div>
       <h2 class="sec-title">Light and dark.<br/><span class="grad-text">First time ever.</span></h2>
-      <p class="sec-body">For the first time in Verint's history, both themes ship as part of the same system. One swap at the semantic token layer and every value updates automatically, across every component, with no developer needed.</p>
+      <p class="sec-body">For the first time in Verint's history, both themes are part of the same system. One change at the semantic token layer and every value updates across every component, automatically. No developer needed. No exceptions.</p>
     </div>
     <div class="theme-compare-wrap reveal-scale">
       <div class="theme-labels">
@@ -1809,7 +1834,7 @@ body.edit-active .impact-sub:hover{
         <div class="compare-handle" id="compareHandle">
           <div class="handle-line"></div>
           <div class="handle-pill">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3L4 7l4 4M16 3l4 4-4 4"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8L4 12l4 4M16 8l4 4-4 4"/></svg>
           </div>
           <div class="handle-line"></div>
         </div>
@@ -1819,8 +1844,8 @@ body.edit-active .impact-sub:hover{
     <div class="theme-token-note reveal">
       <div class="ttn-icon">💡</div>
       <div class="ttn-body">
-        <div class="ttn-title">Change one token. Both themes update.</div>
-        <div class="ttn-desc">Semantic tokens like <code>--color-surface-raised</code> point to different primitive values in each theme. Components reference only semantic tokens, never primitives directly. Switching themes requires no changes to any component.</div>
+        <div class="ttn-title">Change one token. Both themes follow.</div>
+        <div class="ttn-desc">Semantic tokens like <code>--color-surface-raised</code> resolve to different primitive values depending on the active theme.<br/>Components reference semantic tokens only, never primitives directly.<br/>Switching themes touches zero component files.</div>
       </div>
     </div>
   </div>
@@ -1832,7 +1857,7 @@ body.edit-active .impact-sub:hover{
     <div class="reveal">
       <div class="sec-eyebrow">Foundation</div>
       <h2 class="sec-title">Every pixel traces back to <span class="purple-text">one source.</span></h2>
-      <p class="sec-body">Three layers, no hardcoded values anywhere. Every color, spacing, shadow, and radius traces back to one source. That single source is what makes dual themes, the automation pipeline, and consistent rendering across 40+ products possible.</p>
+      <p class="sec-body">Three layers. Zero hardcoded values. Every color, spacing, shadow, and radius has one origin, and one origin only.<br/>That single source is what makes dual themes, automated pipelines, and consistent rendering across 40+ products not just possible, but reliable.</p>
     </div>
     <div class="inner reveal">
       <div class="token-diagram">
@@ -1840,7 +1865,7 @@ body.edit-active .impact-sub:hover{
           <div class="layer-tag">Layer 01 · Primitives</div>
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
             <div class="layer-name">Raw values. No meaning yet.</div>
-            <span style="font-size:10px;font-weight:800;color:#66AFFF;background:rgba(102,175,255,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(59,130,246,.2);">96 tokens</span>
+            <span class="token-count-blue">96 tokens</span>
           </div>
           <div class="layer-desc">The base values: colors, spacing, radii. These never appear in components directly. They only feed the layer above them.</div>
           <div class="token-examples">
@@ -1856,7 +1881,7 @@ body.edit-active .impact-sub:hover{
           <div class="layer-tag">Layer 02 · Semantics</div>
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
             <div class="layer-name">Purpose, not just color.</div>
-            <span style="font-size:10px;font-weight:800;color:#C4B5FD;background:rgba(196,181,253,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(196,181,253,.2);">240 tokens</span>
+            <span class="token-count-purple">240 tokens</span>
           </div>
           <div class="layer-desc">These tokens describe what a value is used for, not what it is. They reference primitives and define meaning. Light and dark themes are defined at this layer.</div>
           <div class="token-examples">
@@ -1871,7 +1896,7 @@ body.edit-active .impact-sub:hover{
           <div class="layer-tag">Layer 03 · Component Tokens</div>
           <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
             <div class="layer-name">Scoped to each component.</div>
-            <span style="font-size:10px;font-weight:800;color:#66E2B0;background:rgba(102,226,176,.1);padding:2px 8px;border-radius:var(--r-full);border:1px solid rgba(102,226,176,.2);">1,113 tokens</span>
+            <span class="token-count-green">1,113 tokens</span>
           </div>
           <div class="layer-desc">Each component has its own token namespace. Changing a button's background color has no effect on anything else in the system.</div>
           <div class="token-examples">
@@ -1884,32 +1909,36 @@ body.edit-active .impact-sub:hover{
         <div class="code-panel">
         <div class="code-header">
           <div class="code-header-dots">
-            <div class="code-dot" style="background:#FF5F57"></div>
-            <div class="code-dot" style="background:#FEBC2E"></div>
-            <div class="code-dot" style="background:#28C840"></div>
+            <div class="code-dot code-dot-red"></div>
+            <div class="code-dot code-dot-yellow"></div>
+            <div class="code-dot code-dot-green"></div>
           </div>
           <span class="code-file">primitives.css → semanticsLight.ts → button.style.ts</span>
         </div>
-        <pre class="token-code"><span class="c-comment">/* 01 - primitives.css (96 tokens, auto-generated) */</span>
+        <pre class="token-code"><span class="c-comment">/* 01 - primitives.css */</span>
 :root {
   <span class="c-key">--lux-color-blue-500</span>: <span class="c-val">#66AFFF</span>;
   <span class="c-key">--lux-color-blue-600</span>: <span class="c-val">#2563EB</span>;
-  <span class="c-key">--lux-spacing-4</span>: <span class="c-val">16px</span>;
-  <span class="c-key">--lux-radius-md</span>: <span class="c-val">8px</span>;
+  <span class="c-key">--lux-color-gray-900</span>: <span class="c-val">#1C1C1E</span>;
+  <span class="c-key">--lux-spacing-4</span>:      <span class="c-val">16px</span>;
+  <span class="c-key">--lux-radius-md</span>:      <span class="c-val">8px</span>;
 }
 
 <span class="c-comment">/* 02 - semanticsLight.ts */</span>
 <span class="c-dim">export const</span> semanticsLight = {
   <span class="c-key">colorInteractiveDefault</span>: <span class="c-ref">var(--lux-color-blue-500)</span>,
-  <span class="c-key">colorSurfaceRaised</span>: <span class="c-ref">var(--lux-color-gray-900)</span>,
+  <span class="c-key">colorInteractiveHover</span>:   <span class="c-ref">var(--lux-color-blue-600)</span>,
+  <span class="c-key">colorSurfaceRaised</span>:      <span class="c-ref">var(--lux-color-gray-900)</span>,
 };
 
-<span class="c-comment">/* 03 - button.style.ts (no hardcoded hex) */</span>
+<span class="c-comment">/* 03 - button.style.ts */</span>
 <span class="c-dim">export const</span> buttonStyles = {
   primary: {
-    <span class="c-key">background</span>: <span class="c-ref">semanticsLight.colorInteractiveDefault</span>,
+    <span class="c-key">background</span>:   <span class="c-ref">semanticsLight.colorInteractiveDefault</span>,
+    <span class="c-key">hoverBg</span>:      <span class="c-ref">semanticsLight.colorInteractiveHover</span>,
     <span class="c-key">borderRadius</span>: <span class="c-ref">var(--lux-radius-md)</span>,
-  }
+    <span class="c-key">padding</span>:      <span class="c-ref">var(--lux-spacing-4)</span>,
+  },
 };</pre>
       </div><!-- end code-panel -->
       </div><!-- end tokens-right-col -->
@@ -1922,48 +1951,48 @@ body.edit-active .impact-sub:hover{
   <div class="wrap">
     <div class="pipeline-heading reveal">
       <div class="sec-eyebrow" style="justify-content:center;">The Pipeline</div>
-      <h2 class="sec-title" style="text-align:center;">Zero-terminal.<br/><span class="grad-text">Designer to GitHub in 60 seconds.</span></h2>
-      <p class="sec-body" style="margin:0 auto;text-align:center;max-width:660px;">Most token pipelines require a developer to run a build script, commit generated files, and open a PR manually. This one runs entirely in the browser. A designer edits a Figma variable, clicks once in the plugin, and a validated pull request lands on GitHub automatically. No terminal. No build step. No waiting.</p>
+      <h2 class="sec-title" style="text-align:center;">Zero terminal.<br/><span class="grad-text">Designer to GitHub in 60 seconds.</span></h2>
+      <p class="sec-body" style="margin:0 auto;text-align:center;max-width:660px;">Most token pipelines need a developer to run a build script, commit the output, and open a PR by hand. This one runs entirely in the browser, edit a Figma variable, click once in the plugin, and a validated pull request lands on GitHub automatically. No terminal. No build step. No waiting.</p>
     </div>
 
     <!-- Animated pipeline flow -->
     <div class="pipeline-flow" id="pipelineFlow">
-      <div class="pf-step" data-delay="0" data-step="1" onclick="selectPipeStep(1)">
+      <div class="pf-step" data-delay="0" data-step="1" onclick="selectPipeStep(1)" role="button" tabindex="0" aria-label="Step 1: Figma Variables" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(1)}">
         <div class="pf-icon">🎨</div>
         <div class="pf-label">Figma Variables</div>
         <div class="pf-sub">Edit a value</div>
         <span class="pf-badge badge-human">Manual</span>
       </div>
       <div class="pf-arrow" data-delay="200">→</div>
-      <div class="pf-step" data-delay="400" data-step="2" onclick="selectPipeStep(2)">
+      <div class="pf-step" data-delay="400" data-step="2" onclick="selectPipeStep(2)" role="button" tabindex="0" aria-label="Step 2: Token Sync" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(2)}">
         <div class="pf-icon">🔌</div>
         <div class="pf-label">Token Sync</div>
         <div class="pf-sub">One click</div>
         <span class="pf-badge badge-human">Manual</span>
       </div>
       <div class="pf-arrow" data-delay="600">→</div>
-      <div class="pf-step" data-delay="800" data-step="3" onclick="selectPipeStep(3)">
+      <div class="pf-step" data-delay="800" data-step="3" onclick="selectPipeStep(3)" role="button" tabindex="0" aria-label="Step 3: TS Generation" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(3)}">
         <div class="pf-icon">📝</div>
         <div class="pf-label">TS Generation</div>
         <div class="pf-sub">4 files, in-browser</div>
         <span class="pf-badge badge-auto">Auto</span>
       </div>
       <div class="pf-arrow" data-delay="1000">→</div>
-      <div class="pf-step" data-delay="1200" data-step="4" onclick="selectPipeStep(4)">
+      <div class="pf-step" data-delay="1200" data-step="4" onclick="selectPipeStep(4)" role="button" tabindex="0" aria-label="Step 4: GitHub Push" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(4)}">
         <div class="pf-icon">😺</div>
         <div class="pf-label">GitHub Push</div>
         <div class="pf-sub">Branch + PR</div>
         <span class="pf-badge badge-auto">Auto</span>
       </div>
       <div class="pf-arrow" data-delay="1400">→</div>
-      <div class="pf-step" data-delay="1600" data-step="5" onclick="selectPipeStep(5)">
+      <div class="pf-step" data-delay="1600" data-step="5" onclick="selectPipeStep(5)" role="button" tabindex="0" aria-label="Step 5: GitHub Actions" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(5)}">
         <div class="pf-icon">⚙️</div>
         <div class="pf-label">GitHub Actions</div>
         <div class="pf-sub">Validate + merge</div>
         <span class="pf-badge badge-auto">Auto</span>
       </div>
       <div class="pf-arrow" data-delay="1800">→</div>
-      <div class="pf-step" data-delay="2000" data-step="6" onclick="selectPipeStep(6)">
+      <div class="pf-step" data-delay="2000" data-step="6" onclick="selectPipeStep(6)" role="button" tabindex="0" aria-label="Step 6: Live on Main" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectPipeStep(6)}">
         <div class="pf-icon">🚀</div>
         <div class="pf-label">Live on Main</div>
         <div class="pf-sub">Under 60 seconds</div>
@@ -1983,7 +2012,7 @@ body.edit-active .impact-sub:hover{
           </div>
         </div>
         <div class="pr-diff-badge-row">
-          <span class="pr-state-badge" style="background:rgba(139,92,246,.15);color:#a78bfa;border-color:rgba(139,92,246,.3);">Merged</span>
+          <span class="pr-state-badge pr-state-badge--merged">Merged</span>
         </div>
       </div>
       <div class="pr-file-header">
@@ -2011,7 +2040,7 @@ body.edit-active .impact-sub:hover{
       <div class="pr-diff-footer">
         <div class="pr-reviewer">
           <div class="pr-reviewer-avatar" style="background:rgba(139,92,246,.15);">⚡</div>
-          <span class="pr-reviewer-name" style="color:#a78bfa;">Auto-merged by GitHub Actions · tsc passed</span>
+          <span class="pr-reviewer-name pr-reviewer-name--accent">Auto-merged by GitHub Actions · tsc passed</span>
         </div>
         <div class="pr-checks">
           <span class="pr-check pass">✓ TypeScript valid</span>
@@ -2028,11 +2057,11 @@ body.edit-active .impact-sub:hover{
   <div class="wrap">
     <div class="reveal">
       <div class="sec-eyebrow">Tooling</div>
-      <h2 class="sec-title">Built the plugins <span class="purple-text">we needed.</span></h2>
-      <p class="sec-body">No existing plugin fit the workflow, so I built them. Four plugins, each one removing a different manual step from the LUX 2.0 process.</p>
+      <h2 class="sec-title">Built to <span class="purple-text">close the gaps.</span></h2>
+      <p class="sec-body">No off-the-shelf plugin fit what LUX 2.0 needed.<br/>So we built four of them, each one eliminating a different manual step from the workflow.<br/>Less friction, more time designing.</p>
     </div>
     <div class="plugins-grid" data-stagger>
-      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/layout-creator.mp4')" style="cursor:pointer;">
+      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/layout-creator.mp4')" role="button" tabindex="0" aria-label="Play Layout Creator plugin demo" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVideoModal('videos/layout-creator.mp4')}" style="cursor:pointer;">
         <div class="plugin-video-thumb">
           <video src="videos/layout-creator.mp4" preload="metadata" muted playsinline></video>
           <div class="play-btn-overlay"><div class="play-btn"><svg width="13" height="14" viewBox="0 0 13 14" fill="currentColor"><polygon points="1,1 12,7 1,13"/></svg></div></div>
@@ -2046,7 +2075,7 @@ body.edit-active .impact-sub:hover{
           <div class="plugin-desc">Scaffold a full LUX 2.0 layout in seconds. Generates containers, navigation, and page structure with the correct token bindings already applied.</div>
         </div>
       </div>
-      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/table-creator.mp4')" style="cursor:pointer;">
+      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/table-creator.mp4')" role="button" tabindex="0" aria-label="Play Table Creator plugin demo" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVideoModal('videos/table-creator.mp4')}" style="cursor:pointer;">
         <div class="plugin-video-thumb">
           <video src="videos/table-creator.mp4" preload="metadata" muted playsinline></video>
           <div class="play-btn-overlay"><div class="play-btn"><svg width="13" height="14" viewBox="0 0 13 14" fill="currentColor"><polygon points="1,1 12,7 1,13"/></svg></div></div>
@@ -2060,7 +2089,7 @@ body.edit-active .impact-sub:hover{
           <div class="plugin-desc">Generate data tables with configurable rows, columns, and content. Every output matches the LUX 2.0 Data Table token structure exactly.</div>
         </div>
       </div>
-      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/token-sync.mp4')" style="cursor:pointer;">
+      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/token-sync.mp4')" role="button" tabindex="0" aria-label="Play Token Sync plugin demo" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVideoModal('videos/token-sync.mp4')}" style="cursor:pointer;">
         <div class="plugin-video-thumb" id="videoTokenSync">
           <video src="videos/token-sync.mp4" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;"></video>
           <div class="play-btn-overlay">
@@ -2076,7 +2105,7 @@ body.edit-active .impact-sub:hover{
           <div class="plugin-desc">Pushes updated design tokens from Figma directly into the pipeline. One click and tokens.json commits, the GitHub Action fires, and Storybook rebuilds.</div>
         </div>
       </div>
-      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/icons-generator.mp4')" style="cursor:pointer;">
+      <div class="plugin-card plugin-card-img" onclick="openVideoModal('videos/icons-generator.mp4')" role="button" tabindex="0" aria-label="Play Icon Library Picker plugin demo" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openVideoModal('videos/icons-generator.mp4')}" style="cursor:pointer;">
         <div class="plugin-video-thumb">
           <video src="videos/icons-generator.mp4" preload="metadata" muted playsinline></video>
           <div class="play-btn-overlay"><div class="play-btn"><svg width="13" height="14" viewBox="0 0 13 14" fill="currentColor"><polygon points="1,1 12,7 1,13"/></svg></div></div>
@@ -2101,7 +2130,7 @@ body.edit-active .impact-sub:hover{
       <div class="docs-text">
         <div class="sec-eyebrow">Documentation</div>
         <h2 class="sec-title">Documented without <span class="purple-text">exception.</span></h2>
-        <p class="sec-body">Every component ships with complete documentation: usage guidelines, visual do/don't examples, a token reference, accessibility notes, and code snippets. The rule is simple: if the docs are not done, the component is not done.</p>
+        <p class="sec-body">Every component ships with the full picture: usage guidelines, visual do/don't examples, a token reference, accessibility notes, and code snippets.<br/>Simple rule: docs not done, component not done.</p>
       </div>
       <div class="docs-viewer-wrap">
         <iframe src="lux-docs.html" title="LUX 2.0 Documentation Preview" scrolling="no"></iframe>
@@ -2120,7 +2149,7 @@ body.edit-active .impact-sub:hover{
     <div class="reveal">
       <div class="sec-tag">Outcome</div>
       <h2 class="impact-title sec-title">LUX 2.0 <span class="grad-text">shipped.</span></h2>
-      <p class="impact-sub sec-body">LUX 2.0 replaced the old system across Verint's entire product suite. A designer can now change a color, a spacing, or a theme across every component without writing a single line of code.</p>
+      <p class="impact-sub sec-body">LUX 2.0 is now live across Verint's entire product suite.<br/>One designer, one change, zero code. A color, a spacing value, a theme swap - it flows through every component automatically.</p>
     </div>
     <div class="impact-grid" data-stagger>
       <div class="impact-cell">
@@ -2129,16 +2158,16 @@ body.edit-active .impact-sub:hover{
       </div>
       <div class="impact-cell">
         <div class="impact-val green">0</div>
-        <div class="impact-lbl">Hardcoded hex values in any component</div>
+        <div class="impact-lbl">Hardcoded values anywhere in the system</div>
       </div>
       <div class="impact-cell">
         <div class="impact-val purple">~0</div>
-        <div class="impact-lbl">Frontend dev required for design changes</div>
+        <div class="impact-lbl">Developer hours needed for design changes</div>
       </div>
     </div>
     <div class="impact-statement reveal-blur">
       <span class="impact-quote-mark">"</span>
-      <p class="impact-quote">The team learned to write component code. What changed was more than the tooling. It was about who owns what. A designer makes a change, a pull request appears in two minutes, the developer reviews and merges. That is a completely different way of working.</p>
+      <p class="impact-quote">What changed was more than the tooling. It was about who owns what. A designer makes a change, a pull request appears in two minutes, the developer reviews and merges. That is a completely different way of working.</p>
       <div class="impact-attr">Team retrospective, LUX 2.0 launch</div>
     </div>
   </div>
@@ -2155,6 +2184,10 @@ body.edit-active .impact-sub:hover{
 
 
 <script>
+// Scroll to top on load (prevents mobile scroll restoration)
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 // Video modal
 function openVideoModal(src) {
   const modal = document.getElementById('videoModal');
@@ -2176,7 +2209,9 @@ function closeVideoModal() {
 // Lightbox
 function openLightbox(src, caption) {
   const lb = document.getElementById('lightbox');
-  document.getElementById('lightboxImg').src = src;
+  const img = document.getElementById('lightboxImg');
+  img.src = src;
+  img.alt = caption || 'Enlarged image';
   document.getElementById('lightboxCaption').textContent = caption || '';
   lb.style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -2263,9 +2298,8 @@ function toggleEditMode() {
   const saveBtn = document.getElementById('editSaveBtn');
 
   if (editModeActive) {
-    btn.textContent = '✓ Done';
-    btn.classList.add('active');
-    saveBtn.style.display = 'flex';
+    if (btn) { btn.textContent = '✓ Done'; btn.classList.add('active'); }
+    if (saveBtn) saveBtn.style.display = 'flex';
 
     // Make text editable
     document.querySelectorAll(EDITABLES).forEach(el => {
@@ -2317,9 +2351,8 @@ function toggleEditMode() {
       }
     });
   } else {
-    btn.textContent = '✏ Edit';
-    btn.classList.remove('active');
-    saveBtn.style.display = 'none';
+    if (btn) { btn.textContent = '✏ Edit'; btn.classList.remove('active'); }
+    if (saveBtn) saveBtn.style.display = 'none';
     document.querySelectorAll('[contenteditable]').forEach(el => {
       el.removeAttribute('contenteditable');
       el.classList.remove('editable-text');
@@ -2460,9 +2493,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closePipeMod
 </script>
 
 <!-- Pipeline step modal -->
-<div id="pipeModal" class="pipe-modal-overlay" onclick="if(event.target===this)closePipeModal()">
+<div id="pipeModal" class="pipe-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pipeModalTitle" onclick="if(event.target===this)closePipeModal()">
   <div class="pipe-modal-card">
-    <button class="pipe-modal-close" onclick="closePipeModal()">✕</button>
+    <button class="pipe-modal-close" onclick="closePipeModal()" aria-label="Close pipeline step">✕</button>
     <div class="pipe-modal-hero">
       <div class="pipe-modal-icon-wrap" id="pipeModalIcon">🎨</div>
       <div class="pipe-modal-meta">

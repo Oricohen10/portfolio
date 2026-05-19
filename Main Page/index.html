@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ori Cohen · Product Designer</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -51,7 +52,8 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  body { overflow-x: hidden; max-width: 100vw; }
   body {
     font-family: var(--f);
     background: var(--bg);
@@ -1700,6 +1702,10 @@
 </footer>
 
 <script>
+// Scroll to top on load (prevents mobile scroll restoration)
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 /* ══════════════════════════════
    1. CUSTOM CURSOR
 ══════════════════════════════ */
