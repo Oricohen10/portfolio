@@ -183,6 +183,12 @@
     background: var(--green);
     animation: breathe 2.5s ease-in-out infinite;
   }
+  @media(max-width:900px){
+    .top-nav{ transform: none !important; }
+    #hero { padding-top: 120px; }
+    .hero-badge { display: none !important; }
+    .photo-wrap { display: none; }
+  }
   @media(max-width:768px){ .top-nav{ padding: 14px 24px; } }
 
   /* ══════════════════════════════════════════
@@ -318,8 +324,7 @@
     position: relative; z-index: 1;
   }
   @media (max-width: 900px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 52px; }
-    .photo-wrap { display: none; }
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
   }
 
   /* Status badge */

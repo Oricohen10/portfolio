@@ -204,15 +204,30 @@ img{max-width:100%;display:block;}
 
 /* ═══ INTERACTIVE SHOWCASE ═══ */
 #showcase{background:var(--bg-2);padding:120px 0;}
-.showcase-inner{display:grid;grid-template-columns:200px auto 1fr;gap:40px;align-items:center;margin-top:72px;}
-@media(max-width:1100px){.showcase-inner{grid-template-columns:170px auto 1fr;gap:28px;}}
+#showcase>.wrap>.reveal{text-align:center;}
+#showcase>.wrap>.reveal .sec-body{margin:0 auto;}
+#showcase>.wrap>.reveal .sec-tag{justify-content:center;}
+#showcase>.wrap>.reveal .sec-tag::before{display:none;}
+@media(max-width:860px){
+  #showcase>.wrap>.reveal{text-align:left;}
+  #showcase>.wrap>.reveal .sec-body{margin:0;}
+  #showcase>.wrap>.reveal .sec-tag{justify-content:flex-start;}
+  #showcase>.wrap>.reveal .sec-tag::before{display:block;}
+  .impact-cell{text-align:left;align-items:flex-start;}
+  .impact-lbl{text-align:left;}
+  .impact-statement{text-align:left;padding:0;}
+}
+.showcase-inner{display:grid;grid-template-columns:300px auto 300px;gap:40px;align-items:center;margin-top:72px;justify-content:center;}
+@media(max-width:1100px){.showcase-inner{grid-template-columns:240px auto 240px;gap:28px;}}
+.sc-desc{text-align:left;}
+.sc-desc-body{max-width:none;}
 .sc-tabs{display:flex;flex-direction:column;gap:4px;position:sticky;top:100px;}
 .sc-tab{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-lg);cursor:pointer;transition:background .15s,color .15s;color:var(--ink-3);}
 .sc-tab:hover{background:var(--surface);color:var(--ink-2);}
 .sc-tab.active{background:rgba(102,175,255,.1);color:var(--blue);}
 .sc-tab-icon{font-size:18px;width:28px;text-align:center;}
 .sc-tab-label{font-size:13px;font-weight:600;}
-.sc-tab-badge{margin-left:auto;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(102,175,255,.15);color:var(--blue);border-radius:var(--r-full);padding:2px 7px;}
+.sc-tab-badge{margin-left:0;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(102,175,255,.15);color:var(--blue);border-radius:var(--r-full);padding:2px 7px;}
 /* Mobile tabs wrapper for scroll-fade effect */
 .sc-tabs-wrap{position:relative;align-self:start;}
 /* Drag cursor hint on desktop */
@@ -231,7 +246,7 @@ img{max-width:100%;display:block;}
   .sc-tab-label{font-size:12px;font-weight:600;white-space:nowrap;}
   .sc-tab-badge{display:none;}
 }
-.sc-phone-col{display:flex;justify-content:flex-start;}
+.sc-phone-col{display:flex;justify-content:center;}
 .sc-phone{width:264px;height:558px;border-radius:52px;background:linear-gradient(160deg,#222,#1A1A1A);border:2px solid rgba(255,255,255,.13);box-shadow:0 0 0 1px rgba(0,0,0,.9),0 40px 80px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.08);position:relative;flex-shrink:0;}
 .sc-phone::before{content:"";position:absolute;right:-4px;top:108px;width:3px;height:68px;background:rgba(255,255,255,.14);border-radius:0 4px 4px 0;}
 .sc-phone::after{content:"";position:absolute;left:-4px;top:88px;width:3px;height:36px;background:rgba(255,255,255,.11);border-radius:4px 0 0 4px;box-shadow:0 50px 0 rgba(255,255,255,.11),0 94px 0 rgba(255,255,255,.11);}
@@ -253,16 +268,16 @@ img{max-width:100%;display:block;}
   .sc-tab-info{display:none!important;}
   /* Phone centered, full-column - mirrors ask-ai-demo phone treatment */
   .sc-phone-col{flex-direction:column;align-items:center;justify-content:flex-start;}
-  /* Phone at 210px - prominent like the ask-ai phone */
-  .sc-phone{width:210px;height:444px;border-radius:42px;cursor:pointer;}
-  .sc-phone::before{top:86px;height:54px;}
-  .sc-phone::after{top:70px;height:29px;box-shadow:0 40px 0 rgba(255,255,255,.11),0 75px 0 rgba(255,255,255,.11);}
-  .sc-phone-screen{inset:8px;border-radius:33px;}
-  .sc-phone-island{width:80px;height:21px;top:10px;border-radius:14px;}
+  /* Phone same size as ask-ai phone */
+  .sc-phone{width:272px;height:572px;border-radius:54px;cursor:pointer;}
+  .sc-phone::before{top:110px;height:70px;}
+  .sc-phone::after{top:90px;height:38px;box-shadow:0 52px 0 rgba(255,255,255,.11),0 98px 0 rgba(255,255,255,.11);}
+  .sc-phone-screen{inset:10px;border-radius:44px;}
+  .sc-phone-island{width:110px;height:30px;top:14px;border-radius:20px;}
   /* Tap hint */
   .sc-phone-hint{display:block;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);opacity:.5;margin-top:10px;}
   /* Description below - full width, no sticky */
-  .sc-desc{display:flex;position:static;padding:0;}
+  .sc-desc{display:flex;position:static;padding:0;text-align:left;width:100%;}
 }
 /* Phone lightbox */
 .sc-lightbox{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:32px 24px;}
