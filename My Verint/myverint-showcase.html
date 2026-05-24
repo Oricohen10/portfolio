@@ -412,9 +412,12 @@ img{max-width:100%;display:block;}
 .impact-cell:hover{transform:translateY(-4px);}
 .impact-cell:first-child{padding-left:0;}
 .impact-cell:last-child{border-right:none;padding-right:0;}
-.impact-val{font-size:clamp(64px,8vw,104px);font-weight:800;line-height:.9;letter-spacing:-4px;margin-bottom:18px;color:var(--blue);font-variant-numeric:tabular-nums;}
+.impact-val{font-size:clamp(64px,8vw,104px);font-weight:800;line-height:.9;letter-spacing:-4px;margin-bottom:18px;color:var(--blue);font-variant-numeric:tabular-nums;position:relative;display:inline-block;}
 .impact-val.green{color:var(--green);}
 .impact-val.purple{color:var(--purple);}
+.impact-sym{font-size:.38em;font-weight:800;letter-spacing:0;line-height:1;position:absolute;top:.05em;}
+.impact-sym-after{right:-.45em;}
+.impact-sym-before{left:-.45em;}
 .impact-lbl{font-size:13px;color:var(--ink-3);line-height:1.5;max-width:150px;text-align:center;}
 .impact-statement{margin-top:72px;text-align:center;padding:0 80px;position:relative;}
 @media(max-width:768px){.impact-statement{padding:0 20px;}}
@@ -818,7 +821,7 @@ img{max-width:100%;display:block;}
     </div>
     <div class="impact-grid" data-stagger>
       <div class="impact-cell"><div class="impact-val">3</div><div class="impact-lbl">Distinct user roles served by a single product</div></div>
-      <div class="impact-cell"><div class="impact-val green">80%</div><div class="impact-lbl">of daily interactions flowing through Ask AI</div></div>
+      <div class="impact-cell"><div class="impact-val green">80<span class="impact-sym impact-sym-after">%</span></div><div class="impact-lbl">of daily interactions flowing through Ask AI</div></div>
       <div class="impact-cell"><div class="impact-val purple">2</div><div class="impact-lbl">Platforms launched simultaneously: iOS and Android</div></div>
     </div>
     <div class="impact-statement reveal-blur">

@@ -1432,9 +1432,21 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   margin-bottom:18px;
   color:var(--blue);
   font-variant-numeric:tabular-nums;
+  position:relative;
+  display:inline-block;
 }
 .impact-val.green{color:var(--green);}
 .impact-val.purple{color:var(--purple);}
+.impact-sym{
+  font-size:.38em;
+  font-weight:800;
+  letter-spacing:0;
+  line-height:1;
+  position:absolute;
+  top:.05em;
+}
+.impact-sym-after{right:-.45em;}
+.impact-sym-before{left:-.45em;}
 .impact-lbl{font-size:13px;color:var(--ink-3);line-height:1.5;max-width:150px;text-align:center;}
 .impact-statement{
   margin-top:72px;
@@ -2178,7 +2190,7 @@ body.edit-active .impact-sub:hover{
     </div>
     <div class="impact-grid" data-stagger>
       <div class="impact-cell">
-        <div class="impact-val">40+</div>
+        <div class="impact-val">40<span class="impact-sym impact-sym-after">+</span></div>
         <div class="impact-lbl">Verint products running on the new system</div>
       </div>
       <div class="impact-cell">
@@ -2186,7 +2198,7 @@ body.edit-active .impact-sub:hover{
         <div class="impact-lbl">Hardcoded values anywhere in the system</div>
       </div>
       <div class="impact-cell">
-        <div class="impact-val purple">~0</div>
+        <div class="impact-val purple"><span class="impact-sym impact-sym-before">~</span>0</div>
         <div class="impact-lbl">Developer hours needed for design changes</div>
       </div>
     </div>
