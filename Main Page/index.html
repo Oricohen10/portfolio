@@ -1018,7 +1018,8 @@
     /* Hero internals */
     .hero-grid  { gap: 32px; }
     .hero-desc  { margin-bottom: 28px; }
-    .hero-ctas  { gap: 10px; }
+    .hero-ctas  { gap: 10px; position: relative; z-index: 3; }
+    #hero::after { display: none; }
 
     /* Story / journey cards */
     .journey        { gap: 16px; }
