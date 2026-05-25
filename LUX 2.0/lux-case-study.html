@@ -2207,6 +2207,30 @@ const _staggerObs = new IntersectionObserver(es => es.forEach(e => {
   });
   _staggerObs.unobserve(e.target);
 }), {threshold:0.08, rootMargin:"0px 0px -48px 0px"});
-document.querySelectorAll("[data-stagger]").forEach(el => _staggerObs.observe(el));
+document.querySelectorAll("[data-stagger]").forEach(el => _staggerObs.observe(el));</script>
 
-// ── Edit mode ──
+<!-- Pipeline step modal -->
+<div id="pipeModal" class="pipe-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pipeModalTitle" onclick="if(event.target===this)closePipeModal()">
+  <div class="pipe-modal-card">
+    <button class="pipe-modal-close" onclick="closePipeModal()" aria-label="Close pipeline step">✕</button>
+    <div class="pipe-modal-hero">
+      <div class="pipe-modal-icon-wrap" id="pipeModalIcon">🎨</div>
+      <div class="pipe-modal-meta">
+        <span class="pipe-modal-counter" id="pipeModalCounter">Step 1 of 6</span>
+        <span class="pipe-modal-badge" id="pipeModalBadge">Manual</span>
+      </div>
+      <div class="pipe-modal-title" id="pipeModalTitle"></div>
+    </div>
+    <div class="pipe-modal-body-wrap">
+      <div class="pipe-modal-body" id="pipeModalBody"></div>
+    </div>
+    <div class="pipe-modal-nav">
+      <button class="pipe-modal-nav-btn" id="pipeModalPrev" onclick="navigatePipeStep(-1)">← Prev</button>
+      <div class="pipe-modal-dots" id="pipeModalDots"></div>
+      <button class="pipe-modal-nav-btn" id="pipeModalNext" onclick="navigatePipeStep(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
