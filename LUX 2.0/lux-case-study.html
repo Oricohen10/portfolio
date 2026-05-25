@@ -1556,13 +1556,15 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   position:relative;
 }
 @media(max-width:768px){.impact-statement{padding:0 20px;}}
-/* Mobile: row layout — must come AFTER desktop .impact-cell definition */
+/* Mobile: column layout — number above label. Must come AFTER desktop rules */
 @media(max-width:640px){
-  .impact-grid{grid-template-columns:1fr;gap:28px;}
-  .impact-cell{flex-direction:row;align-items:center;gap:20px;border-right:none;padding:0;}
-  .impact-val-wrap{flex-shrink:0;text-align:left;width:auto;}
-  .impact-val{font-size:clamp(44px,13vw,68px);margin-bottom:0;letter-spacing:-2px;}
-  .impact-lbl{text-align:left;max-width:none;font-size:14px;}
+  .impact-grid{grid-template-columns:repeat(3,1fr);gap:0;}
+  .impact-cell{flex-direction:column;align-items:center;text-align:center;padding:0 8px;border-right:1px solid var(--border);}
+  .impact-cell:last-child{border-right:none;}
+  .impact-val-wrap{text-align:center;width:100%;}
+  .impact-val{font-size:clamp(32px,9vw,48px);margin-bottom:8px;letter-spacing:-2px;}
+  .impact-sym{display:none;}
+  .impact-lbl{text-align:center;max-width:none;font-size:11px;line-height:1.4;}
 }
 .impact-quote-mark{
   font-family:Georgia,'Times New Roman',serif;
@@ -1625,16 +1627,6 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   .compare-container { height: 280px; }
   .docs-viewer-wrap { height: 320px; }
 
-  /* Impact — fixed number column + 2-line labels */
-  .impact-val-wrap { min-width: 72px; max-width: 72px; text-align: right; }
-  .impact-val { font-size: clamp(38px, 11vw, 56px); }
-  .impact-lbl {
-    font-size: 13px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
 }
 
 :focus{outline:none;}
