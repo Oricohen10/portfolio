@@ -775,15 +775,47 @@ section{padding:96px 0;}
   .tc-prop,.tc-val-green,.tc-val-yellow{font-size:9px;}
 }
 @media(max-width:640px){
-  pre.token-code{font-size:10px;line-height:1.6;padding:14px 16px;}
-  .code-file{font-size:9px;}
-  .tc-prop,.tc-val-green,.tc-val-yellow{font-size:9px;}
-  .token-code-inline{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
-  .token-layer{overflow:hidden;}
-  .layer-desc{overflow-wrap:break-word;word-break:break-word;}
-  .layer-name{overflow-wrap:break-word;word-break:break-word;}
-  .token-examples{overflow:hidden;}
+  #tokens .inner { display: none; }
+  .tokens-mobile { display: flex; }
 }
+
+/* ── Tokens mobile component ── */
+.tokens-mobile {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 40px;
+}
+.tm-layer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.tm-layer:last-child { border-bottom: none; }
+.tm-top { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+.tm-num {
+  font-size: 10px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; opacity: .4; color: var(--ink);
+  min-width: 24px;
+}
+.tm-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 20px; letter-spacing: .04em;
+}
+.tm-l1 .tm-badge { background: rgba(102,175,255,.15); color: #66AFFF; }
+.tm-l2 .tm-badge { background: rgba(196,181,253,.15); color: #C4B5FD; }
+.tm-l3 .tm-badge { background: rgba(102,226,176,.15); color: #66E2B0; }
+.tm-name {
+  font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.2;
+}
+.tm-l1 .tm-name { color: #66AFFF; }
+.tm-l2 .tm-name { color: #C4B5FD; }
+.tm-l3 .tm-name { color: #66E2B0; }
+.tm-sub { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.tm-desc { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
 .token-diagram{display:flex;flex-direction:column;gap:16px;position:relative;height:100%;min-width:0;overflow:hidden;}
 .token-layer{
   border-radius:var(--r-xl);padding:20px 22px;
@@ -1555,11 +1587,16 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   padding:0 80px;
   position:relative;
 }
+@media(max-width:900px){
+  .impact-cell{text-align:left;align-items:flex-start;}
+  .impact-lbl{text-align:left;}
+  .impact-statement{text-align:left;padding:0;}
+}
 @media(max-width:768px){.impact-statement{padding:0 20px;}}
 /* Mobile: column layout — number above label. Must come AFTER desktop rules */
 @media(max-width:640px){
   .impact-grid{grid-template-columns:repeat(3,1fr);gap:0;}
-  .impact-cell{flex-direction:column;align-items:center;text-align:center;padding:0 8px;border-right:1px solid var(--border);}
+  .impact-cell{flex-direction:column;align-items:flex-start;text-align:left;padding:0 12px;border-right:1px solid var(--border);}
   .impact-cell:last-child{border-right:none;}
   .impact-val-wrap{text-align:center;width:100%;}
   .impact-val{font-size:clamp(32px,9vw,48px);margin-bottom:8px;letter-spacing:-2px;}
@@ -1612,7 +1649,6 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   .comp-numbers { gap: 16px; }
   .decision-grid { gap: 16px; }
 
-  .impact-grid { gap: 24px; }
   .impact-statement { margin-top: 32px; padding: 0 16px; }
 
   .case-footer { padding: 40px 0; flex-direction: column-reverse; }
@@ -1992,6 +2028,37 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 };</pre>
       </div><!-- end code-panel -->
       </div><!-- end tokens-right-col -->
+    </div>
+
+    <!-- Mobile-native token component -->
+    <div class="tokens-mobile">
+      <div class="tm-layer tm-l1">
+        <div class="tm-top">
+          <span class="tm-num">01</span>
+          <span class="tm-badge">96 tokens</span>
+        </div>
+        <div class="tm-name">Primitives</div>
+        <div class="tm-sub">Raw values. No meaning yet.</div>
+        <div class="tm-desc">The base values — colors, spacing, radii. These never appear in components directly. They only feed the layer above them.</div>
+      </div>
+      <div class="tm-layer tm-l2">
+        <div class="tm-top">
+          <span class="tm-num">02</span>
+          <span class="tm-badge">240 tokens</span>
+        </div>
+        <div class="tm-name">Semantics</div>
+        <div class="tm-sub">Purpose, not just color.</div>
+        <div class="tm-desc">These tokens describe what a value is used for, not what it is. Light and dark themes are defined entirely at this layer.</div>
+      </div>
+      <div class="tm-layer tm-l3">
+        <div class="tm-top">
+          <span class="tm-num">03</span>
+          <span class="tm-badge">1,113 tokens</span>
+        </div>
+        <div class="tm-name">Component Tokens</div>
+        <div class="tm-sub">Scoped to each component.</div>
+        <div class="tm-desc">Each component has its own token namespace. Changing a button's background has zero effect on anything else in the system.</div>
+      </div>
     </div>
   </div>
 </section>
