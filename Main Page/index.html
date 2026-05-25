@@ -258,7 +258,7 @@
     }
     .dock-item {
       flex-direction: row; gap: 0;
-      padding: 10px 12px; min-width: unset;
+      padding: 10px 12px; min-width: unset; min-height: 44px;
       justify-content: center;
     }
     .dock-item:hover { transform: translateX(2px); }
@@ -1045,98 +1045,6 @@
     .footer-row { gap: 16px; }
   }
 
-  /* ══════════════ EDIT MODE ══════════════ */
-  #editFab{
-    position:fixed;bottom:28px;right:28px;z-index:9000;
-    display:flex;flex-direction:column;align-items:flex-end;gap:10px;
-  }
-  .edit-fab-btn{
-    display:flex;align-items:center;gap:8px;
-    padding:10px 20px;border-radius:999px;
-    font-size:12px;font-weight:700;font-family:var(--f);
-    cursor:pointer;border:none;letter-spacing:-.1px;
-    transition:all .2s;
-    box-shadow:0 4px 24px rgba(0,0,0,.5);
-  }
-  .edit-fab-main{
-    background:var(--card);color:var(--ink-2);
-    border:1px solid var(--border-m);
-  }
-  .edit-fab-main:hover{color:var(--ink);border-color:var(--border-b);}
-  .edit-fab-main.active{
-    background:rgba(102,175,255,.15);color:#66AFFF;
-    border-color:rgba(102,175,255,.4);
-  }
-  .edit-fab-save{
-    background:var(--blue);color:#fff;
-    box-shadow:0 4px 20px rgba(59,130,246,.35);
-  }
-  .edit-fab-save:hover{background:#2563EB;}
-
-  body.edit-active .editable-text{
-    outline:2px dashed rgba(102,175,255,.4);
-    outline-offset:3px;border-radius:4px;cursor:text;
-    transition:outline .15s,background .15s;
-  }
-  body.edit-active .editable-text:focus{
-    outline:2px solid var(--blue);
-    background:rgba(59,130,246,.06);
-    border-radius:4px;
-  }
-  .sec-del-btn{
-    display:none;position:absolute;top:18px;right:18px;
-    background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);
-    color:#F87171;padding:5px 14px;border-radius:999px;
-    font-size:10px;font-weight:700;font-family:var(--f);
-    cursor:pointer;letter-spacing:.06em;text-transform:uppercase;
-    transition:all .15s;z-index:20;
-  }
-  .sec-del-btn:hover{background:rgba(239,68,68,.22);border-color:rgba(239,68,68,.5);}
-  body.edit-active section{position:relative;}
-  body.edit-active .sec-del-btn{display:block;}
-
-  /* Width drag handles */
-  body.edit-active .container{position:relative;}
-  .w-handle{
-    display:none;
-    position:absolute;top:50%;right:-20px;
-    transform:translateY(-50%);
-    width:36px;height:80px;
-    cursor:ew-resize;
-    align-items:center;justify-content:center;
-    z-index:50;border-radius:8px;
-  }
-  body.edit-active .container:hover > .w-handle,
-  .w-handle.dragging{display:flex;}
-  .w-handle-bar{
-    width:5px;height:48px;border-radius:3px;
-    background:rgba(59,130,246,.45);transition:height .15s,background .15s;
-  }
-  .w-handle:hover .w-handle-bar,
-  .w-handle.dragging .w-handle-bar{height:68px;background:var(--blue);}
-  .w-badge{
-    display:none;
-    position:absolute;top:-28px;left:50%;transform:translateX(-50%);
-    background:var(--blue);color:#fff;
-    font-size:10px;font-weight:700;font-family:var(--f);
-    padding:3px 8px;border-radius:5px;white-space:nowrap;
-  }
-  .w-handle.dragging .w-badge{display:block;}
-
-  /* Text block resize */
-  body.edit-active .hero-desc,
-  body.edit-active .sec-sub,
-  body.edit-active .about-body{
-    resize:horizontal;overflow:hidden;
-    min-width:200px;box-sizing:border-box;
-    border:1px dashed rgba(139,92,246,.35);
-    border-radius:4px;padding:4px 6px;margin:-5px -7px;
-  }
-  body.edit-active .hero-desc:hover,
-  body.edit-active .sec-sub:hover,
-  body.edit-active .about-body:hover{
-    border-color:rgba(139,92,246,.6);
-  }
   </style>
 </head>
 <body>
@@ -1740,7 +1648,7 @@
         <a href="mailto:oricohenw@gmail.com" class="btn btn-primary mag-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span class="btn-label-full">Email me</span>
-          <span class="btn-label-short">Email me</span>
+          <span class="btn-label-short">Email</span>
         </a>
         <a href="https://www.linkedin.com/in/ori-cohen-hello/" target="_blank" rel="noopener" class="btn btn-secondary mag-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
@@ -1926,104 +1834,6 @@ counters.forEach(c => cntObs.observe(c));
 /* ══════════════════════════════
    8. CARD SPOTLIGHT (mouse follow)
 ══════════════════════════════ */
-/* ══════════════════════════════
-   EDIT MODE
-══════════════════════════════ */
-let editModeActive = false;
-const EDITABLES = [
-  '.hero-name','.hero-role','.hero-desc',
-  '.sec-tag','.sec-title','.sec-sub',
-  '.ch-year','.ch-title','.ch-desc',
-  '.proj-title','.proj-desc',
-  '#contact-heading',
-  '#story-heading','#work-heading','#about-heading'
-].join(',');
-
-function toggleEditMode() {
-  editModeActive = !editModeActive;
-  document.body.classList.toggle('edit-active', editModeActive);
-  const btn = document.getElementById('editToggleBtn');
-  const saveBtn = document.getElementById('editSaveBtn');
-
-  if (editModeActive) {
-    btn.textContent = '✓ Done';
-    btn.classList.add('active');
-    saveBtn.style.display = 'flex';
-
-    document.querySelectorAll(EDITABLES).forEach(el => {
-      el.classList.add('editable-text');
-      el.setAttribute('contenteditable','true');
-      el.setAttribute('spellcheck','false');
-    });
-
-    // Width handles on .container elements
-    document.querySelectorAll('.container').forEach(c => {
-      if (c.querySelector('.w-handle')) return;
-      const h = document.createElement('div');
-      h.className = 'w-handle';
-      h.innerHTML = '<div class="w-badge"></div><div class="w-handle-bar"></div>';
-      c.appendChild(h);
-      let sx, sw;
-      h.addEventListener('mousedown', e => {
-        sx = e.clientX;
-        sw = parseInt(getComputedStyle(c).maxWidth) || 1200;
-        e.preventDefault();
-        h.classList.add('dragging');
-        const badge = h.querySelector('.w-badge');
-        const mm = e2 => {
-          const nw = Math.max(400, sw + (e2.clientX - sx) * 2);
-          c.style.maxWidth = nw + 'px';
-          badge.textContent = Math.round(nw) + 'px';
-        };
-        const mu = () => {
-          h.classList.remove('dragging');
-          document.removeEventListener('mousemove', mm);
-          document.removeEventListener('mouseup', mu);
-        };
-        document.addEventListener('mousemove', mm);
-        document.addEventListener('mouseup', mu);
-      });
-    });
-
-    // Remove buttons on sections
-    document.querySelectorAll('section:not([style*="display:none"])').forEach(sec => {
-      if (!sec.querySelector('.sec-del-btn')) {
-        const dBtn = document.createElement('button');
-        dBtn.className = 'sec-del-btn';
-        dBtn.textContent = '× Remove';
-        dBtn.onclick = () => { sec.style.display = 'none'; };
-        sec.appendChild(dBtn);
-      }
-    });
-
-  } else {
-    btn.textContent = '✏ Edit';
-    btn.classList.remove('active');
-    saveBtn.style.display = 'none';
-    document.querySelectorAll('[contenteditable]').forEach(el => {
-      el.removeAttribute('contenteditable');
-      el.classList.remove('editable-text');
-    });
-    document.querySelectorAll('.w-handle').forEach(el => el.remove());
-  }
-}
-
-function downloadHTML() {
-  const clone = document.documentElement.cloneNode(true);
-  clone.querySelectorAll('.sec-del-btn, #editFab').forEach(el => el.remove());
-  clone.querySelectorAll('[contenteditable]').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.classList.remove('editable-text');
-  });
-  clone.querySelector('body').classList.remove('edit-active');
-  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'index.html';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-}
 
 document.querySelectorAll('.proj-card').forEach(card => {
   card.addEventListener('mousemove', e => {

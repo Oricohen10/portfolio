@@ -18,7 +18,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<link rel="preload" as="video" href="videos/hero.mp4"/>
 <style>
 :root {
   /* ── LUX 2.0 Dark Mode Tokens ── */
@@ -57,6 +56,7 @@ img{max-width:100%;display:block;}
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 64px;
+  padding-top:calc(16px + env(safe-area-inset-top));
   background:rgba(18,18,19,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border);
 }
@@ -1004,7 +1004,9 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   display:flex;align-items:flex-start;justify-content:center;
   gap:0;margin-bottom:64px;
   overflow-x:auto;padding:8px 0;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
 }
+.pf-step{scroll-snap-align:center;}
 .pf-step{
   display:flex;flex-direction:column;align-items:center;gap:10px;
   min-width:100px;flex-shrink:0;
@@ -1220,7 +1222,7 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   font-size:12px;font-weight:700;color:var(--blue);text-align:right;
   font-family:'SF Mono','Fira Code',monospace;
 }
-@media(max-width:640px){.pt-row{grid-template-columns:1fr 1fr;}.pt-where,.pt-time{display:none;}}
+@media(max-width:640px){.pt-row{grid-template-columns:1fr 1fr;}.pt-where,.pt-time{display:none;}.pt-who,.pt-what{word-break:break-word;overflow-wrap:break-word;}}
 
 /* ══════════════ COMPONENTS ══════════════ */
 #components{background:var(--bg-2);}
@@ -1414,7 +1416,7 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   margin-top:72px;
   padding:0;
 }
-@media(max-width:640px){.impact-grid{grid-template-columns:1fr;gap:40px;}}
+@media(max-width:640px){.impact-grid{grid-template-columns:1fr;gap:40px;}.impact-cell{border-right:none;padding:0;}}
 .impact-cell{
   display:flex;flex-direction:column;align-items:center;text-align:center;
   padding:0 32px;
@@ -1480,109 +1482,6 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 }
 .impact-attr::before{content:'·';margin-right:4px;}
 
-/* ══════════════ EDIT MODE ══════════════ */
-#editFab{
-  position:fixed;bottom:28px;right:28px;z-index:9000;
-  display:flex;flex-direction:column;align-items:flex-end;gap:10px;
-}
-.edit-fab-btn{
-  display:flex;align-items:center;gap:8px;
-  padding:10px 20px;border-radius:var(--r-full);
-  font-size:12px;font-weight:700;font-family:var(--f);
-  cursor:pointer;border:none;letter-spacing:-.1px;
-  transition:all .2s var(--ease);
-  box-shadow:0 4px 24px rgba(0,0,0,.5);
-}
-.edit-fab-main{
-  background:var(--card);color:var(--ink-2);
-  border:1px solid var(--border-m);
-}
-.edit-fab-main:hover{color:var(--ink);border-color:var(--border-b);}
-.edit-fab-main.active{
-  background:rgba(102,175,255,.15);color:#66AFFF;
-  border-color:rgba(102,175,255,.4);
-}
-.edit-fab-save{
-  background:var(--blue);color:#fff;
-  box-shadow:0 4px 20px rgba(59,130,246,.35);
-}
-.edit-fab-save:hover{background:#2563EB;}
-
-body.edit-active .editable-text{
-  outline:2px dashed rgba(102,175,255,.4);
-  outline-offset:3px;border-radius:4px;cursor:text;
-  transition:outline .15s,background .15s;
-}
-body.edit-active .editable-text:focus{
-  outline:2px solid var(--blue);
-  background:rgba(59,130,246,.06);
-  border-radius:4px;
-}
-body.edit-active .editable-text:empty::before{
-  content:attr(data-placeholder);
-  color:rgba(255,255,255,.2);font-style:italic;
-}
-.sec-del-btn{
-  display:none;position:absolute;top:18px;right:18px;
-  background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);
-  color:#F87171;padding:5px 14px;border-radius:var(--r-full);
-  font-size:10px;font-weight:700;font-family:var(--f);
-  cursor:pointer;letter-spacing:.06em;text-transform:uppercase;
-  transition:all .15s;z-index:20;
-}
-.sec-del-btn:hover{background:rgba(239,68,68,.22);border-color:rgba(239,68,68,.5);}
-body.edit-active section,
-body.edit-active .strip-wrap{position:relative;}
-body.edit-active .sec-del-btn{display:block;}
-
-/* ── Width drag handles on .wrap ── */
-body.edit-active .wrap{position:relative;}
-.w-handle{
-  display:none;
-  position:absolute;top:50%;right:-20px;
-  transform:translateY(-50%);
-  width:36px;height:80px;
-  cursor:ew-resize;
-  align-items:center;justify-content:center;
-  z-index:50;border-radius:8px;
-}
-body.edit-active .wrap:hover > .w-handle,
-.w-handle.dragging{display:flex;}
-.w-handle-bar{
-  width:5px;height:48px;border-radius:3px;
-  background:rgba(59,130,246,.45);transition:height .15s,background .15s;
-}
-.w-handle:hover .w-handle-bar,
-.w-handle.dragging .w-handle-bar{height:68px;background:var(--blue);}
-
-/* Width badge tooltip */
-.w-badge{
-  display:none;
-  position:absolute;top:-28px;left:50%;transform:translateX(-50%);
-  background:var(--blue);color:#fff;
-  font-size:10px;font-weight:700;font-family:var(--f);
-  padding:3px 8px;border-radius:5px;white-space:nowrap;letter-spacing:.04em;
-}
-.w-handle.dragging .w-badge{display:block;}
-
-/* Text block resize (sec-body, hero-sub etc.) */
-body.edit-active .sec-body,
-body.edit-active .hero-sub,
-body.edit-active .impact-sub{
-  resize:horizontal;
-  overflow:hidden;
-  min-width:200px;
-  box-sizing:border-box;
-  border:1px dashed rgba(139,92,246,.35);
-  border-radius:4px;
-  padding:4px 6px;
-  margin:-5px -7px;
-}
-body.edit-active .sec-body:hover,
-body.edit-active .hero-sub:hover,
-body.edit-active .impact-sub:hover{
-  border-color:rgba(139,92,246,.6);
-}
 
 /* ══════════════ FOOTER ══════════════ */
 .case-footer{padding:64px 0;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:16px;}
@@ -2311,244 +2210,3 @@ const _staggerObs = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll("[data-stagger]").forEach(el => _staggerObs.observe(el));
 
 // ── Edit mode ──
-let editModeActive = false;
-const EDITABLES = [
-  '.hero-chapter','.hero-sub','.hero-img-caption',
-  '.sec-eyebrow','.sec-title','.sec-body',
-  '.tl-period','.tl-label','.tl-desc',
-  '.inc-eyebrow','.inc-title','.inc-desc',
-  '.ttn-title','.ttn-desc',
-  '.layer-tag','.layer-name','.layer-desc',
-  '.compare-hint','.callout-desc',
-  '.plugin-name','.plugin-desc',
-  '.impact-title','.impact-sub','.impact-quote',
-  '.stat-num','.stat-lbl',
-  '.nav-pill','.hero-img-caption'
-].join(',');
-
-function toggleEditMode() {
-  editModeActive = !editModeActive;
-  document.body.classList.toggle('edit-active', editModeActive);
-  const btn = document.getElementById('editToggleBtn');
-  const saveBtn = document.getElementById('editSaveBtn');
-
-  if (editModeActive) {
-    if (btn) { btn.textContent = '✓ Done'; btn.classList.add('active'); }
-    if (saveBtn) saveBtn.style.display = 'flex';
-
-    // Make text editable
-    document.querySelectorAll(EDITABLES).forEach(el => {
-      el.classList.add('editable-text');
-      el.setAttribute('contenteditable','true');
-      el.setAttribute('spellcheck','false');
-    });
-
-    // Add width drag handles to wrap elements
-    document.querySelectorAll('.wrap').forEach(wrap => {
-      if (wrap.querySelector('.w-handle')) return;
-      const h = document.createElement('div');
-      h.className = 'w-handle';
-      h.innerHTML = '<div class="w-badge"></div><div class="w-handle-bar"></div>';
-      h.title = 'Drag to resize column width';
-      wrap.appendChild(h);
-
-      let sx, sw;
-      h.addEventListener('mousedown', e => {
-        sx = e.clientX;
-        sw = parseInt(getComputedStyle(wrap).maxWidth) || 1100;
-        e.preventDefault();
-        h.classList.add('dragging');
-        const badge = h.querySelector('.w-badge');
-        const mm = e2 => {
-          const dx = (e2.clientX - sx) * 2;
-          const nw = Math.max(400, sw + dx);
-          wrap.style.maxWidth = nw + 'px';
-          badge.textContent = Math.round(nw) + 'px';
-        };
-        const mu = () => {
-          h.classList.remove('dragging');
-          document.removeEventListener('mousemove', mm);
-          document.removeEventListener('mouseup', mu);
-        };
-        document.addEventListener('mousemove', mm);
-        document.addEventListener('mouseup', mu);
-      });
-    });
-
-    // Add remove buttons to visible sections
-    document.querySelectorAll('section:not([style*="display:none"]), .strip-wrap').forEach(sec => {
-      if (!sec.querySelector('.sec-del-btn')) {
-        const dBtn = document.createElement('button');
-        dBtn.className = 'sec-del-btn';
-        dBtn.textContent = '× Remove';
-        dBtn.onclick = () => { sec.style.display = 'none'; };
-        sec.appendChild(dBtn);
-      }
-    });
-  } else {
-    if (btn) { btn.textContent = '✏ Edit'; btn.classList.remove('active'); }
-    if (saveBtn) saveBtn.style.display = 'none';
-    document.querySelectorAll('[contenteditable]').forEach(el => {
-      el.removeAttribute('contenteditable');
-      el.classList.remove('editable-text');
-    });
-    document.querySelectorAll('.w-handle').forEach(el => el.remove());
-  }
-}
-
-function downloadHTML() {
-  const clone = document.documentElement.cloneNode(true);
-  // Strip edit UI
-  clone.querySelectorAll('.sec-del-btn, #editFab').forEach(el => el.remove());
-  clone.querySelectorAll('[contenteditable]').forEach(el => {
-    el.removeAttribute('contenteditable');
-    el.classList.remove('editable-text');
-  });
-  clone.querySelector('body').classList.remove('edit-active');
-  const html = '<!DOCTYPE html>\n' + clone.outerHTML;
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'lux-case-study.html';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-}
-
-// Pipeline step data
-const pipeStepData = [
-  {
-    icon: '🎨', type: 'manual',
-    title: 'Designer updates Figma Variables',
-    body: '<p>The token architecture uses three Figma variable collections. Primitives holds raw values: hex colors, rem sizes, millisecond durations. Semantics Light and Semantics Dark map those primitives to role-based names. Components bind semantic tokens to specific UI patterns.</p><p>When a designer changes a value in any collection, that single edit is the only manual input the entire pipeline needs. No annotation, no handoff note, no Jira ticket.</p>'
-  },
-  {
-    icon: '🔌', type: 'manual',
-    title: 'One click in Verint Token Sync',
-    body: '<p>The plugin calls the Figma Variables REST API and pulls all three collections at once. It resolves aliases across collections so every semantic token has a concrete value before code generation starts.</p><p>The single-click trigger is intentional. Designers push on their own schedule, not on a cron job. It gives them ownership over what lands in the repository.</p>'
-  },
-  {
-    icon: '📝', type: 'auto',
-    title: 'Four TypeScript files generated in the browser',
-    body: '<p>The plugin runs a code generation pass inside the Figma plugin sandbox and writes four typed TypeScript files: <code>primitives.ts</code> for raw values, <code>semanticsLight.ts</code> and <code>semanticsDark.ts</code> for role-based mappings, and <code>components.tsx</code> for component-level bindings.</p><p>All four files use a consistent export shape so consuming components import exactly the token they need. No JSON, no CSS variables at this stage. Typed constants only.</p>'
-  },
-  {
-    icon: '😺', type: 'auto',
-    title: 'Plugin pushes to GitHub and opens a PR',
-    body: '<p>The plugin base64-encodes each file and calls the GitHub Contents API to write them to a feature branch. It then calls the GitHub Pull Requests API to open a PR against <code>main</code> with a commit message that names the changed tokens.</p><p>There is no server in this path. The plugin holds a scoped GitHub token in Figma plugin storage and makes all API calls from inside the sandbox. The entire push-and-PR sequence completes in under two seconds.</p>'
-  },
-  {
-    icon: '⚙️', type: 'auto',
-    title: 'GitHub Actions validates and auto-merges',
-    body: '<p>A GitHub Actions workflow runs <code>tsc --noEmit</code> against the four generated files. If TypeScript compilation passes, the workflow calls the GitHub Merge API and squash-merges the PR automatically. If it fails, the PR stays open and the checks surface shows exactly which file broke.</p><p>The TypeScript check is the safety net. Generated code that references a token with a type mismatch or a broken alias fails the build before it ever reaches <code>main</code>.</p>'
-  },
-  {
-    icon: '🚀', type: 'auto',
-    title: 'Tokens live on main in under 60 seconds',
-    body: '<p>The squash-merge lands on <code>main</code> with a clean commit message referencing the changed tokens. Storybook, the component library build, and any product that imports the token package all pick up the update on their next install or CI run.</p><p>The full cycle from Figma save to merged PR is under 60 seconds. The designer sees the PR open in the plugin UI and gets a confirmation when it merges. No developer was paged.</p>'
-  }
-];
-
-let currentPipeStep = 1;
-
-function renderPipeModal(n) {
-  const data = pipeStepData[n - 1];
-  const total = pipeStepData.length;
-
-  document.getElementById('pipeModalIcon').textContent = data.icon;
-  document.getElementById('pipeModalCounter').textContent = 'Step ' + n + ' of ' + total;
-  const badge = document.getElementById('pipeModalBadge');
-  badge.textContent = data.type === 'manual' ? 'Manual' : 'Auto';
-  badge.className = 'pipe-modal-badge ' + data.type;
-  document.getElementById('pipeModalTitle').textContent = data.title;
-  document.getElementById('pipeModalBody').innerHTML = data.body;
-
-  document.getElementById('pipeModalPrev').disabled = n === 1;
-  document.getElementById('pipeModalNext').disabled = n === total;
-
-  // Dots
-  const dotsEl = document.getElementById('pipeModalDots');
-  dotsEl.innerHTML = '';
-  for (let i = 1; i <= total; i++) {
-    const d = document.createElement('div');
-    d.className = 'pipe-modal-dot' + (i === n ? ' active' : '');
-    d.onclick = () => navigatePipeModal(i);
-    dotsEl.appendChild(d);
-  }
-
-  // Highlight active pipeline step
-  document.querySelectorAll('#pipelineFlow .pf-step').forEach(s => s.classList.remove('active'));
-  const el = document.querySelector('#pipelineFlow .pf-step[data-step="' + n + '"]');
-  if (el) el.classList.add('active');
-}
-
-function selectPipeStep(n) {
-  currentPipeStep = n;
-  renderPipeModal(n);
-  document.getElementById('pipeModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function navigatePipeModal(n) {
-  currentPipeStep = n;
-  renderPipeModal(n);
-}
-
-function navigatePipeStep(dir) {
-  const next = currentPipeStep + dir;
-  if (next < 1 || next > pipeStepData.length) return;
-  navigatePipeModal(next);
-}
-
-function closePipeModal() {
-  document.getElementById('pipeModal').classList.remove('open');
-  document.body.style.overflow = '';
-  document.querySelectorAll('#pipelineFlow .pf-step').forEach(s => s.classList.remove('active'));
-}
-
-// Pipeline scroll animation
-const pipelineFlow = document.getElementById('pipelineFlow');
-const pipelineItems = pipelineFlow.querySelectorAll('.pf-step, .pf-arrow');
-let pipelineTriggered = false;
-const pipelineObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting && !pipelineTriggered) {
-      pipelineTriggered = true;
-      pipelineItems.forEach(item => {
-        const delay = parseInt(item.dataset.delay || 0);
-        setTimeout(() => item.classList.add('lit'), delay);
-      });
-      pipelineObs.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.3 });
-pipelineObs.observe(pipelineFlow);
-
-// Escape key closes modal
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePipeModal(); });
-</script>
-
-<!-- Pipeline step modal -->
-<div id="pipeModal" class="pipe-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pipeModalTitle" onclick="if(event.target===this)closePipeModal()">
-  <div class="pipe-modal-card">
-    <button class="pipe-modal-close" onclick="closePipeModal()" aria-label="Close pipeline step">✕</button>
-    <div class="pipe-modal-hero">
-      <div class="pipe-modal-icon-wrap" id="pipeModalIcon">🎨</div>
-      <div class="pipe-modal-meta">
-        <span class="pipe-modal-counter" id="pipeModalCounter">Step 1 of 6</span>
-        <span class="pipe-modal-badge" id="pipeModalBadge">Manual</span>
-      </div>
-      <div class="pipe-modal-title" id="pipeModalTitle"></div>
-    </div>
-    <div class="pipe-modal-body-wrap">
-      <div class="pipe-modal-body" id="pipeModalBody"></div>
-    </div>
-    <div class="pipe-modal-nav">
-      <button class="pipe-modal-nav-btn" id="pipeModalPrev" onclick="navigatePipeStep(-1)">← Prev</button>
-      <div class="pipe-modal-dots" id="pipeModalDots"></div>
-      <button class="pipe-modal-nav-btn" id="pipeModalNext" onclick="navigatePipeStep(1)">Next →</button>
-    </div>
-  </div>
-</div>
-
-</body>
-</html>

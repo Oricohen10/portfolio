@@ -43,7 +43,7 @@ a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 
 /* NAV */
-.case-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;background:rgba(18,18,19,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.case-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;padding-top:calc(16px + env(safe-area-inset-top));background:rgba(18,18,19,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
 .nav-back{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);transition:color .15s;}
 .nav-back:hover{color:var(--ink);}
 .nav-back svg{opacity:.6;transition:opacity .15s;flex-shrink:0;}
@@ -307,7 +307,7 @@ img{max-width:100%;display:block;}
 .sc-sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--border-b);margin:12px auto 20px;}
 .sc-sheet-close{position:absolute;top:14px;right:18px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:var(--ink-3);transition:background .15s,color .15s;}
 .sc-sheet-close:hover{background:rgba(255,255,255,.1);color:var(--ink-2);}
-.sc-sheet-body{overflow-y:auto;max-height:62vh;display:flex;flex-direction:column;gap:14px;}
+.sc-sheet-body{overflow-y:auto;max-height:min(62vh,420px);display:flex;flex-direction:column;gap:14px;}
 .sc-desc-tab{display:none;}
 .sc-desc-tab.active{display:flex;flex-direction:column;gap:14px;}
 .sc-desc-eyebrow{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);opacity:.8;margin-bottom:2px;}
@@ -407,7 +407,7 @@ img{max-width:100%;display:block;}
 .impact-title{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;}
 .impact-sub{font-size:14px;color:var(--ink-2);line-height:1.75;max-width:800px;text-wrap:pretty;}
 .impact-grid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:72px;padding:0;}
-@media(max-width:640px){.impact-grid{grid-template-columns:1fr;gap:40px;}}
+@media(max-width:640px){.impact-grid{grid-template-columns:1fr;gap:40px;}.impact-cell{border-right:none;padding:0;}}
 .impact-cell{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 32px;border-right:1px solid var(--border);transition:transform .3s var(--ease-emphasized);}
 .impact-cell:hover{transform:translateY(-4px);}
 .impact-cell:first-child{padding-left:0;}
@@ -1055,7 +1055,7 @@ function runDemo(){
     if(scr && scr.classList.contains("has-video")){
       // Pick the active video source dynamically
       const activeVidEl = document.getElementById(scr.dataset.activeVid || "scScreenVid");
-      const activeSrc = activeVidEl ? activeVidEl.src : "";
+      const activeSrc = activeVidEl ? (activeVidEl.src || _webmSrc(activeVidEl.dataset.src) || "") : "";
       if(!lbxVid || lbxVidSrc !== activeSrc){
         if(lbxVid) lbxVid.remove();
         lbxVid = document.createElement("video");
