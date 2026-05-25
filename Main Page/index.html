@@ -55,10 +55,10 @@
 
     --ease:   cubic-bezier(.4,0,.2,1);
     --spring: cubic-bezier(.22,.68,0,1.2);
-    --ease-emphasized: cubic-bezier(0.05,0.7,0.1,1);
+    --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-in: cubic-bezier(0.3,0,1,1);
     --t: 200ms;
-    --dur-std: 500ms; --dur-slow: 700ms;
+    --dur-std: 650ms; --dur-slow: 950ms;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,25 +128,25 @@
 
   /* ── REVEAL ── */
   .reveal {
-    opacity: 0; transform: translateY(24px);
+    opacity: 0; transform: translateY(20px);
     transition: opacity var(--dur-std) var(--ease-emphasized), transform var(--dur-std) var(--ease-emphasized);
   }
   .reveal.visible { opacity: 1; transform: none; }
-  .d1{transition-delay:.06s}.d2{transition-delay:.12s}
-  .d3{transition-delay:.18s}.d4{transition-delay:.24s}
+  .d1{transition-delay:.09s}.d2{transition-delay:.18s}
+  .d3{transition-delay:.27s}.d4{transition-delay:.36s}
 
   /* ── ANIMATION VARIANTS ── */
-  .reveal-left{opacity:0;transform:translateX(-44px);transition:opacity var(--dur-slow) var(--ease-emphasized),transform var(--dur-slow) var(--ease-emphasized);}
+  .reveal-left{opacity:0;transform:translateX(-32px);transition:opacity var(--dur-slow) var(--ease-emphasized),transform var(--dur-slow) var(--ease-emphasized);}
   .reveal-left.visible{opacity:1;transform:none;}
-  .reveal-right{opacity:0;transform:translateX(44px);transition:opacity var(--dur-slow) var(--ease-emphasized),transform var(--dur-slow) var(--ease-emphasized);}
+  .reveal-right{opacity:0;transform:translateX(32px);transition:opacity var(--dur-slow) var(--ease-emphasized),transform var(--dur-slow) var(--ease-emphasized);}
   .reveal-right.visible{opacity:1;transform:none;}
-  .reveal-scale{opacity:0;transform:scale(.9) translateY(20px);transition:opacity .6s var(--ease-emphasized),transform .6s var(--ease-emphasized);}
+  .reveal-scale{opacity:0;transform:scale(.92) translateY(16px);transition:opacity .7s var(--ease-emphasized),transform .7s var(--ease-emphasized);}
   .reveal-scale.visible{opacity:1;transform:none;}
-  .reveal-blur{opacity:0;transform:translateY(16px);filter:blur(10px);transition:opacity .85s var(--ease-emphasized),transform .85s var(--ease-emphasized),filter .85s var(--ease-emphasized);}
+  .reveal-blur{opacity:0;transform:translateY(16px);filter:blur(8px);transition:opacity .95s var(--ease-emphasized),transform .95s var(--ease-emphasized),filter .95s var(--ease-emphasized);}
   .reveal-blur.visible{opacity:1;transform:none;filter:none;}
   /* Stagger delay classes - applied to children by stagger observer */
-  .sd1{transition-delay:.06s!important}.sd2{transition-delay:.13s!important}.sd3{transition-delay:.20s!important}
-  .sd4{transition-delay:.27s!important}.sd5{transition-delay:.34s!important}.sd6{transition-delay:.41s!important}
+  .sd1{transition-delay:.09s!important}.sd2{transition-delay:.18s!important}.sd3{transition-delay:.27s!important}
+  .sd4{transition-delay:.36s!important}.sd5{transition-delay:.45s!important}.sd6{transition-delay:.54s!important}
 
   /* ── AMBIENT ANIMATIONS ── */
   @keyframes gradShimmer{0%{background-position:0% center}100%{background-position:300% center}}
@@ -1003,8 +1003,9 @@
      Scale: 8 · 16 · 24 · 32 · 40 · 48 · 64
   ══════════════════════════════════════════ */
   @media (max-width: 640px) {
-    /* Sections — major breaks 40px, hero 48px */
-    #hero    { padding-bottom: 48px; }
+    /* Sections — major breaks 40px, hero 32px */
+    #hero    { padding-bottom: 32px; }
+    .hero-scroll { display: none; }
     #story   { padding: 40px 0; }
     #work    { padding: 40px 0; }
     #about   { padding: 40px 0; }
