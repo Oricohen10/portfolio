@@ -1055,6 +1055,23 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 
 /* Pipeline step - clickable + active state */
 .pf-step{cursor:pointer;transition:opacity .5s var(--ease),transform .5s var(--ease);}
+
+/* Pulse ring on step 1 — hints that all steps are clickable */
+@keyframes pfPing{
+  0%{opacity:.7;transform:scale(1);}
+  80%{opacity:0;transform:scale(1.55);}
+  100%{opacity:0;transform:scale(1.55);}
+}
+.pf-step[data-step="1"].lit .pf-icon::after{
+  content:'';
+  position:absolute;inset:-5px;
+  border-radius:20px;
+  border:2px solid rgba(102,175,255,.55);
+  animation:pfPing 2.2s ease-out infinite;
+  pointer-events:none;
+  animation-delay:1.2s; /* wait for the lit entrance to finish */
+}
+
 .pf-step.active .pf-icon{
   border-color:rgba(102,175,255,.9) !important;
   box-shadow:0 0 36px rgba(59,130,246,.45) !important;
@@ -1404,6 +1421,10 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 @media (max-width: 900px) {
   .docs-layout { grid-template-columns: 1fr; }
   .docs-viewer-wrap { height: 420px; }
+}
+@media (max-width: 640px) {
+  .docs-viewer-wrap { height: 240px; overflow: hidden; }
+  .docs-viewer-wrap iframe { transform-origin: top left; }
 }
 
 /* ══════════════ IMPACT ══════════════ */
@@ -2326,7 +2347,39 @@ const pipelineObs = new IntersectionObserver(entries => {
 pipelineObs.observe(pipelineFlow);
 
 // Escape key closes modal
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePipeModal(); });</script>
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePipeModal(); });
+
+// ── DOCS IFRAME SCALE (responsive) ──
+// The lux-docs.html is designed for ~1100px. On narrower viewports we
+// scale it down so it's fully visible without horizontal scroll.
+(function() {
+  const DOCS_NATURAL_W = 1100;
+  const DOCS_NATURAL_H = 560;
+  function scaleLuxDocs() {
+    const wrap = document.querySelector('.docs-viewer-wrap');
+    const frame = wrap ? wrap.querySelector('iframe') : null;
+    if (!wrap || !frame) return;
+    if (window.innerWidth > 900) {
+      // Desktop — let CSS control
+      frame.style.cssText = '';
+      wrap.style.height = '';
+      return;
+    }
+    const avail = wrap.clientWidth || (window.innerWidth - 40);
+    const scale = Math.min(1, avail / DOCS_NATURAL_W);
+    frame.style.width  = DOCS_NATURAL_W + 'px';
+    frame.style.height = DOCS_NATURAL_H + 'px';
+    frame.style.transform = 'scale(' + scale.toFixed(4) + ')';
+    frame.style.transformOrigin = 'top left';
+    wrap.style.height = Math.round(DOCS_NATURAL_H * scale) + 'px';
+  }
+  // Run once DOM is ready, then again if viewport changes
+  scaleLuxDocs();
+  window.addEventListener('resize', scaleLuxDocs);
+  // Also run after iframe loads in case its content shifts the layout
+  const frame = document.querySelector('.docs-viewer-wrap iframe');
+  if (frame) frame.addEventListener('load', scaleLuxDocs);
+})();</script>
 
 <!-- Pipeline step modal -->
 <div id="pipeModal" class="pipe-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pipeModalTitle" onclick="if(event.target===this)closePipeModal()">
