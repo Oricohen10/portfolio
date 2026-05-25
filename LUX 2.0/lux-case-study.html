@@ -1436,9 +1436,22 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   .docs-viewer-wrap { height: 420px; }
 }
 @media (max-width: 640px) {
-  .docs-viewer-wrap { height: 240px; overflow: hidden; }
-  .docs-viewer-wrap iframe { transform-origin: top left; }
+  .docs-viewer-wrap { display: none; }
+  .docs-mobile-cta { display: flex; }
 }
+.docs-mobile-cta {
+  display: none;
+  align-items: center; justify-content: space-between;
+  background: var(--surface-1); border: 1px solid var(--border-m);
+  border-radius: var(--r-xl); padding: 20px;
+  text-decoration: none; color: inherit;
+  transition: background .2s;
+}
+.docs-mobile-cta:hover { background: var(--surface-2); }
+.docs-mobile-cta-text { display: flex; flex-direction: column; gap: 4px; }
+.docs-mobile-cta-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.docs-mobile-cta-title { font-size: 15px; font-weight: 700; color: var(--ink); }
+.docs-mobile-cta-arrow { font-size: 20px; color: var(--blue); }
 
 /* ══════════════ IMPACT ══════════════ */
 #impact{background:var(--bg-2);overflow:hidden;position:relative;}
@@ -1557,6 +1570,8 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 
   .case-footer { padding: 40px 0; flex-direction: column-reverse; }
 
+  .hero-scroll { display: none; }
+
   .pipeline-heading { margin-bottom: 40px; }
   .pipeline-flow { justify-content: flex-start; padding: 8px 20px; }
   .pf-step { scroll-snap-align: start; }
@@ -1564,6 +1579,17 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   .browser-frame:hover { transform: translateY(-4px); }
   .compare-container { height: 280px; }
   .docs-viewer-wrap { height: 320px; }
+
+  /* Impact — fixed number column + 2-line labels */
+  .impact-val-wrap { min-width: 72px; max-width: 72px; text-align: right; }
+  .impact-val { font-size: clamp(38px, 11vw, 56px); }
+  .impact-lbl {
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 :focus{outline:none;}
@@ -2126,6 +2152,13 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
           scroll · click to explore
         </div>
       </div>
+      <a href="lux-docs.html" target="_blank" class="docs-mobile-cta" rel="noopener">
+        <div class="docs-mobile-cta-text">
+          <span class="docs-mobile-cta-label">Documentation</span>
+          <span class="docs-mobile-cta-title">Explore the LUX 2.0 docs →</span>
+        </div>
+        <span class="docs-mobile-cta-arrow">↗</span>
+      </a>
     </div>
   </div>
 </section>
