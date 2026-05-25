@@ -1437,21 +1437,66 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
 }
 @media (max-width: 640px) {
   .docs-viewer-wrap { display: none; }
-  .docs-mobile-cta { display: flex; }
+  .docs-mobile { display: flex; }
 }
-.docs-mobile-cta {
+
+/* ── Docs mobile component ── */
+.docs-mobile {
   display: none;
-  align-items: center; justify-content: space-between;
-  background: var(--surface-1); border: 1px solid var(--border-m);
-  border-radius: var(--r-xl); padding: 20px;
-  text-decoration: none; color: inherit;
-  transition: background .2s;
+  flex-direction: column;
+  gap: 16px;
 }
-.docs-mobile-cta:hover { background: var(--surface-2); }
-.docs-mobile-cta-text { display: flex; flex-direction: column; gap: 4px; }
-.docs-mobile-cta-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-.docs-mobile-cta-title { font-size: 15px; font-weight: 700; color: var(--ink); }
-.docs-mobile-cta-arrow { font-size: 20px; color: var(--blue); }
+.docs-mobile-cards {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.docs-mobile-cards::-webkit-scrollbar { display: none; }
+.docs-mobile-card {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  width: 200px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-m);
+  border-radius: var(--r-xl);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dmc-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  background: var(--surface-2);
+}
+.dmc-title {
+  font-size: 13px; font-weight: 700; color: var(--ink);
+  line-height: 1.3;
+}
+.dmc-desc {
+  font-size: 11px; color: var(--ink-3); line-height: 1.55;
+}
+.docs-mobile-open {
+  display: flex;
+  align-items: center; justify-content: space-between;
+  background: var(--surface-1);
+  border: 1px solid var(--border-m);
+  border-radius: var(--r-xl);
+  padding: 16px 20px;
+  text-decoration: none; color: inherit;
+  transition: background .15s;
+}
+.docs-mobile-open:hover { background: var(--surface-2); }
+.docs-mobile-open-text { display: flex; flex-direction: column; gap: 2px; }
+.docs-mobile-open-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+.docs-mobile-open-title { font-size: 14px; font-weight: 700; color: var(--ink); }
+.docs-mobile-open-arrow { color: var(--blue); font-size: 18px; }
 
 /* ══════════════ IMPACT ══════════════ */
 #impact{background:var(--bg-2);overflow:hidden;position:relative;}
@@ -2152,13 +2197,42 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
           scroll · click to explore
         </div>
       </div>
-      <a href="lux-docs.html" target="_blank" class="docs-mobile-cta" rel="noopener">
-        <div class="docs-mobile-cta-text">
-          <span class="docs-mobile-cta-label">Documentation</span>
-          <span class="docs-mobile-cta-title">Explore the LUX 2.0 docs →</span>
+      <div class="docs-mobile">
+        <div class="docs-mobile-cards">
+          <div class="docs-mobile-card">
+            <div class="dmc-icon">📐</div>
+            <div class="dmc-title">Usage Guidelines</div>
+            <div class="dmc-desc">When to use, when not to use, and how to compose correctly.</div>
+          </div>
+          <div class="docs-mobile-card">
+            <div class="dmc-icon">🎨</div>
+            <div class="dmc-title">Token Reference</div>
+            <div class="dmc-desc">Every token mapped to its layer — primitive, semantic, component.</div>
+          </div>
+          <div class="docs-mobile-card">
+            <div class="dmc-icon">✅</div>
+            <div class="dmc-title">Do / Don't</div>
+            <div class="dmc-desc">Visual examples of correct and incorrect component usage.</div>
+          </div>
+          <div class="docs-mobile-card">
+            <div class="dmc-icon">♿</div>
+            <div class="dmc-title">Accessibility</div>
+            <div class="dmc-desc">WCAG notes, keyboard nav, ARIA patterns for every component.</div>
+          </div>
+          <div class="docs-mobile-card">
+            <div class="dmc-icon">💻</div>
+            <div class="dmc-title">Code Snippets</div>
+            <div class="dmc-desc">Copy-ready React and HTML usage patterns per component.</div>
+          </div>
         </div>
-        <span class="docs-mobile-cta-arrow">↗</span>
-      </a>
+        <a href="lux-docs.html" target="_blank" class="docs-mobile-open" rel="noopener">
+          <div class="docs-mobile-open-text">
+            <span class="docs-mobile-open-label">Documentation</span>
+            <span class="docs-mobile-open-title">Open in full</span>
+          </div>
+          <span class="docs-mobile-open-arrow">↗</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
