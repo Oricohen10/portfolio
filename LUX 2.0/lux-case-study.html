@@ -766,7 +766,14 @@ section{padding:96px 0;}
 /* ══════════════ TOKEN ARCHITECTURE ══════════════ */
 #tokens{background:var(--bg);}
 #tokens .inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:stretch;margin-top:60px;}
-@media(max-width:768px){#tokens .inner{grid-template-columns:1fr;gap:48px;}}
+@media(max-width:768px){
+  #tokens .inner{grid-template-columns:1fr;gap:48px;}
+  .token-diagram{min-width:0;width:100%;overflow:hidden;}
+  .token-layer{min-width:0;width:100%;box-sizing:border-box;}
+  .token-examples{min-width:0;overflow:hidden;}
+  .token-code-inline{display:block;min-width:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .tc-prop,.tc-val-green,.tc-val-yellow{font-size:9px;}
+}
 @media(max-width:640px){
   pre.token-code{font-size:10px;line-height:1.6;padding:14px 16px;}
   .code-file{font-size:9px;}
