@@ -815,6 +815,29 @@ section{padding:96px 0;}
 .tm-l3 .tm-name { color: #66E2B0; }
 .tm-sub { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
 .tm-desc { font-size: 12px; color: var(--ink-3); line-height: 1.55; }
+.tm-code-panel {
+  margin-top: 24px;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0d1117;
+}
+.tm-code-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.tm-code-file {
+  font-size: 10px; font-weight: 600; color: rgba(255,255,255,.4);
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.tm-code-body {
+  margin: 0; padding: 16px;
+  font-family: 'SF Mono', monospace;
+  font-size: 11px; line-height: 1.8;
+  overflow: hidden;
+  white-space: pre;
+}
 .token-diagram{display:flex;flex-direction:column;gap:16px;position:relative;height:100%;min-width:0;overflow:hidden;}
 .token-layer{
   border-radius:var(--r-xl);padding:20px 22px;
@@ -1587,21 +1610,20 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   position:relative;
 }
 @media(max-width:900px){
-  .impact-cell{text-align:left;align-items:flex-start;}
-  .impact-lbl{text-align:left;}
-  .impact-statement{text-align:left;padding:0;}
+  #impact .impact-cell{text-align:left;align-items:flex-start;}
+  #impact .impact-lbl{text-align:left;}
+  #impact .impact-statement{text-align:left;padding:0;}
 }
-@media(max-width:768px){.impact-statement{padding:0 20px;}}
-/* Mobile: column layout — number above label. Must come AFTER desktop rules */
+@media(max-width:768px){#impact .impact-statement{padding:0 20px;}}
 @media(max-width:640px){
-  .impact-grid{grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:48px;}
-  .impact-cell{flex-direction:column;align-items:flex-start;text-align:left;padding:0 12px;border-right:1px solid var(--border);}
-  .impact-cell:first-child{padding-left:0;}
-  .impact-cell:last-child{border-right:none;padding-right:0;}
-  .impact-val-wrap{text-align:left;width:100%;}
-  .impact-val{font-size:clamp(32px,9vw,48px);margin-bottom:8px;letter-spacing:-2px;}
-  .impact-sym{display:none;}
-  .impact-lbl{text-align:left;max-width:none;font-size:11px;line-height:1.4;}
+  #impact .impact-grid{grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:48px;}
+  #impact .impact-cell{flex-direction:column;align-items:flex-start;text-align:left;padding:0 12px;border-right:1px solid var(--border);}
+  #impact .impact-cell:first-child{padding-left:0;}
+  #impact .impact-cell:last-child{border-right:none;padding-right:0;}
+  #impact .impact-val-wrap{text-align:left;width:100%;}
+  #impact .impact-val{font-size:clamp(32px,9vw,48px);margin-bottom:8px;letter-spacing:-2px;}
+  #impact .impact-sym{display:none;}
+  #impact .impact-lbl{text-align:left;max-width:none;font-size:11px;line-height:1.4;}
 }
 .impact-quote-mark{
   font-family:Georgia,'Times New Roman',serif;
@@ -2058,6 +2080,26 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
         <div class="tm-name">Component Tokens</div>
         <div class="tm-sub">Scoped to each component.</div>
         <div class="tm-desc">Each component has its own token namespace. Changing a button's background has zero effect on anything else in the system.</div>
+      </div>
+
+      <!-- Mobile code panel -->
+      <div class="tm-code-panel">
+        <div class="tm-code-header">
+          <div class="code-header-dots">
+            <div class="code-dot code-dot-red"></div>
+            <div class="code-dot code-dot-yellow"></div>
+            <div class="code-dot code-dot-green"></div>
+          </div>
+          <span class="tm-code-file">token chain</span>
+        </div>
+        <pre class="tm-code-body"><span class="c-comment">/* 01 primitives */</span>
+<span class="tc-prop">--color-blue-500</span><span class="tc-val-green">: #66AFFF</span>;
+
+<span class="c-comment">/* 02 semantics */</span>
+<span class="tc-prop">--color-interactive</span><span class="tc-val-yellow">: var(--color-blue-500)</span>;
+
+<span class="c-comment">/* 03 component */</span>
+<span class="tc-prop">--button-bg-primary</span><span class="tc-val-yellow">: var(--color-interactive)</span>;</pre>
       </div>
     </div>
   </div>
