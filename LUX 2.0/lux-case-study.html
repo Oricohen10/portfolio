@@ -771,7 +771,11 @@ section{padding:96px 0;}
   pre.token-code{font-size:10px;line-height:1.6;padding:14px 16px;}
   .code-file{font-size:9px;}
   .tc-prop,.tc-val-green,.tc-val-yellow{font-size:9px;}
-  .token-code-inline{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .token-code-inline{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+  .token-layer{overflow:hidden;}
+  .layer-desc{overflow-wrap:break-word;word-break:break-word;}
+  .layer-name{overflow-wrap:break-word;word-break:break-word;}
+  .token-examples{overflow:hidden;}
 }
 .token-diagram{display:flex;flex-direction:column;gap:16px;position:relative;height:100%;}
 .token-layer{
@@ -1545,6 +1549,8 @@ a.plugin-card:hover,.plugin-card[onclick]:hover{
   .case-footer { padding: 40px 0; flex-direction: column-reverse; }
 
   .pipeline-heading { margin-bottom: 40px; }
+  .pipeline-flow { justify-content: flex-start; padding: 8px 20px; }
+  .pf-step { scroll-snap-align: start; }
   .browser-frame { transform: none; }
   .browser-frame:hover { transform: translateY(-4px); }
   .compare-container { height: 280px; }
