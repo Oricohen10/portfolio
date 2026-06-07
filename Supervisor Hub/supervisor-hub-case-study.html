@@ -201,7 +201,7 @@ section{padding:96px 0;}
       <div class="reveal-l">
         <div class="hero-chapter">Case Study · Enterprise Dashboard</div>
         <h1 class="hero-title">Supervisor<br/><span class="grad">Hub</span></h1>
-        <p class="hero-sub">When Verint's AI can't close a $600K policy alone, it hands off to a supervisor. Supervisor Hub is where that handoff lands - with full context, a 3-minute clock, and AI-drafted rationale already prepared.</p>
+        <p class="hero-sub">When a Verint AI agent reaches a transaction above its authorization threshold, it escalates to a supervisor. Supervisor Hub is where that escalation lands - with full context, a 3-minute clock, and AI-drafted rationale already prepared.</p>
         <div class="meta-row">
           <span class="meta-pill">⏱ 3 min SLA</span>
           <span class="meta-pill">$500K+ threshold</span>
@@ -243,8 +243,8 @@ section{padding:96px 0;}
         <div class="eyebrow">The User</div>
         <h2 class="sec-title">The person holding the line<br/>when the AI can't.</h2>
         <p class="body-txt">A contact center supervisor runs 8-15 agents at once. They're coaching mid-call, watching queue health, chasing metrics, handling escalations - all simultaneously, every shift.</p>
-        <p class="body-txt">And somewhere in that chaos, a $600K life insurance application is waiting for their approval. A real person is on hold. The AI got as far as it could. Now it's on them.</p>
-        <p class="body-txt">Before Supervisor Hub, that moment had nowhere to land properly.</p>
+        <p class="body-txt">And somewhere in that chaos, a $600K life insurance application is waiting for their sign-off. A real customer is on hold. The agent flagged it - correctly - as a case that requires human authorization.</p>
+        <p class="body-txt">Before Supervisor Hub, that handoff had nowhere to land properly.</p>
       </div>
       <div class="reveal-r" style="display:flex;flex-direction:column;gap:20px;">
         <div class="user-stats">
@@ -276,99 +276,130 @@ section{padding:96px 0;}
 </section>
 
 <!-- ══════════════════════
-     3. THE BIG FLOW
+     3. DECISION TREE
 ══════════════════════ -->
 <section id="flow">
   <div class="wrap">
     <div style="max-width:680px;margin-bottom:48px;" class="reveal">
       <div class="eyebrow">The Flow</div>
-      <h2 class="sec-title">Three minutes.<br/>Three possible outcomes.<br/><span class="grad">Zero guesswork.</span></h2>
-      <p class="body-txt">The supervisor enters the moment the AI can't proceed alone. What happens next is a precise sequence - designed so that every decision is fast, informed, and defensible.</p>
+      <h2 class="sec-title">One decision point.<br/>Three possible outcomes.<br/><span class="grad">Every path audited.</span></h2>
+      <p class="body-txt">When the AI agent flags a transaction that requires human authorization, the supervisor enters the flow. What follows is a precise sequence - designed so every decision is fast, informed, and defensible.</p>
     </div>
-    <div class="stepper reveal d1">
 
-      <!-- Step 1 -->
-      <div class="step-row">
-        <div class="step-spine">
-          <div class="step-circle" style="background:rgba(102,175,255,.12);border:1px solid rgba(102,175,255,.25);color:var(--blue);">1</div>
-          <div class="step-vert-line" style="background:linear-gradient(to bottom,rgba(102,175,255,.3),rgba(252,168,120,.3));"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-body-inner">
-            <div class="step-label" style="color:var(--blue);">Trigger</div>
-            <div class="step-title">The AI gets as far as it can</div>
-            <div class="step-desc">Verint's Agentic AI handles the interaction autonomously - until it hits a threshold it can't cross alone. A $500K+ life insurance policy, a compliance flag, a legal edge case. The AI creates an authorization request and stops.</div>
-            <span class="step-tag" style="background:rgba(102,175,255,.1);color:var(--blue);border:1px solid rgba(102,175,255,.2);">Policy: $600,000 · Risk score: 68/100</span>
-          </div>
-        </div>
-      </div>
+    <!-- Decision Tree SVG -->
+    <div class="reveal d1" style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-2xl);padding:40px 32px;overflow-x:auto;">
+      <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:640px;font-family:'Inter',sans-serif;display:block;">
+        <defs>
+          <marker id="arr" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 9,3 0,6" fill="#46494B"/>
+          </marker>
+          <marker id="arr-g" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 9,3 0,6" fill="rgba(102,226,176,.55)"/>
+          </marker>
+          <marker id="arr-r" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 9,3 0,6" fill="rgba(247,128,128,.55)"/>
+          </marker>
+          <marker id="arr-a" markerWidth="9" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0,0 9,3 0,6" fill="rgba(252,168,120,.55)"/>
+          </marker>
+        </defs>
 
-      <!-- Step 2 -->
-      <div class="step-row">
-        <div class="step-spine">
-          <div class="step-circle" style="background:rgba(252,168,120,.12);border:1px solid rgba(252,168,120,.25);color:var(--amber);">2</div>
-          <div class="step-vert-line" style="background:linear-gradient(to bottom,rgba(252,168,120,.3),rgba(247,128,128,.3));"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-body-inner">
-            <div class="step-label" style="color:var(--amber);">Interrupt</div>
-            <div class="step-title">The supervisor can't miss it</div>
-            <div class="step-desc">A full-screen modal takes over. Customer name, policy amount, risk score, and a live SLA countdown. It can't be dismissed without acknowledgment - because a $600K decision shouldn't be silently swiped away.</div>
-            <span class="step-tag" style="background:rgba(247,128,128,.1);color:var(--red);border:1px solid rgba(247,128,128,.2);">⏱ Clock starts: 3 minutes</span>
-          </div>
-        </div>
-      </div>
+        <!-- ── MAIN TRUNK ARROWS ── -->
+        <line x1="480" y1="44" x2="480" y2="66" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
+        <line x1="480" y1="114" x2="480" y2="136" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- YES label + arrow down from diamond 1 -->
+        <line x1="480" y1="194" x2="480" y2="218" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="492" y="210" fill="#9DA4AA" font-size="10" font-weight="600">YES</text>
+        <!-- NO arrow right from diamond 1 -->
+        <line x1="640" y1="165" x2="710" y2="165" stroke="#585B5E" stroke-width="1.5" marker-end="url(#arr)" stroke-dasharray="4 3"/>
+        <text x="670" y="158" fill="#9DA4AA" font-size="10" font-weight="600">NO</text>
+        <!-- Arrow down after case created -->
+        <line x1="480" y1="262" x2="480" y2="284" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Arrow down supervisor -->
+        <line x1="480" y1="330" x2="480" y2="352" stroke="#FCA878" stroke-width="1.5" marker-end="url(#arr-a)" opacity=".6"/>
+        <!-- Arrow down to case reviewed -->
+        <line x1="480" y1="396" x2="480" y2="414" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Arrow down to decision diamond 2 -->
+        <line x1="480" y1="454" x2="480" y2="472" stroke="#3A3C3E" stroke-width="1.5" marker-end="url(#arr)"/>
 
-      <!-- Step 3 -->
-      <div class="step-row">
-        <div class="step-spine">
-          <div class="step-circle" style="background:rgba(252,168,120,.12);border:1px solid rgba(252,168,120,.25);color:var(--amber);">3</div>
-          <div class="step-vert-line" style="background:linear-gradient(to bottom,rgba(247,128,128,.3),rgba(196,181,253,.3));"></div>
-        </div>
-        <div class="step-body">
-          <div class="step-body-inner">
-            <div class="step-label" style="color:var(--amber);">Review</div>
-            <div class="step-title">Everything needed to decide - assembled and waiting</div>
-            <div class="step-desc">The case view brings together policy details, all compliance checks, AI analysis, and comparable case statistics. No system-switching. No searching. The supervisor reads, evaluates, and decides.</div>
-          </div>
-        </div>
-      </div>
+        <!-- ── OUTCOME ARROWS ── -->
+        <!-- Approve: left from diamond 2 -->
+        <line x1="320" y1="494" x2="180" y2="494" stroke="rgba(102,226,176,.4)" stroke-width="1.5" marker-end="url(#arr-g)"/>
+        <text x="248" y="487" fill="#66E2B0" font-size="10" font-weight="600" opacity=".75">Approve</text>
+        <line x1="140" y1="512" x2="140" y2="534" stroke="rgba(102,226,176,.4)" stroke-width="1.5" marker-end="url(#arr-g)"/>
+        <!-- Reject: down from diamond 2 -->
+        <line x1="480" y1="516" x2="480" y2="534" stroke="rgba(247,128,128,.4)" stroke-width="1.5" marker-end="url(#arr-r)"/>
+        <text x="490" y="528" fill="#F78080" font-size="10" font-weight="600" opacity=".75">Reject</text>
+        <!-- Request Docs: right from diamond 2 -->
+        <line x1="640" y1="494" x2="792" y2="494" stroke="rgba(252,168,120,.4)" stroke-width="1.5" marker-end="url(#arr-a)"/>
+        <text x="698" y="487" fill="#FCA878" font-size="10" font-weight="600" opacity=".75">Request docs</text>
+        <line x1="830" y1="512" x2="830" y2="534" stroke="rgba(252,168,120,.4)" stroke-width="1.5" marker-end="url(#arr-a)"/>
+        <!-- Loop arrow: docs → back to case reviewed -->
+        <path d="M900,566 L920,566 L920,434 L600,434" stroke="rgba(252,168,120,.3)" stroke-width="1.5" fill="none" marker-end="url(#arr-a)" stroke-dasharray="5 4"/>
+        <text x="920" y="504" fill="#FCA878" font-size="9" font-weight="600" opacity=".5" transform="rotate(90,920,504)" text-anchor="middle">Docs received → retry</text>
 
-      <!-- Step 4: Decision branches -->
-      <div class="step-row">
-        <div class="step-spine">
-          <div class="step-circle" style="background:rgba(196,181,253,.12);border:1px solid rgba(196,181,253,.25);color:var(--purple);">4</div>
-        </div>
-        <div class="step-body" style="padding-bottom:0;">
-          <div class="step-body-inner">
-            <div class="step-label" style="color:var(--purple);">Decision</div>
-            <div class="step-title">Three paths. All documented.</div>
-            <div class="step-desc" style="margin-bottom:16px;">Whatever the outcome, the Copilot has drafted the rationale. The supervisor reviews, edits, and submits. Nothing leaves without a paper trail.</div>
-            <div class="outcome-branches">
-              <div class="ob ok">
-                <div class="ob-title" style="color:var(--green);">✓ Approve</div>
-                <div class="ob-step">Copilot drafts rationale from AI analysis</div>
-                <div class="ob-step">Supervisor reviews and confirms</div>
-                <div class="ob-end ok">Case closed · Logged ✓</div>
-              </div>
-              <div class="ob rej">
-                <div class="ob-title" style="color:var(--red);">✗ Reject</div>
-                <div class="ob-step">Copilot drafts rejection rationale</div>
-                <div class="ob-step">Agent and customer notified</div>
-                <div class="ob-end rej">Case closed · Logged ✓</div>
-              </div>
-              <div class="ob docs">
-                <div class="ob-title" style="color:var(--amber);">📄 Request Docs</div>
-                <div class="ob-step">Supervisor picks from categorized checklist</div>
-                <div class="ob-step">Agent receives request instantly</div>
-                <div class="ob-end loop">In Progress → back to review</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- ══ NODE: START ══ -->
+        <ellipse cx="480" cy="30" rx="140" ry="20" fill="#1A1B1E" stroke="#46494B" stroke-width="1.2"/>
+        <text x="480" y="34" text-anchor="middle" fill="#9DA4AA" font-size="11" font-weight="600">AI Agent · Live Call</text>
 
-    </div><!-- /stepper -->
+        <!-- ══ NODE: PROCESS 1 — threshold reached ══ -->
+        <rect x="340" y="66" width="280" height="48" rx="6" fill="#1A1B1E" stroke="#3A3C3E" stroke-width="1.2"/>
+        <text x="480" y="86" text-anchor="middle" fill="#C0C5C9" font-size="12" font-weight="600">Transaction reaches</text>
+        <text x="480" y="102" text-anchor="middle" fill="#C0C5C9" font-size="12" font-weight="600">authorization threshold</text>
+
+        <!-- ══ NODE: DIAMOND 1 — requires auth? ══ -->
+        <polygon points="480,136 640,165 480,194 320,165" fill="rgba(102,175,255,.06)" stroke="rgba(102,175,255,.35)" stroke-width="1.2"/>
+        <text x="480" y="161" text-anchor="middle" fill="#66AFFF" font-size="11" font-weight="600">Requires supervisor</text>
+        <text x="480" y="175" text-anchor="middle" fill="#66AFFF" font-size="11" font-weight="600">authorization?</text>
+
+        <!-- NO path: agent completes autonomously -->
+        <rect x="710" y="145" width="200" height="40" rx="6" fill="#15161A" stroke="#3A3C3E" stroke-width="1" opacity=".6"/>
+        <text x="810" y="169" text-anchor="middle" fill="#585B5E" font-size="11">Agent completes autonomously</text>
+
+        <!-- ══ NODE: PROCESS 2 — case created ══ -->
+        <rect x="340" y="218" width="280" height="44" rx="6" fill="#1A1B1E" stroke="#3A3C3E" stroke-width="1.2"/>
+        <text x="480" y="244" text-anchor="middle" fill="#C0C5C9" font-size="12" font-weight="600">Authorization case created in Hub</text>
+
+        <!-- ══ NODE: PROCESS 3 — supervisor interrupted ══ -->
+        <rect x="340" y="284" width="280" height="46" rx="6" fill="rgba(252,168,120,.07)" stroke="rgba(252,168,120,.35)" stroke-width="1.2"/>
+        <text x="480" y="305" text-anchor="middle" fill="#FCA878" font-size="12" font-weight="600">Supervisor interrupted</text>
+        <text x="480" y="320" text-anchor="middle" fill="#FCA878" font-size="10" opacity=".7">Modal · SLA clock starts · 3 min</text>
+
+        <!-- ══ NODE: PROCESS 4 — case reviewed ══ -->
+        <rect x="340" y="352" width="280" height="44" rx="6" fill="#1A1B1E" stroke="#3A3C3E" stroke-width="1.2"/>
+        <text x="480" y="372" text-anchor="middle" fill="#C0C5C9" font-size="12" font-weight="600">Case reviewed in Supervisor Hub</text>
+        <text x="480" y="388" text-anchor="middle" fill="#9DA4AA" font-size="10">Policy · Risk · AI analysis · Comparable cases</text>
+
+        <!-- ══ NODE: DIAMOND 2 — decision ══ -->
+        <polygon points="480,414 640,494 480,516 320,494" fill="rgba(252,168,120,.06)" stroke="rgba(252,168,120,.4)" stroke-width="1.4"/>
+        <text x="480" y="484" text-anchor="middle" fill="#FCA878" font-size="12" font-weight="700">Supervisor's decision</text>
+        <text x="480" y="500" text-anchor="middle" fill="#FCA878" font-size="10" opacity=".65">+ Copilot-drafted rationale</text>
+
+        <!-- ══ OUTCOME: APPROVE ══ -->
+        <rect x="56" y="512" width="168" height="42" rx="6" fill="rgba(102,226,176,.06)" stroke="rgba(102,226,176,.3)" stroke-width="1.2"/>
+        <text x="140" y="530" text-anchor="middle" fill="#66E2B0" font-size="11" font-weight="600">Rationale confirmed</text>
+        <text x="140" y="545" text-anchor="middle" fill="#66E2B0" font-size="10" opacity=".7">Supervisor submits</text>
+        <ellipse cx="140" cy="578" rx="72" ry="16" fill="rgba(102,226,176,.1)" stroke="rgba(102,226,176,.4)" stroke-width="1.2"/>
+        <text x="140" y="582" text-anchor="middle" fill="#66E2B0" font-size="10" font-weight="700">Case Closed · Approved</text>
+        <line x1="140" y1="554" x2="140" y2="562" stroke="rgba(102,226,176,.4)" stroke-width="1.5" marker-end="url(#arr-g)"/>
+
+        <!-- ══ OUTCOME: REJECT ══ -->
+        <rect x="392" y="534" width="176" height="42" rx="6" fill="rgba(247,128,128,.06)" stroke="rgba(247,128,128,.3)" stroke-width="1.2"/>
+        <text x="480" y="552" text-anchor="middle" fill="#F78080" font-size="11" font-weight="600">Rationale confirmed</text>
+        <text x="480" y="567" text-anchor="middle" fill="#F78080" font-size="10" opacity=".7">Supervisor submits</text>
+        <ellipse cx="480" cy="594" rx="72" ry="16" fill="rgba(247,128,128,.1)" stroke="rgba(247,128,128,.4)" stroke-width="1.2"/>
+        <text x="480" y="598" text-anchor="middle" fill="#F78080" font-size="10" font-weight="700">Case Closed · Rejected</text>
+        <line x1="480" y1="576" x2="480" y2="578" stroke="rgba(247,128,128,.4)" stroke-width="1.5" marker-end="url(#arr-r)"/>
+
+        <!-- ══ OUTCOME: REQUEST DOCS ══ -->
+        <rect x="738" y="512" width="184" height="42" rx="6" fill="rgba(252,168,120,.06)" stroke="rgba(252,168,120,.3)" stroke-width="1.2"/>
+        <text x="830" y="530" text-anchor="middle" fill="#FCA878" font-size="11" font-weight="600">Checklist sent to agent</text>
+        <text x="830" y="545" text-anchor="middle" fill="#FCA878" font-size="10" opacity=".7">Case → In Progress</text>
+        <ellipse cx="830" cy="572" rx="76" ry="16" fill="rgba(252,168,120,.1)" stroke="rgba(252,168,120,.4)" stroke-width="1.2"/>
+        <text x="830" y="576" text-anchor="middle" fill="#FCA878" font-size="10" font-weight="700">Awaiting Documents</text>
+        <line x1="830" y1="554" x2="830" y2="556" stroke="rgba(252,168,120,.4)" stroke-width="1.5" marker-end="url(#arr-a)"/>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -493,7 +524,7 @@ section{padding:96px 0;}
       </div>
     </div>
     <div class="impact-statement reveal">
-      <p style="font-size:clamp(16px,2vw,20px);font-weight:600;color:var(--ink-2);line-height:1.6;max-width:720px;margin:0 auto;">When the AI can't decide alone, the supervisor needs to act with full confidence - not guesswork. Supervisor Hub makes that possible.</p>
+      <p style="font-size:clamp(16px,2vw,20px);font-weight:600;color:var(--ink-2);line-height:1.6;max-width:720px;margin:0 auto;">Some decisions require a human signature - by design, not limitation. Supervisor Hub makes that moment fast, informed, and compliant.</p>
     </div>
   </div>
 </section>
