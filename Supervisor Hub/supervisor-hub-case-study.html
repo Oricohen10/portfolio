@@ -21,28 +21,20 @@
   --f:'Inter',-apple-system,sans-serif;
   --r-xs:2px;--r-sm:4px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-2xl:20px;--r-full:999px;
   --ease:cubic-bezier(.4,0,.2,1);--ease-out:cubic-bezier(0.16,1,0.3,1);
-  --spring:cubic-bezier(.22,.68,0,1.2);
   --dur-std:650ms;--dur-slow:950ms;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;overflow-x:clip;}
-body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100vw;}
+body{font-family:var(--f);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 
-/* ── NAV ── */
-.case-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 64px;padding-top:calc(16px + env(safe-area-inset-top));
-  background:rgba(18,18,19,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
-  animation:navSlideIn .55s cubic-bezier(0.16,1,0.3,1) both;
-}
-@keyframes navSlideIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
+/* NAV */
+.case-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 64px;padding-top:calc(16px + env(safe-area-inset-top));background:rgba(18,18,19,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);animation:navIn .55s cubic-bezier(.16,1,.3,1) both;}
+@keyframes navIn{from{transform:translateY(-100%);opacity:0}to{transform:none;opacity:1}}
 .nav-back{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);transition:color .15s;}
 .nav-back:hover{color:var(--ink);}
-.nav-back svg{opacity:.6;transition:opacity .15s;flex-shrink:0;}
+.nav-back svg{opacity:.6;transition:opacity .15s;}
 .nav-back:hover svg{opacity:1;}
 .nav-tag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);}
 .nav-pill{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--ink);background:rgba(252,168,120,.1);border:1px solid rgba(252,168,120,.2);padding:5px 12px;border-radius:var(--r-full);}
@@ -50,148 +42,141 @@ img{max-width:100%;display:block;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.85)}}
 @media(max-width:768px){.case-nav{padding:16px 24px;}.nav-tag{display:none;}}
 
-/* ── CONTAINER ── */
+/* LAYOUT */
 .wrap{max-width:1280px;margin:0 auto;padding:0 64px;}
 @media(max-width:900px){.wrap{padding:0 32px;}}
 @media(max-width:640px){.wrap{padding:0 20px;}}
+section{padding:96px 0;}
 
-/* ── REVEAL ── */
+/* REVEAL */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity var(--dur-std) var(--ease-out),transform var(--dur-std) var(--ease-out);}
 .reveal.visible{opacity:1;transform:none;}
-.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);}
-.reveal-left.visible{opacity:1;transform:none;}
-.reveal-right{opacity:0;transform:translateX(40px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);}
-.reveal-right.visible{opacity:1;transform:none;}
-.sd1{transition-delay:.1s!important}.sd2{transition-delay:.2s!important}.sd3{transition-delay:.3s!important}.sd4{transition-delay:.4s!important}
+.reveal-l{opacity:0;transform:translateX(-40px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);}
+.reveal-l.visible{opacity:1;transform:none;}
+.reveal-r{opacity:0;transform:translateX(40px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);}
+.reveal-r.visible{opacity:1;transform:none;}
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}
 
-/* ── SECTION BASE ── */
-section{padding:96px 0;}
-.sec-eyebrow{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;margin-bottom:16px;}
-.sec-eyebrow::before{content:'';width:20px;height:1px;background:var(--amber);opacity:.5;}
-.sec-title{font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:20px;}
+/* TYPE */
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--amber);opacity:.5;}
+.sec-title{font-size:clamp(28px,3.5vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:20px;}
+.body-txt{font-size:15px;color:var(--ink-2);line-height:1.75;text-wrap:pretty;}
+.body-txt+.body-txt{margin-top:14px;}
 .grad{background:linear-gradient(135deg,#FCA878 0%,#F78080 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.grad-text{background:linear-gradient(135deg,#FCA878,#F78080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.sec-body{font-size:15px;color:var(--ink-2);line-height:1.75;max-width:580px;text-wrap:pretty;}
-.sec-body+.sec-body{margin-top:16px;}
 
-/* ── SPLIT LAYOUT ── */
+/* SPLIT */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
 .split.flip{direction:rtl;}.split.flip>*{direction:ltr;}
-@media(max-width:900px){.split{grid-template-columns:1fr;gap:48px;}.split.flip{direction:ltr;}}
-.split-text{display:flex;flex-direction:column;}
+@media(max-width:900px){.split,.split.flip{grid-template-columns:1fr;gap:48px;direction:ltr;}}
 
-/* ── HERO ── */
+/* CENTERED */
+.centered{display:flex;flex-direction:column;align-items:center;text-align:center;}
+.centered .sec-title,.centered .body-txt{max-width:720px;}
+
+/* BROWSER FRAME */
+.browser{border-radius:12px;overflow:hidden;background:#1C1C1E;border:1px solid rgba(255,255,255,.07);box-shadow:0 24px 64px rgba(0,0,0,.5);transform:rotate(-1deg);animation:float 5.5s cubic-bezier(.45,0,.55,1) infinite;}
+.browser:hover{transform:rotate(-1deg) translateY(-4px);}
+@keyframes float{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-8px)}}
+@media(max-width:768px){.browser{animation:none;transform:none;}}
+.bc{display:flex;align-items:center;padding:10px 14px;background:#2A2A2D;border-bottom:1px solid rgba(255,255,255,.07);}
+.bd{display:flex;gap:6px;}
+.bd span{width:12px;height:12px;border-radius:50%;}
+.bu{flex:1;margin:0 12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:5px;padding:3px 12px;font-size:11px;color:rgba(255,255,255,.3);text-align:center;}
+.bb{overflow:hidden;aspect-ratio:16/9;position:relative;}
+.bb img{width:100%;height:100%;object-fit:cover;object-position:top;}
+
+/* PLACEHOLDER */
+.ph{width:100%;background:var(--card);border:2px dashed rgba(252,168,120,.25);border-radius:var(--r-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:48px 32px;color:var(--ink-3);}
+.ph svg{width:28px;height:28px;opacity:.35;}
+.ph-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);opacity:.7;}
+.ph-sub{font-size:11px;text-align:center;max-width:200px;line-height:1.5;opacity:.5;}
+.ph.r169{aspect-ratio:16/9;padding:0;}
+.ph.r43{aspect-ratio:4/3;padding:0;}
+.ph-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;height:100%;}
+
+/* HERO */
 #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 64px;position:relative;overflow:hidden;}
-.hero-glow{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;}
+.hero-glow{position:absolute;inset:0;pointer-events:none;}
 .hero-glow::after{content:'';position:absolute;top:-200px;right:-100px;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(252,168,120,.06) 0%,transparent 70%);}
-.hero-glow::before{content:'';position:absolute;bottom:-100px;left:-100px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(247,128,128,.04) 0%,transparent 70%);}
 .hero-chapter{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);display:flex;align-items:center;gap:8px;margin-bottom:24px;}
 .hero-chapter::before{content:'';width:24px;height:1px;background:var(--amber);opacity:.5;}
-.hero-title{font-size:clamp(52px,8vw,88px);font-weight:800;letter-spacing:-0.04em;line-height:.95;margin-bottom:20px;}
-.hero-sub{font-size:15px;color:var(--ink-2);max-width:560px;line-height:1.7;font-weight:400;text-wrap:pretty;}
+.hero-title{font-size:clamp(52px,8vw,88px);font-weight:800;letter-spacing:-.04em;line-height:.95;margin-bottom:20px;}
+.hero-sub{font-size:15px;color:var(--ink-2);max-width:520px;line-height:1.7;font-weight:400;text-wrap:pretty;}
 .hero-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:center;}
 @media(max-width:960px){.hero-grid{grid-template-columns:1fr;gap:48px;}}
-.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
-.meta-pill{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--border-m);border-radius:var(--r-sm);padding:5px 12px;}
-.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;transition:color .2s;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+.meta-pill{font-size:11px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--border-m);border-radius:var(--r-sm);padding:5px 12px;}
+.hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);transition:color .2s;}
 .hero-scroll:hover{color:var(--ink-2);}
-.scroll-icon{animation:scrollBounce 2.5s ease-in-out infinite;}
-@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+.scroll-icon{animation:bounce 2.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
-/* ── BROWSER FRAME ── */
-.browser-frame{border-radius:12px;overflow:hidden;background:#1C1C1E;border:1px solid rgba(255,255,255,.07);box-shadow:0 24px 64px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04);transform:rotate(-1deg);transform-origin:center center;transition:box-shadow .4s,transform .4s;animation:floatBrowser 5.5s cubic-bezier(.45,0,.55,1) infinite;}
-.browser-frame:hover{transform:rotate(-1deg) translateY(-4px);}
-@keyframes floatBrowser{0%,100%{transform:rotate(-1deg) translateY(0)}50%{transform:rotate(-1deg) translateY(-8px)}}
-@media(max-width:768px){.browser-frame{animation:none;transform:none;}}
-.browser-chrome{display:flex;align-items:center;padding:10px 14px;background:#2A2A2D;border-bottom:1px solid rgba(255,255,255,.07);}
-.browser-dots{display:flex;gap:6px;flex-shrink:0;}
-.browser-dot{width:12px;height:12px;border-radius:50%;}
-.dot-r{background:#FF5F57;}.dot-y{background:#FEBC2E;}.dot-g{background:#28C840;}
-.browser-url{flex:1;margin:0 12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.06);border-radius:5px;padding:3px 12px;font-size:11px;color:rgba(255,255,255,.3);text-align:center;}
-.browser-body{overflow:hidden;aspect-ratio:16/9;position:relative;}
-.browser-body img{width:100%;height:100%;object-fit:cover;object-position:top;}
-
-/* ── IMAGE PLACEHOLDER ── */
-.img-placeholder{
-  width:100%;aspect-ratio:16/9;border-radius:var(--r-xl);
-  background:var(--card);border:2px dashed var(--border-m);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:10px;color:var(--ink-3);
-}
-.img-placeholder svg{width:28px;height:28px;opacity:.4;}
-.img-placeholder-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;opacity:.5;}
-.img-placeholder-sub{font-size:11px;color:var(--ink-3);opacity:.45;text-align:center;max-width:220px;line-height:1.5;}
-.img-placeholder.tall{aspect-ratio:4/3;}
-.img-placeholder.screen{aspect-ratio:16/10;border-radius:12px;overflow:hidden;}
-
-/* ── CENTERED SECTION ── */
-.sec-centered{text-align:center;display:flex;flex-direction:column;align-items:center;}
-.sec-centered .sec-body{max-width:640px;}
-
-/* ── PROBLEM CARDS ── */
+/* PROBLEM CARDS */
 .problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
 @media(max-width:768px){.problem-grid{grid-template-columns:1fr;}}
-.problem-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px 24px;}
-.problem-card-icon{font-size:24px;margin-bottom:16px;}
-.problem-card-title{font-size:15px;font-weight:700;margin-bottom:8px;}
-.problem-card-body{font-size:13px;color:var(--ink-2);line-height:1.65;}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:28px 24px;}
+.pc-icon{font-size:24px;margin-bottom:14px;}
+.pc-title{font-size:15px;font-weight:700;margin-bottom:8px;}
+.pc-body{font-size:13px;color:var(--ink-2);line-height:1.65;}
 
-/* ── INSIGHT PILLS ── */
-.insight-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px;}
-.insight-pill{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border-m);border-radius:var(--r-full);padding:10px 18px;font-size:13px;font-weight:600;}
-.insight-pill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+/* FLOW */
+.flow-box{margin-top:48px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-2xl);padding:36px 40px;overflow-x:auto;}
+.flow-track{display:flex;align-items:center;gap:0;min-width:680px;}
+.fn{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1;}
+.fi{width:50px;height:50px;border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.fi.ai{background:rgba(102,175,255,.1);border:1px solid rgba(102,175,255,.2);}
+.fi.trig{background:rgba(247,128,128,.1);border:1px solid rgba(247,128,128,.25);}
+.fi.notif{background:rgba(252,168,120,.1);border:1px solid rgba(252,168,120,.25);}
+.fi.rev{background:rgba(252,168,120,.1);border:1px solid rgba(252,168,120,.25);}
+.fi.dec{background:rgba(102,226,176,.1);border:1px solid rgba(102,226,176,.2);}
+.fi.done{background:rgba(102,226,176,.1);border:1px solid rgba(102,226,176,.2);}
+.fl{font-size:11px;font-weight:600;color:var(--ink-2);text-align:center;line-height:1.4;}
+.fs{font-size:10px;color:var(--ink-3);text-align:center;}
+.fa{flex-shrink:0;color:var(--border-b);padding:0 2px;margin-bottom:18px;}
+.fa svg{width:18px;height:18px;fill:currentColor;}
+.ft{font-size:10px;font-weight:700;background:rgba(252,168,120,.1);color:var(--amber);border:1px solid rgba(252,168,120,.2);border-radius:var(--r-full);padding:2px 8px;margin-top:2px;}
+.ft.sla{background:rgba(247,128,128,.1);color:var(--red);border-color:rgba(247,128,128,.2);}
+.flow-outcomes{margin-top:24px;padding-top:20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fo-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3);margin-right:4px;}
+.fo-pill{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;border-radius:var(--r-full);padding:4px 12px;}
+.fo-pill.ok{color:var(--green);background:rgba(102,226,176,.08);border:1px solid rgba(102,226,176,.2);}
+.fo-pill.rej{color:var(--red);background:rgba(247,128,128,.08);border:1px solid rgba(247,128,128,.2);}
+.fo-pill.docs{color:var(--amber);background:rgba(252,168,120,.08);border:1px solid rgba(252,168,120,.2);}
 
-/* ── FLOW DIAGRAM ── */
-.flow-wrap{margin-top:48px;background:var(--card);border:1px solid var(--border);border-radius:var(--r-2xl);padding:40px;overflow-x:auto;}
-.flow-track{display:flex;align-items:center;gap:0;min-width:700px;}
-.flow-node{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;}
-.flow-icon{width:52px;height:52px;border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-.flow-icon.ai{background:linear-gradient(135deg,rgba(102,175,255,.15),rgba(102,175,255,.05));border:1px solid rgba(102,175,255,.2);}
-.flow-icon.trigger{background:linear-gradient(135deg,rgba(247,128,128,.15),rgba(247,128,128,.05));border:1px solid rgba(247,128,128,.25);}
-.flow-icon.notify{background:linear-gradient(135deg,rgba(252,168,120,.15),rgba(252,168,120,.05));border:1px solid rgba(252,168,120,.25);}
-.flow-icon.review{background:linear-gradient(135deg,rgba(252,168,120,.15),rgba(252,168,120,.05));border:1px solid rgba(252,168,120,.25);}
-.flow-icon.decide{background:linear-gradient(135deg,rgba(102,226,176,.15),rgba(102,226,176,.05));border:1px solid rgba(102,226,176,.2);}
-.flow-icon.done{background:linear-gradient(135deg,rgba(102,226,176,.15),rgba(102,226,176,.05));border:1px solid rgba(102,226,176,.2);}
-.flow-label{font-size:11px;font-weight:600;color:var(--ink-2);text-align:center;line-height:1.4;}
-.flow-sublabel{font-size:10px;color:var(--ink-3);text-align:center;margin-top:-6px;}
-.flow-arrow{flex-shrink:0;color:var(--border-b);padding:0 4px;margin-bottom:20px;}
-.flow-arrow svg{width:20px;height:20px;fill:currentColor;}
-.flow-time{font-size:10px;color:var(--amber);font-weight:700;background:rgba(252,168,120,.1);border:1px solid rgba(252,168,120,.2);border-radius:var(--r-full);padding:2px 8px;margin-top:4px;}
-.flow-time.sla{color:var(--red);background:rgba(247,128,128,.1);border-color:rgba(247,128,128,.2);}
-.flow-subs{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;}
-.flow-sub{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;}
-.flow-sub-dot{width:8px;height:8px;border-radius:50%;}
+/* SCREEN SECTIONS */
+.screens-wrap{padding:0;}
+.screen-block{padding:72px 0;}
+.screen-block+.screen-block{border-top:1px solid var(--border);}
+.screen-block:nth-child(even){background:var(--bg-2);}
+.anno{margin-top:28px;display:flex;flex-direction:column;gap:16px;}
+.anno-item{display:flex;gap:12px;align-items:flex-start;}
+.anno-n{width:22px;height:22px;border-radius:50%;background:rgba(252,168,120,.1);border:1px solid rgba(252,168,120,.25);color:var(--amber);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.anno-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.anno-body{font-size:13px;color:var(--ink-2);line-height:1.6;}
 
-/* ── SCREEN SECTION (alternating) ── */
-.screen-section{padding:80px 0;}
-.screen-section+.screen-section{border-top:1px solid var(--border);}
-.screen-annotation{margin-top:28px;}
-.annotation-item{display:flex;gap:12px;margin-bottom:18px;}
-.annotation-num{width:22px;height:22px;border-radius:50%;background:rgba(252,168,120,.12);border:1px solid rgba(252,168,120,.25);color:var(--amber);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.annotation-text{font-size:13px;color:var(--ink-2);line-height:1.6;}
-.annotation-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+/* DESIGN DECISIONS */
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;}
+@media(max-width:768px){.dd-grid{grid-template-columns:1fr;}}
+.dd{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;}
+.dd-q{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:10px;}
+.dd-title{font-size:15px;font-weight:700;margin-bottom:8px;}
+.dd-body{font-size:13px;color:var(--ink-2);line-height:1.65;}
+.dd-tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
+.tag-c{font-size:10px;font-weight:600;padding:3px 9px;border-radius:var(--r-full);background:rgba(252,168,120,.1);color:var(--amber);border:1px solid rgba(252,168,120,.2);}
+.tag-r{font-size:10px;font-weight:600;padding:3px 9px;border-radius:var(--r-full);background:var(--surface);color:var(--ink-3);border:1px solid var(--border);text-decoration:line-through;opacity:.5;}
 
-/* ── DECISION CARDS ── */
-.decisions-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px;}
-@media(max-width:768px){.decisions-grid{grid-template-columns:1fr;}}
-.decision-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:24px;}
-.decision-q{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--amber);margin-bottom:10px;}
-.decision-a-title{font-size:15px;font-weight:700;margin-bottom:8px;}
-.decision-a-body{font-size:13px;color:var(--ink-2);line-height:1.65;}
-.decision-vs{display:flex;gap:8px;margin-top:12px;}
-.decision-tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:var(--r-full);}
-.decision-tag.chosen{background:rgba(252,168,120,.12);color:var(--amber);border:1px solid rgba(252,168,120,.2);}
-.decision-tag.rejected{background:var(--surface);color:var(--ink-3);border:1px solid var(--border);text-decoration:line-through;opacity:.55;}
-
-/* ── IMPACT NUMBERS ── */
-.impact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:48px;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;}
+/* IMPACT */
+.impact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:var(--r-2xl);overflow:hidden;margin-top:48px;}
 @media(max-width:640px){.impact-row{grid-template-columns:1fr;}}
-.impact-cell{padding:32px 28px;background:var(--card);}
-.impact-cell+.impact-cell{border-left:1px solid var(--border);}
-.impact-num{font-size:clamp(36px,5vw,56px);font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:8px;background:linear-gradient(135deg,#FCA878,#F78080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.impact-label{font-size:13px;color:var(--ink-2);}
+.ic{padding:36px 32px;background:var(--card);}
+.ic+.ic{border-left:1px solid var(--border);}
+@media(max-width:640px){.ic+.ic{border-left:none;border-top:1px solid var(--border);}}
+.ic-num{font-size:clamp(40px,5vw,60px);font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:8px;background:linear-gradient(135deg,#FCA878,#F78080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ic-label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.ic-sub{font-size:12px;color:var(--ink-3);line-height:1.5;}
 
-/* ── FOOTER ── */
+/* FOOTER */
 .case-footer{padding:64px 0;border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;gap:16px;}
 .case-footer a{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink-2);transition:color .15s;}
 .case-footer a:hover{color:var(--ink);}
@@ -210,376 +195,328 @@ section{padding:96px 0;}
   <div class="nav-pill"><span class="nav-dot"></span>Supervisor Hub</div>
 </nav>
 
-<!-- ═══════════════════════════════════
-     HERO
-═══════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     1. HERO
+══════════════════════════════════════ -->
 <section id="hero">
   <div class="hero-glow"></div>
   <div class="wrap">
     <div class="hero-grid">
-      <div class="hero-left reveal-left">
+      <div class="reveal-l">
         <div class="hero-chapter">Case Study · Enterprise Dashboard</div>
         <h1 class="hero-title">Supervisor<br/><span class="grad">Hub</span></h1>
-        <p class="hero-sub">A real-time authorization workspace for contact center supervisors - where AI decisioning meets human oversight. Every high-risk call, one focused place to act.</p>
-        <div class="hero-meta">
+        <p class="hero-sub">A real-time authorization workspace for contact center supervisors - where AI decisioning meets human oversight.</p>
+        <div class="meta-row">
           <span class="meta-pill">⏱ 3 min SLA</span>
           <span class="meta-pill">$500K+ threshold</span>
           <span class="meta-pill">AI-assisted decisions</span>
           <span class="meta-pill">Verint · 2026</span>
         </div>
       </div>
-      <div class="browser-frame reveal-right">
-        <div class="browser-chrome">
-          <div class="browser-dots"><div class="browser-dot dot-r"></div><div class="browser-dot dot-y"></div><div class="browser-dot dot-g"></div></div>
-          <div class="browser-url">supervisor-hub.verint.com</div>
+      <div class="browser reveal-r">
+        <div class="bc">
+          <div class="bd"><span style="background:#FF5F57"></span><span style="background:#FEBC2E"></span><span style="background:#28C840"></span></div>
+          <div class="bu">supervisor-hub.verint.com</div>
         </div>
-        <div class="browser-body">
-          <!-- PLACEHOLDER: Hero dashboard screenshot -->
-          <div class="img-placeholder" style="aspect-ratio:16/9;border-radius:0;">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5"/></svg>
-            <span class="img-placeholder-label">Screenshot: Hub Dashboard</span>
-            <span class="img-placeholder-sub">Replace with dashboard screenshot from prototype</span>
+        <div class="bb">
+          <div class="ph r169">
+            <div class="ph-inner">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span class="ph-label">Dashboard screenshot</span>
+              <span class="ph-sub">Replace with hub dashboard from prototype</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <a href="#moment" class="hero-scroll" aria-label="Scroll to explore">
+  <a href="#moment" class="hero-scroll">
     <span>Scroll to explore</span>
     <svg class="scroll-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </a>
 </section>
 
-<!-- ═══════════════════════════════════
-     1. THE MOMENT
-═══════════════════════════════════ -->
-<section id="moment" style="padding:96px 0;">
+<!-- ══════════════════════════════════════
+     2. THE MOMENT
+══════════════════════════════════════ -->
+<section id="moment" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div class="wrap">
-    <div class="sec-centered reveal">
-      <div class="sec-eyebrow">The Moment</div>
-      <h2 class="sec-title" style="max-width:760px;text-align:center;">An AI agent just tried to approve<br/>a <span class="grad">$600,000 life insurance policy.</span><br/>It couldn't. You have 3 minutes.</h2>
-      <p class="sec-body" style="text-align:center;margin-top:16px;">This is the exact moment Supervisor Hub was designed for. Not a dashboard you check in the morning. An interruption that demands an answer - now.</p>
+    <div class="centered reveal" style="margin-bottom:56px;">
+      <div class="eyebrow">The Moment</div>
+      <h2 class="sec-title" style="font-size:clamp(32px,4.5vw,52px);">An AI agent just tried to approve<br/>a <span class="grad">$600,000 life insurance policy.</span><br/>It couldn't. You have 3 minutes.</h2>
+      <p class="body-txt" style="margin-top:16px;">This is the exact moment Supervisor Hub was designed for. Not a dashboard you check in the morning - an interruption that demands an answer now.</p>
     </div>
-    <!-- Modal interrupt visual -->
-    <div style="max-width:560px;margin:56px auto 0;" class="reveal sd1">
-      <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:var(--r-2xl);">
-        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zM12 7v5M12 16v1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-        <span class="img-placeholder-label">Screenshot: Interrupt Modal</span>
-        <span class="img-placeholder-sub">The red modal appearing on the supervisor's screen. Dana Levy · $600K · 3 min SLA</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════
-     2. CONTEXT
-═══════════════════════════════════ -->
-<section id="context" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div class="wrap">
-    <div class="split">
-      <div class="split-text reveal-left">
-        <div class="sec-eyebrow">Context</div>
-        <h2 class="sec-title">A supervisor's shift never stops. Neither does the pressure.</h2>
-        <p class="sec-body">A contact center supervisor manages 8-15 agents simultaneously. They're coaching, monitoring queues, handling escalations, reviewing performance - all in real time.</p>
-        <p class="sec-body" style="margin-top:14px;">Verint's Agentic AI handles thousands of interactions autonomously. Most it resolves on its own. But when a decision crosses a threshold - legal exposure, policy limits, compliance flags - a human must be in the loop.</p>
-        <p class="sec-body" style="margin-top:14px;">That human is the supervisor. And until now, there was no dedicated place for that moment to land.</p>
-      </div>
-      <div class="reveal-right">
-        <!-- Infographic: supervisor's responsibilities -->
-        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-2xl);padding:28px;display:flex;flex-direction:column;gap:14px;">
-          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);margin-bottom:4px;">Supervisor responsibilities</div>
-          <!-- Responsibility bars -->
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Agent coaching</span><span style="font-size:12px;color:var(--ink-2);">Daily</span></div>
-            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:88%;height:100%;background:linear-gradient(90deg,#66AFFF,#66E2B0);border-radius:3px;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Queue management</span><span style="font-size:12px;color:var(--ink-2);">Constant</span></div>
-            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:95%;height:100%;background:linear-gradient(90deg,#66AFFF,#66E2B0);border-radius:3px;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:600;">Performance tracking</span><span style="font-size:12px;color:var(--ink-2);">Per shift</span></div>
-            <div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="width:70%;height:100%;background:linear-gradient(90deg,#66AFFF,#66E2B0);border-radius:3px;"></div></div>
-          </div>
-          <div style="border-top:1px solid var(--border);padding-top:14px;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;font-weight:700;color:var(--amber);">High-risk authorizations</span><span style="font-size:12px;color:var(--amber);font-weight:600;">Real-time</span></div>
-            <div style="height:8px;background:rgba(252,168,120,.1);border-radius:4px;overflow:hidden;border:1px solid rgba(252,168,120,.2);"><div style="width:100%;height:100%;background:linear-gradient(90deg,#FCA878,#F78080);border-radius:4px;animation:pulseBar 2s ease-in-out infinite;"></div></div>
-            <div style="font-size:11px;color:var(--amber);margin-top:6px;">⚡ SLA: 3 minutes. No room for error.</div>
-          </div>
-          @keyframes pulseBar{0%,100%{opacity:1}50%{opacity:.5}}
+    <!-- Modal visual -->
+    <div style="max-width:520px;margin:0 auto;" class="reveal d1">
+      <div class="ph r43">
+        <div class="ph-inner">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zM12 7v5M12 16v1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+          <span class="ph-label">Interrupt Modal screenshot</span>
+          <span class="ph-sub">The full-screen red modal arriving on the supervisor's workspace</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════
      3. THE PROBLEM
-═══════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section id="problem">
   <div class="wrap">
-    <div class="sec-centered reveal">
-      <div class="sec-eyebrow">The Problem</div>
-      <h2 class="sec-title">The AI can decide a lot.<br/>But not everything. <span class="grad">And that gap is expensive.</span></h2>
-      <p class="sec-body" style="text-align:center;">When an authorization request arrived, supervisors were expected to act - but they had no dedicated tool, no context, and no way to document their decision compliantly.</p>
+    <div class="centered reveal">
+      <div class="eyebrow">The Problem</div>
+      <h2 class="sec-title">The AI can decide most things.<br/>But not everything. <span class="grad">And that gap is expensive.</span></h2>
+      <p class="body-txt" style="margin-top:4px;">Contact center supervisors manage 8-15 agents simultaneously. When the AI hits a threshold it can't cross alone, the supervisor must step in - with no dedicated tool, no immediate context, and no structured way to document the decision.</p>
     </div>
     <div class="problem-grid">
-      <div class="problem-card reveal sd1">
-        <div class="problem-card-icon">🔔</div>
-        <div class="problem-card-title">No dedicated interrupt</div>
-        <div class="problem-card-body">Requests arrived as generic notifications buried among other alerts. High-stakes decisions competed for attention with routine updates.</div>
+      <div class="pc reveal d1">
+        <div class="pc-icon">🔔</div>
+        <div class="pc-title">No dedicated interrupt</div>
+        <div class="pc-body">High-stakes requests arrived as generic alerts buried among routine notifications. A $600K decision competed for attention with shift updates.</div>
       </div>
-      <div class="problem-card reveal sd2">
-        <div class="problem-card-icon">🧩</div>
-        <div class="problem-card-title">No context at the moment of decision</div>
-        <div class="problem-card-body">The supervisor had to navigate multiple systems to gather customer info, risk scores, and policy details before they could make a call.</div>
+      <div class="pc reveal d2">
+        <div class="pc-icon">🧩</div>
+        <div class="pc-title">No context at the moment of decision</div>
+        <div class="pc-body">Supervisors had to navigate multiple systems to gather customer info, risk scores, and policy details before they could make a call.</div>
       </div>
-      <div class="problem-card reveal sd3">
-        <div class="problem-card-icon">📋</div>
-        <div class="problem-card-title">No audit trail</div>
-        <div class="problem-card-body">Decisions were made verbally or via chat. No structured rationale. No timestamped log. No compliance-ready documentation.</div>
+      <div class="pc reveal d3">
+        <div class="pc-icon">📋</div>
+        <div class="pc-title">No audit trail</div>
+        <div class="pc-body">Decisions were made verbally or via chat. No rationale, no timestamp, no compliance-ready documentation. A liability waiting to happen.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════
      4. THE FLOW
-═══════════════════════════════════ -->
+══════════════════════════════════════ -->
 <section id="flow" style="background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div class="wrap">
-    <div class="sec-centered reveal">
-      <div class="sec-eyebrow">The Flow</div>
+    <div class="centered reveal">
+      <div class="eyebrow">The Flow</div>
       <h2 class="sec-title">From AI trigger to closed case.<br/><span class="grad">Under 3 minutes.</span></h2>
-      <p class="sec-body" style="text-align:center;">The entire flow is designed around one constraint: the supervisor must make a confident, documented decision as fast as possible - without cutting corners on compliance.</p>
+      <p class="body-txt">The entire flow is designed around one constraint: the supervisor must make a confident, documented decision as fast as possible - without cutting corners on compliance.</p>
     </div>
-    <div class="flow-wrap reveal sd1">
+    <div class="flow-box reveal d1">
       <div class="flow-track">
-        <div class="flow-node">
-          <div class="flow-icon ai">🤖</div>
-          <div class="flow-label">AI Agent<br/>at limit</div>
-          <div class="flow-sublabel">$500K+ policy</div>
+        <div class="fn">
+          <div class="fi ai">🤖</div>
+          <div class="fl">AI Agent<br/>at limit</div>
+          <div class="fs">$500K+ policy</div>
         </div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="flow-node">
-          <div class="flow-icon trigger">⚡</div>
-          <div class="flow-label">Authorization<br/>triggered</div>
-          <div class="flow-sublabel">Case created</div>
+        <div class="fa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="fn">
+          <div class="fi trig">⚡</div>
+          <div class="fl">Authorization<br/>triggered</div>
+          <div class="fs">Case created</div>
         </div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="flow-node">
-          <div class="flow-icon notify">🔔</div>
-          <div class="flow-label">Supervisor<br/>interrupted</div>
-          <div class="flow-time">Modal · instant</div>
+        <div class="fa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="fn">
+          <div class="fi notif">🔔</div>
+          <div class="fl">Supervisor<br/>interrupted</div>
+          <div class="ft">Modal · instant</div>
         </div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="flow-node">
-          <div class="flow-icon review">👁</div>
-          <div class="flow-label">Case<br/>reviewed</div>
-          <div class="flow-time sla">SLA: 3 min</div>
+        <div class="fa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="fn">
+          <div class="fi rev">👁</div>
+          <div class="fl">Case<br/>reviewed</div>
+          <div class="ft sla">SLA: 3 min</div>
         </div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="flow-node">
-          <div class="flow-icon decide">✍️</div>
-          <div class="flow-label">Decision +<br/>rationale</div>
-          <div class="flow-sublabel">Copilot drafts</div>
+        <div class="fa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="fn">
+          <div class="fi dec">✍️</div>
+          <div class="fl">Decision +<br/>rationale</div>
+          <div class="fs">Copilot drafts</div>
         </div>
-        <div class="flow-arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-        <div class="flow-node">
-          <div class="flow-icon done">✅</div>
-          <div class="flow-label">Case closed +<br/>logged</div>
-          <div class="flow-sublabel">Audit trail</div>
+        <div class="fa"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="fn">
+          <div class="fi done">✅</div>
+          <div class="fl">Case closed<br/>+ logged</div>
+          <div class="fs">Audit trail</div>
         </div>
       </div>
-      <!-- Decision branches -->
-      <div style="margin-top:28px;padding-top:24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span style="font-size:11px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-right:4px;">Decision outcomes:</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--green);background:rgba(102,226,176,.08);border:1px solid rgba(102,226,176,.2);border-radius:var(--r-full);padding:4px 10px;">✓ Approve</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--red);background:rgba(247,128,128,.08);border:1px solid rgba(247,128,128,.2);border-radius:var(--r-full);padding:4px 10px;">✗ Reject</span>
-        <span style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--amber);background:rgba(252,168,120,.08);border:1px solid rgba(252,168,120,.2);border-radius:var(--r-full);padding:4px 10px;">📄 Request documents → case moves to In Progress</span>
+      <div class="flow-outcomes">
+        <span class="fo-label">Outcomes:</span>
+        <span class="fo-pill ok">✓ Approve</span>
+        <span class="fo-pill rej">✗ Reject</span>
+        <span class="fo-pill docs">📄 Request Documents → In Progress</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════
+<!-- ══════════════════════════════════════
      5. KEY SCREENS
-═══════════════════════════════════ -->
-<section id="screens" style="padding:0;">
+══════════════════════════════════════ -->
+<div class="screens-wrap">
 
-  <!-- Screen 1: Dashboard - left text, right image -->
-  <div class="screen-section">
+  <!-- Screen A: Dashboard — text left, image right -->
+  <div class="screen-block">
     <div class="wrap">
       <div class="split">
-        <div class="split-text reveal-left">
-          <div class="sec-eyebrow">Screen 01 · Dashboard</div>
+        <div class="reveal-l">
+          <div class="eyebrow">Screen 01 · Dashboard</div>
           <h2 class="sec-title">The shift at a glance. Authorizations above the fold.</h2>
-          <p class="sec-body">The dashboard gives the supervisor situational awareness of the entire shift - team status, performance metrics, and every authorization request in one table. Urgent cases surface automatically at the top.</p>
-          <div class="screen-annotation" style="margin-top:28px;">
-            <div class="annotation-item">
-              <div class="annotation-num">1</div>
-              <div><div class="annotation-title">Stats row</div><div class="annotation-text">4 key metrics in one glance: pending approvals, agents on shift, CSAT, AHT.</div></div>
+          <p class="body-txt">The dashboard is the supervisor's command center for the entire shift. Team status, performance metrics, and every authorization request in one table - urgent cases surface automatically at the top.</p>
+          <div class="anno">
+            <div class="anno-item">
+              <div class="anno-n">1</div>
+              <div><div class="anno-title">Stats row</div><div class="anno-body">4 key metrics at a glance: pending approvals, agents on shift, CSAT, average handle time.</div></div>
             </div>
-            <div class="annotation-item">
-              <div class="annotation-num">2</div>
-              <div><div class="annotation-title">Authorization table</div><div class="annotation-text">All requests sorted by urgency. SLA status, risk score, and action buttons per row.</div></div>
+            <div class="anno-item">
+              <div class="anno-n">2</div>
+              <div><div class="anno-title">Authorization table</div><div class="anno-body">All requests sorted by urgency. SLA status, risk score, amount, and Review button per row.</div></div>
             </div>
-            <div class="annotation-item">
-              <div class="annotation-num">3</div>
-              <div><div class="annotation-title">Copilot rail</div><div class="annotation-text">Always-on right panel with shift insights and real-time authorization context.</div></div>
+            <div class="anno-item">
+              <div class="anno-n">3</div>
+              <div><div class="anno-title">Copilot always-on</div><div class="anno-body">The right panel surfaces shift insights and real-time authorization context. Always visible, never intrusive.</div></div>
             </div>
           </div>
         </div>
-        <div class="reveal-right">
-          <div class="img-placeholder screen">
+        <div class="reveal-r">
+          <div class="ph" style="aspect-ratio:16/10;border-radius:var(--r-2xl);">
             <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.5"/></svg>
-            <span class="img-placeholder-label">Screenshot: Dashboard</span>
-            <span class="img-placeholder-sub">Full dashboard view showing stats, team, and authorization table</span>
+            <span class="ph-label">Dashboard screenshot</span>
+            <span class="ph-sub">Full dashboard with stats, team widget, performance, and auth table</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Screen 2: Modal interrupt - right text, left image (flip) -->
-  <div class="screen-section" style="background:var(--bg-2);">
+  <!-- Screen B: Case Drilldown — image left, text right (flip) -->
+  <div class="screen-block">
     <div class="wrap">
       <div class="split flip">
-        <div class="split-text reveal-right">
-          <div class="sec-eyebrow">Screen 02 · Interrupt Modal</div>
-          <h2 class="sec-title">Not a notification. An interruption.</h2>
-          <p class="sec-body">When an authorization request arrives, a full modal takes over the screen. It cannot be dismissed without acknowledgment. This is a deliberate design choice - a $600K decision deserves full attention.</p>
-          <div class="screen-annotation" style="margin-top:28px;">
-            <div class="annotation-item">
-              <div class="annotation-num">1</div>
-              <div><div class="annotation-title">SLA countdown bar</div><div class="annotation-text">A visual timer shows how much time remains. The bar depletes in real time - urgency is visceral, not just text.</div></div>
+        <div class="reveal-r">
+          <div class="eyebrow">Screen 02 · Case Drilldown</div>
+          <h2 class="sec-title">Everything needed to decide.<br/>Nothing else.</h2>
+          <p class="body-txt">The case view is focused on one thing: giving the supervisor enough context to make a confident decision in under 3 minutes. Policy details, all compliance checks, and AI analysis - assembled and waiting.</p>
+          <div class="anno">
+            <div class="anno-item">
+              <div class="anno-n">1</div>
+              <div><div class="anno-title">Policy details grid</div><div class="anno-body">All underwriting data pre-compiled: coverage, premium, health declaration, AML check, risk score.</div></div>
             </div>
-            <div class="annotation-item">
-              <div class="annotation-num">2</div>
-              <div><div class="annotation-title">Key case details upfront</div><div class="annotation-text">Customer name, policy amount, risk score, and agent - everything the supervisor needs to decide whether to act now or delegate.</div></div>
+            <div class="anno-item">
+              <div class="anno-n">2</div>
+              <div><div class="anno-title">AI Copilot analysis</div><div class="anno-body">What passed, what flagged, and comparable approval rates - precomputed so the supervisor doesn't have to research.</div></div>
             </div>
-            <div class="annotation-item">
-              <div class="annotation-num">3</div>
-              <div><div class="annotation-title">Single primary action</div><div class="annotation-text">"Review Case Now" is the only highlighted action. Dismiss is secondary - because dismissal should be a deliberate choice.</div></div>
+            <div class="anno-item">
+              <div class="anno-n">3</div>
+              <div><div class="anno-title">Activity log</div><div class="anno-body">Full timeline of the case: when the AI triggered, when notification was sent, SLA status.</div></div>
             </div>
           </div>
         </div>
-        <div class="reveal-left">
-          <div class="img-placeholder screen">
-            <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2zM12 7v5M12 16v1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-            <span class="img-placeholder-label">Screenshot: Interrupt Modal</span>
-            <span class="img-placeholder-sub">The red modal mid-screen with SLA bar and case summary</span>
+        <div class="reveal-l">
+          <div class="ph" style="aspect-ratio:16/10;border-radius:var(--r-2xl);">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            <span class="ph-label">Case Drilldown screenshot</span>
+            <span class="ph-sub">Case detail view with policy data, AI analysis panel, and decision aside</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Screen 3: Case Drilldown - left text, right image -->
-  <div class="screen-section">
+  <!-- Screen C: Copilot Rationale — text left, image right -->
+  <div class="screen-block">
     <div class="wrap">
       <div class="split">
-        <div class="split-text reveal-left">
-          <div class="sec-eyebrow">Screen 03 · Case Drilldown</div>
-          <h2 class="sec-title">Everything needed to decide. Nothing else.</h2>
-          <p class="sec-body">The case view is focused on one thing: giving the supervisor enough context to make a confident decision in under 3 minutes. Policy details, compliance checks, AI analysis - all in one place.</p>
-          <div class="screen-annotation" style="margin-top:28px;">
-            <div class="annotation-item">
-              <div class="annotation-num">1</div>
-              <div><div class="annotation-title">AI Copilot analysis</div><div class="annotation-text">What passed, what flagged, and comparable approval rates - precomputed so the supervisor doesn't have to research.</div></div>
-            </div>
-            <div class="annotation-item">
-              <div class="annotation-num">2</div>
-              <div><div class="annotation-title">Copilot-drafted rationale</div><div class="annotation-text">When the supervisor clicks Approve or Reject, the Copilot has already written the rationale. They review, edit if needed, and submit.</div></div>
-            </div>
-            <div class="annotation-item">
-              <div class="annotation-num">3</div>
-              <div><div class="annotation-title">Document request flow</div><div class="annotation-text">If something's missing, the supervisor selects from a categorized checklist. The agent is notified instantly.</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="reveal-right">
-          <div class="img-placeholder screen">
-            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-            <span class="img-placeholder-label">Screenshot: Case Drilldown</span>
-            <span class="img-placeholder-sub">Case detail view with AI analysis and decision aside panel</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Screen 4: Copilot Rationale - right text, left image (flip) -->
-  <div class="screen-section" style="background:var(--bg-2);">
-    <div class="wrap">
-      <div class="split flip">
-        <div class="split-text reveal-right">
-          <div class="sec-eyebrow">Screen 04 · Copilot Rationale</div>
+        <div class="reveal-l">
+          <div class="eyebrow">Screen 03 · Decision + Rationale</div>
           <h2 class="sec-title">The supervisor decides.<br/><span class="grad">The Copilot explains why.</span></h2>
-          <p class="sec-body">Every Approve or Reject requires a rationale. The Copilot prepares a draft based on the AI analysis - pre-written, accurate, and editable. The supervisor owns the decision; the Copilot reduces the cognitive load of documenting it.</p>
-          <p class="sec-body" style="margin-top:14px;">This is not optional. The friction is intentional. A $600K decision should require more than a single click.</p>
+          <p class="body-txt">Every Approve or Reject requires a rationale. The Copilot prepares a draft based on the AI analysis - accurate, editable, and ready to submit. The supervisor owns the decision; the Copilot reduces the cognitive load of documenting it.</p>
+          <p class="body-txt">This friction is intentional. A $600K decision should require more than a single click.</p>
+          <div class="anno" style="margin-top:28px;">
+            <div class="anno-item">
+              <div class="anno-n">1</div>
+              <div><div class="anno-title">Copilot-drafted rationale</div><div class="anno-body">Pre-written text based on the AI analysis. Supervisor reviews, edits if needed, and submits.</div></div>
+            </div>
+            <div class="anno-item">
+              <div class="anno-n">2</div>
+              <div><div class="anno-title">Document request flow</div><div class="anno-body">If something is missing, a categorized checklist lets the supervisor select required documents. Agent is notified instantly.</div></div>
+            </div>
+          </div>
         </div>
-        <div class="reveal-left">
-          <div class="img-placeholder screen">
+        <div class="reveal-r">
+          <div class="ph" style="aspect-ratio:16/10;border-radius:var(--r-2xl);">
             <svg viewBox="0 0 24 24"><path d="M8 10h8M8 14h5M12 2a10 10 0 100 20A10 10 0 0012 2z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
-            <span class="img-placeholder-label">Screenshot: Copilot Rationale</span>
-            <span class="img-placeholder-sub">Decision confirmation step showing AI-drafted rationale in editable text area</span>
+            <span class="ph-label">Decision + Rationale screenshot</span>
+            <span class="ph-sub">Confirmation step with Copilot-drafted rationale in editable text area</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+</div><!-- /screens -->
+
+<!-- ══════════════════════════════════════
+     6. DESIGN DECISIONS
+══════════════════════════════════════ -->
+<section id="decisions" style="background:var(--bg-2);border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="centered reveal">
+      <div class="eyebrow">Design Decisions</div>
+      <h2 class="sec-title">The choices that<br/><span class="grad">define the product.</span></h2>
+      <p class="body-txt">Every non-obvious decision in the Hub has a reason. Here are the four that shaped the experience most.</p>
+    </div>
+    <div class="dd-grid">
+      <div class="dd reveal d1">
+        <div class="dd-q">Notification type</div>
+        <div class="dd-title">Modal interrupt, not a toast</div>
+        <div class="dd-body">A snackbar says "FYI." A modal says "act now." With a 3-minute SLA and irreversible consequences, the interface must match the urgency. Supervisors cannot miss this.</div>
+        <div class="dd-tags"><span class="tag-c">Modal interrupt</span><span class="tag-r">Toast</span><span class="tag-r">Badge only</span></div>
+      </div>
+      <div class="dd reveal d2">
+        <div class="dd-q">Decision entry point</div>
+        <div class="dd-title">Always a full drilldown</div>
+        <div class="dd-body">Inline approve buttons in the table would be faster - but speed isn't the only goal. Confidence and compliance are. Every decision requires full context review before action is possible.</div>
+        <div class="dd-tags"><span class="tag-c">Full case drilldown</span><span class="tag-r">Inline table actions</span></div>
+      </div>
+      <div class="dd reveal d3">
+        <div class="dd-q">Rationale requirement</div>
+        <div class="dd-title">Mandatory - Copilot-assisted</div>
+        <div class="dd-body">Requiring a rationale creates intentional friction. The Copilot drafts it to reduce the burden - supervisors review and submit rather than write from scratch. Every decision is defensible.</div>
+        <div class="dd-tags"><span class="tag-c">Mandatory + Copilot draft</span><span class="tag-r">Optional note</span><span class="tag-r">No documentation</span></div>
+      </div>
+      <div class="dd reveal d4">
+        <div class="dd-q">Missing documents</div>
+        <div class="dd-title">Structured checklist, not free text</div>
+        <div class="dd-body">When documents are missing, the supervisor picks from a categorized list. Structured requests are trackable, reduce agent confusion, and feed cleanly into the audit trail and case history.</div>
+        <div class="dd-tags"><span class="tag-c">Categorized checklist</span><span class="tag-r">Free text message</span></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ═══════════════════════════════════
-     6. DESIGN DECISIONS
-═══════════════════════════════════ -->
-<section id="decisions">
+<!-- ══════════════════════════════════════
+     7. IMPACT / CLOSING
+══════════════════════════════════════ -->
+<section id="impact">
   <div class="wrap">
-    <div class="sec-centered reveal">
-      <div class="sec-eyebrow">Design Decisions</div>
-      <h2 class="sec-title">The choices that define<br/><span class="grad">the product.</span></h2>
-      <p class="sec-body" style="text-align:center;">Every non-obvious design decision in the Hub has a reason. Here are the ones that mattered most.</p>
+    <div class="centered reveal">
+      <div class="eyebrow">Impact</div>
+      <h2 class="sec-title">One workspace.<br/><span class="grad">Every high-stakes decision.</span></h2>
+      <p class="body-txt">Supervisor Hub brings together authorization, context, and compliance into a single flow - so supervisors can act fast without cutting corners.</p>
     </div>
-    <div class="decisions-grid">
-      <div class="decision-card reveal sd1">
-        <div class="decision-q">Notification type</div>
-        <div class="decision-a-title">Modal interrupt, not a toast</div>
-        <div class="decision-a-body">A snackbar says "FYI." A modal says "act now." With a 3-minute SLA and irreversible consequences, the UI must match the urgency. Supervisors cannot miss this.</div>
-        <div class="decision-vs">
-          <span class="decision-tag chosen">Modal interrupt</span>
-          <span class="decision-tag rejected">Toast / snackbar</span>
-          <span class="decision-tag rejected">Badge only</span>
-        </div>
+    <div class="impact-row">
+      <div class="ic reveal d1">
+        <div class="ic-num">&lt;3 min</div>
+        <div class="ic-label">Decision SLA target</div>
+        <div class="ic-sub">From AI trigger to closed case, with full documentation</div>
       </div>
-      <div class="decision-card reveal sd2">
-        <div class="decision-q">Decision entry point</div>
-        <div class="decision-a-title">Always full drilldown</div>
-        <div class="decision-a-body">Inline approve/reject buttons in the table would be faster - but speed isn't the goal. Confidence and compliance are. Every decision requires full context review.</div>
-        <div class="decision-vs">
-          <span class="decision-tag chosen">Full case drilldown</span>
-          <span class="decision-tag rejected">Inline table actions</span>
-        </div>
+      <div class="ic reveal d2">
+        <div class="ic-num">100%</div>
+        <div class="ic-label">Decisions documented</div>
+        <div class="ic-sub">Every Approve and Reject includes a rationale in the audit trail</div>
       </div>
-      <div class="decision-card reveal sd3">
-        <div class="decision-q">Rationale</div>
-        <div class="decision-a-title">Mandatory, Copilot-assisted</div>
-        <div class="decision-a-body">Requiring a rationale creates intentional friction. Copilot drafts it to reduce the burden - supervisors review and submit rather than write from scratch.</div>
-        <div class="decision-vs">
-          <span class="decision-tag chosen">Mandatory + Copilot draft</span>
-          <span class="decision-tag rejected">Optional note</span>
-          <span class="decision-tag rejected">No documentation</span>
-        </div>
-      </div>
-      <div class="decision-card reveal sd4">
-        <div class="decision-q">Missing documents flow</div>
-        <div class="decision-a-title">Categorized checklist, not free text</div>
-        <div class="decision-a-body">When docs are missing, the supervisor picks from a structured list. This creates trackable requests, reduces agent confusion, and feeds cleanly into the audit trail.</div>
-        <div class="decision-vs">
-          <span class="decision-tag chosen">Structured checklist</span>
-          <span class="decision-tag rejected">Free text message</span>
-        </div>
+      <div class="ic reveal d3">
+        <div class="ic-num">1 hub</div>
+        <div class="ic-label">Source of truth</div>
+        <div class="ic-sub">All authorization context, AI analysis, and case history in one place</div>
       </div>
     </div>
   </div>
@@ -599,7 +536,7 @@ window.scrollTo(0, 0);
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
 </script>
 </body>
 </html>
