@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Verint Supervisor Hub — Prototype</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brand:#006ee5;--brand-hov:#0055b2;--brand-dk:#003d80;
+  --txt:#121213;--txt2:#585b5e;--txt3:#6a6d70;--lnk:#0062cc;
+  --bg:#f0f4f9;--surf:#fff;--surf2:#f5f7f9;--surf3:#eff0f1;
+  --bdr:#dfe2e4;--bdr2:#c0c5c9;--bdr-f:#0055b2;
+  --ok:#007c4a;--ok-bg:#ccf5e5;--ok-t:#005232;
+  --warn:#e1631b;--warn-bg:#fee2d2;--warn-t:#642c0c;
+  --err:#be0000;--err-bg:#fccccc;--err-t:#5f0000;
+  --info-bg:#cce4ff;--info-t:#003166;
+  --navy-bg:#dee0e3;--navy-t:#24292f;
+  --y-bg:#efe9cc;--y-t:#453a00;
+  --pur-bg:#e4dcea;--pur-t:#31203c;
+  --r:4px;--r-lg:8px;--r-pill:9999px;
+  --sh:0 1px 4px rgba(18,18,19,.12);
+  --sh-md:0 2px 8px rgba(18,18,19,.15);
+  --sh-lg:0 4px 20px rgba(18,18,19,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;font-size:12px;color:var(--txt);background:#c5cfd8;-webkit-font-smoothing:antialiased;}
+
+/* ── DEMO BAR ── */
+.dbar{
+  position:fixed;top:0;left:0;right:0;z-index:9999;height:36px;
+  background:#111418;display:flex;align-items:center;padding:0 16px;gap:10px;
+}
+.dbar-logo{font-size:11px;font-weight:700;color:#fff;padding-right:12px;border-right:1px solid #2a2d33;}
+.dbar-lbl{font-size:10px;color:#555;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.dbtn{
+  height:24px;padding:0 12px;border-radius:3px;border:1px solid #2e3138;
+  background:transparent;color:#888;font-size:11px;font-weight:600;
+  font-family:inherit;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:5px;
+}
+.dbtn:hover:not(.on){background:#1e2128;color:#fff;}
+.dbtn.on{background:var(--brand);border-color:var(--brand);color:#fff;}
+.dbtn .n{width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,.18);font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.dbar-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.zoom-btn{height:22px;padding:0 8px;border-radius:3px;border:1px solid #2e3138;background:transparent;color:#666;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .12s;}
+.zoom-btn:hover,.zoom-btn.on{background:#2e3138;color:#fff;}
+
+/* ── VIEWPORT ── */
+.vp-wrap{margin-top:36px;overflow:auto;padding:20px;display:flex;justify-content:center;min-height:calc(100vh - 36px);}
+.vp{
+  width:1440px;height:900px;flex-shrink:0;
+  background:var(--bg);border-radius:8px;
+  box-shadow:0 12px 48px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;overflow:hidden;
+  transform-origin:top center;
+}
+
+/* ── APP TOP BAR ── */
+.app-bar{
+  height:48px;flex-shrink:0;background:var(--surf);border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;padding:0 20px;gap:16px;
+}
+.app-logo{display:flex;align-items:center;gap:8px;}
+.logo-mark{
+  width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--brand),var(--brand-dk));
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:15px;height:15px;fill:#fff;}
+.logo-name{font-size:13px;font-weight:700;color:var(--txt);}
+.logo-sub{font-size:11px;color:var(--txt2);margin-left:4px;font-weight:400;}
+.app-bar-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.status-pill{
+  height:26px;padding:0 10px;border-radius:var(--r-pill);
+  background:var(--ok-bg);color:var(--ok-t);font-size:11px;font-weight:600;
+  display:flex;align-items:center;gap:5px;
+}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.bar-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt2);transition:background .1s;position:relative;}
+.bar-icon:hover{background:var(--surf2);}
+.bar-icon svg{width:16px;height:16px;fill:currentColor;}
+.notif-badge{position:absolute;top:5px;right:5px;width:8px;height:8px;border-radius:50%;background:var(--err);border:1.5px solid var(--surf);}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#cce4ff,#99caff);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--brand-dk);cursor:pointer;}
+
+/* ── BODY LAYOUT ── */
+.app-body{flex:1;display:flex;overflow:hidden;}
+
+/* ── LEFT NAV ── */
+.sidenav{
+  width:220px;flex-shrink:0;height:100%;background:var(--surf);border-right:1px solid var(--bdr);
+  display:flex;flex-direction:column;padding:16px 0;
+}
+.nav-section{padding:0 12px;margin-bottom:4px;}
+.nav-section-label{font-size:10px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;padding:8px 8px 4px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r);
+  cursor:pointer;color:var(--txt2);transition:all .1s;font-size:12px;font-weight:500;
+  margin-bottom:1px;position:relative;
+}
+.nav-item:hover{background:var(--surf2);color:var(--txt);}
+.nav-item.active{background:#e8f2fd;color:var(--brand);font-weight:600;}
+.nav-item.active .nav-icon{color:var(--brand);}
+.nav-icon{width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.nav-icon svg{width:15px;height:15px;fill:currentColor;}
+.nav-badge{
+  margin-left:auto;min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-pill);
+  background:var(--err);color:#fff;font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-badge.warn{background:var(--warn);}
+.nav-divider{height:1px;background:var(--bdr);margin:8px 12px;}
+.nav-spacer{flex:1;}
+.nav-user{padding:12px;border-top:1px solid var(--bdr);margin:0;display:flex;align-items:center;gap:8px;}
+.nav-user-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#cce4ff,#99caff);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--brand-dk);flex-shrink:0;}
+.nav-user-name{font-size:11px;font-weight:600;}
+.nav-user-role{font-size:10px;color:var(--txt2);}
+
+/* ── MAIN CONTENT ── */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+
+/* ── PAGE HEADER ── */
+.page-hdr{
+  padding:20px 24px 16px;flex-shrink:0;border-bottom:1px solid var(--bdr);
+  background:var(--surf);display:flex;align-items:flex-start;justify-content:space-between;
+}
+.page-title{font-size:18px;font-weight:600;}
+.page-sub{font-size:12px;color:var(--txt2);margin-top:3px;}
+.page-hdr-right{display:flex;align-items:center;gap:8px;}
+
+/* ── CHIPS ── */
+.chip{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:var(--r-pill);font-size:10px;font-weight:600;white-space:nowrap;}
+.ch-b{background:var(--info-bg);color:var(--info-t);}
+.ch-r{background:var(--err-bg);color:var(--err-t);}
+.ch-g{background:var(--ok-bg);color:var(--ok-t);}
+.ch-o{background:var(--warn-bg);color:var(--warn-t);}
+.ch-n{background:var(--navy-bg);color:var(--navy-t);}
+.ch-y{background:var(--y-bg);color:var(--y-t);}
+
+/* ── BUTTONS ── */
+.btn{height:32px;padding:0 14px;border-radius:var(--r);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s;border:none;}
+.btn svg{width:13px;height:13px;fill:currentColor;}
+.btn-primary{background:var(--brand);color:#fff;}
+.btn-primary:hover{background:var(--brand-hov);}
+.btn-ghost{background:transparent;color:var(--txt2);border:1px solid var(--bdr);}
+.btn-ghost:hover{background:var(--surf2);color:var(--txt);border-color:var(--bdr2);}
+.btn-danger{background:transparent;color:var(--err);border:1px solid var(--bdr);}
+.btn-danger:hover{background:#fff5f5;border-color:var(--err);}
+
+/* ────────────────────────────────
+   STATE 1: DASHBOARD
+──────────────────────────────── */
+.dashboard{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px;}
+
+/* Stats row — horizontal */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.stat-icon{width:40px;height:40px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat-icon svg{width:20px;height:20px;}
+.stat-icon.red{background:#fff0f0;} .stat-icon.red svg{fill:var(--err);}
+.stat-icon.blue{background:#e8f2fd;} .stat-icon.blue svg{fill:var(--brand);}
+.stat-icon.green{background:var(--ok-bg);} .stat-icon.green svg{fill:var(--ok);}
+.stat-icon.orange{background:var(--warn-bg);} .stat-icon.orange svg{fill:var(--warn);}
+.stat-body{}
+.stat-num{font-size:26px;font-weight:700;line-height:1;}
+.stat-num.err{color:var(--err);}
+.stat-num.ok{color:var(--ok);}
+.stat-label{font-size:11px;color:var(--txt2);margin-top:2px;}
+.stat-delta{font-size:10px;margin-top:3px;font-weight:600;}
+.stat-delta.up{color:var(--ok);}
+.stat-delta.dn{color:var(--err);}
+
+/* Mid row — Team + Performance side by side */
+.mid-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);overflow:hidden;}
+.card-hdr{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:13px;font-weight:600;}
+.card-body{padding:14px 16px;}
+
+/* Team infographic */
+.team-viz{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.donut-wrap{position:relative;width:72px;height:72px;flex-shrink:0;}
+.donut-wrap svg{width:72px;height:72px;}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.donut-num{font-size:18px;font-weight:700;line-height:1;}
+.donut-lbl{font-size:9px;color:var(--txt2);font-weight:600;text-transform:uppercase;}
+.team-legend{display:flex;flex-direction:column;gap:5px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.legend-num{font-weight:700;margin-left:auto;min-width:20px;text-align:right;}
+.agent-mini-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-top:1px solid var(--bdr);}
+.agent-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;}
+.agent-name{font-size:11px;flex:1;}
+.agent-status{font-size:10px;font-weight:600;display:flex;align-items:center;gap:3px;}
+.agent-status.live{color:var(--ok);}
+.agent-status.brk{color:var(--warn);}
+.agent-status.wrap{color:var(--txt2);}
+
+/* Performance infographic */
+.perf-kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.kpi-box{background:var(--surf2);border-radius:var(--r);padding:10px 12px;text-align:center;}
+.kpi-num{font-size:20px;font-weight:700;}
+.kpi-num.ok{color:var(--ok);}
+.kpi-num.warn{color:var(--warn);}
+.kpi-lbl{font-size:10px;color:var(--txt2);margin-top:2px;}
+.perf-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.perf-bar-label{font-size:11px;color:var(--txt2);width:90px;flex-shrink:0;}
+.perf-bar-track{flex:1;height:6px;background:var(--bdr);border-radius:3px;overflow:hidden;}
+.perf-bar-fill{height:100%;border-radius:3px;}
+.perf-bar-val{font-size:11px;font-weight:600;width:32px;text-align:right;flex-shrink:0;}
+
+/* Main requests table */
+.table-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);overflow:hidden;}
+.table-hdr{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;}
+.table-title{font-size:13px;font-weight:600;flex:1;}
+.main-table{width:100%;border-collapse:collapse;}
+.main-table th{padding:8px 14px;text-align:left;font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;background:var(--surf2);border-bottom:1px solid var(--bdr);white-space:nowrap;}
+.main-table td{padding:11px 14px;border-bottom:1px solid var(--bdr);font-size:12px;vertical-align:middle;}
+.main-table tr:last-child td{border-bottom:none;}
+.main-table tbody tr{cursor:pointer;transition:background .1s;}
+.main-table tbody tr:hover td{background:#f8fafc;}
+.main-table tbody tr.urgent td{background:#fff8f8;}
+.main-table tbody tr.urgent td:first-child{border-left:3px solid var(--err);}
+.t-name{font-weight:600;}
+.t-sub{font-size:10px;color:var(--txt2);margin-top:1px;}
+.t-amount{font-weight:700;font-size:13px;}
+.t-timer{font-size:11px;display:flex;align-items:center;gap:3px;}
+.t-timer.urg{color:var(--err);font-weight:600;}
+.t-timer svg{width:11px;height:11px;fill:currentColor;}
+.t-action{display:flex;gap:5px;}
+.t-btn{height:26px;padding:0 10px;border-radius:var(--r);border:1px solid var(--bdr);background:transparent;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .12s;}
+.t-btn:hover{background:var(--surf2);}
+.t-btn.primary{background:var(--brand);color:#fff;border-color:var(--brand);}
+.t-btn.primary:hover{background:var(--brand-hov);}
+
+/* Authorization urgent card (kept for animation target) */
+.auth-urgent-card{display:none;}
+
+/* ── COPILOT PANEL ── */
+.copilot-rail{
+  width:280px;flex-shrink:0;border-left:1px solid var(--bdr);
+  background:var(--surf);display:flex;flex-direction:column;overflow:hidden;
+}
+.cp-rail-hdr{
+  height:48px;flex-shrink:0;padding:0 14px;border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;gap:8px;
+}
+.cp-rail-icon{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#ccf5e5,#99ebcb);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cp-rail-icon svg{width:14px;height:14px;fill:#005232;}
+.cp-rail-title{font-size:13px;font-weight:600;flex:1;}
+.cp-body{flex:1;overflow-y:auto;padding:12px;}
+.cp-card{border:1px solid var(--bdr);border-radius:var(--r-lg);overflow:hidden;margin-bottom:10px;}
+.cp-card-hdr{padding:9px 12px;background:var(--surf2);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px;cursor:pointer;}
+.cp-card-hdr:hover{background:#eef0f2;}
+.cp-card-htitle{font-size:11px;font-weight:600;flex:1;}
+.cp-card-body{padding:10px 12px;}
+.cp-insight{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #f0f2f4;font-size:11px;line-height:16px;}
+.cp-insight:last-child{border-bottom:none;}
+.cp-insight-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.cp-insight-dot.ok{background:var(--ok);}
+.cp-insight-dot.warn{background:var(--warn);}
+.cp-insight-dot.n{background:var(--txt2);}
+.cp-alert{background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:var(--r-lg);padding:12px;color:#fff;margin-bottom:10px;}
+.cp-alert-title{font-size:12px;font-weight:600;margin-bottom:4px;}
+.cp-alert-sub{font-size:11px;opacity:.85;line-height:15px;}
+.cp-alert-cta{margin-top:8px;padding:5px 12px;border-radius:var(--r);background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .1s;}
+.cp-alert-cta:hover{background:rgba(255,255,255,.3);}
+.cp-search-wrap{margin-top:auto;border-top:1px solid var(--bdr);padding:10px 12px;flex-shrink:0;display:flex;gap:8px;}
+.cp-input{flex:1;height:30px;border:1px solid var(--bdr);border-radius:var(--r);padding:0 8px;font-size:11px;font-family:inherit;outline:none;}
+.cp-input:focus{border-color:var(--bdr-f);}
+.cp-send-btn{width:30px;height:30px;border-radius:var(--r);border:none;background:var(--brand);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cp-send-btn svg{width:13px;height:13px;fill:#fff;}
+
+/* ── DECISION FLOWS (aside sub-states) ── */
+.decision-step{display:none;flex-direction:column;flex:1;overflow:hidden;}
+.decision-step.active{display:flex;}
+
+/* Approve/Reject confirmation */
+.confirm-hdr{padding:14px 16px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.confirm-hdr.approve{background:linear-gradient(135deg,#f0fdf4,#dcfce7);}
+.confirm-hdr.reject{background:linear-gradient(135deg,#fff5f5,#fee2e2);}
+.confirm-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+.confirm-icon.approve{background:var(--ok-bg);}
+.confirm-icon.approve svg{fill:var(--ok);}
+.confirm-icon.reject{background:var(--err-bg);}
+.confirm-icon.reject svg{fill:var(--err);}
+.confirm-title{font-size:14px;font-weight:700;}
+.confirm-sub{font-size:11px;color:var(--txt2);margin-top:2px;}
+.rationale-wrap{padding:14px 16px;flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.rationale-label{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.copilot-suggestion{
+  background:linear-gradient(135deg,#f0f7ff,#e8f2fd);border:1px solid #c8dffc;
+  border-radius:var(--r-lg);padding:11px 13px;font-size:11px;line-height:17px;
+  color:var(--txt);margin-bottom:8px;position:relative;flex-shrink:0;
+}
+.copilot-suggestion-tag{
+  display:inline-flex;align-items:center;gap:4px;background:var(--brand);color:#fff;
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:var(--r-pill);
+  margin-bottom:6px;
+}
+.rationale-edit-label{font-size:10px;color:var(--txt2);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.rationale-edit-label a{color:var(--lnk);cursor:pointer;font-weight:600;}
+.rationale-textarea{
+  width:100%;border:1px solid var(--bdr);border-radius:var(--r);padding:9px 10px;
+  font-size:12px;font-family:inherit;color:var(--txt);resize:none;outline:none;flex:1;
+  min-height:80px;line-height:17px;
+}
+.rationale-textarea:focus{border-color:var(--bdr-f);}
+.confirm-footer{padding:12px 16px;border-top:1px solid var(--bdr);flex-shrink:0;}
+.confirm-submit.approve{
+  width:100%;height:36px;border-radius:var(--r);border:none;
+  background:var(--ok);color:#fff;font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;margin-bottom:8px;transition:background .15s;
+}
+.confirm-submit.approve:hover{background:#006040;}
+.confirm-submit.reject{
+  width:100%;height:36px;border-radius:var(--r);border:none;
+  background:var(--err);color:#fff;font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;margin-bottom:8px;transition:background .15s;
+}
+.confirm-submit.reject:hover{background:#9a0000;}
+.cancel-link{display:block;text-align:center;font-size:11px;color:var(--txt2);cursor:pointer;padding:4px;}
+.cancel-link:hover{color:var(--txt);text-decoration:underline;}
+
+/* Request Documents */
+.docs-hdr{padding:14px 16px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.docs-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.docs-sub{font-size:11px;color:var(--txt2);}
+.docs-search-wrap{padding:10px 16px;border-bottom:1px solid var(--bdr);flex-shrink:0;position:relative;}
+.docs-search{
+  width:100%;height:32px;border:1px solid var(--bdr);border-radius:var(--r);
+  padding:0 10px 0 30px;font-size:12px;font-family:inherit;outline:none;
+}
+.docs-search:focus{border-color:var(--bdr-f);}
+.docs-search-icon{position:absolute;left:25px;top:50%;transform:translateY(-50%);width:13px;height:13px;fill:var(--txt2);}
+.docs-list{flex:1;overflow-y:auto;padding:8px 16px;}
+.doc-group-label{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;padding:8px 0 5px;}
+.doc-item{
+  display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r);
+  cursor:pointer;transition:background .1s;margin-bottom:2px;
+}
+.doc-item:hover{background:var(--surf2);}
+.doc-item.checked{background:#f0f7ff;}
+.doc-checkbox{
+  width:16px;height:16px;border:1.5px solid var(--bdr2);border-radius:3px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all .1s;
+}
+.doc-item.checked .doc-checkbox{background:var(--brand);border-color:var(--brand);}
+.doc-item.checked .doc-checkbox svg{display:block;}
+.doc-checkbox svg{display:none;width:10px;height:10px;fill:#fff;}
+.doc-name{font-size:12px;}
+.doc-badge{margin-left:auto;font-size:10px;color:var(--txt2);}
+.docs-footer{padding:12px 16px;border-top:1px solid var(--bdr);flex-shrink:0;}
+.docs-selected-count{font-size:11px;color:var(--txt2);margin-bottom:8px;text-align:center;}
+.docs-send-btn{
+  width:100%;height:36px;border-radius:var(--r);border:none;
+  background:var(--brand);color:#fff;font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;margin-bottom:6px;transition:background .15s;
+}
+.docs-send-btn:hover{background:var(--brand-hov);}
+.docs-send-btn:disabled{background:var(--bdr2);cursor:not-allowed;}
+
+/* Completed state */
+.completed-state{display:none;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:24px;text-align:center;}
+.completed-state.active{display:flex;}
+.completed-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.completed-icon.ok{background:var(--ok-bg);}
+.completed-icon.ok svg{fill:var(--ok);width:28px;height:28px;}
+.completed-icon.err{background:var(--err-bg);}
+.completed-icon.err svg{fill:var(--err);width:28px;height:28px;}
+.completed-icon.blue{background:var(--info-bg);}
+.completed-icon.blue svg{fill:var(--brand);width:28px;height:28px;}
+.completed-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.completed-sub{font-size:12px;color:var(--txt2);line-height:18px;margin-bottom:20px;}
+.completed-back{
+  padding:0 16px;height:32px;border-radius:var(--r);border:1px solid var(--bdr);
+  background:transparent;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;
+}
+.completed-back:hover{background:var(--surf2);}
+
+/* ── INTERRUPT MODAL ── */
+.modal-overlay{
+  position:absolute;inset:0;background:rgba(18,18,19,.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:200;backdrop-filter:blur(2px);
+  animation:fadeIn .2s ease;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--surf);border-radius:12px;
+  box-shadow:0 24px 64px rgba(18,18,19,.4);
+  width:480px;overflow:hidden;
+  animation:modalIn .35s cubic-bezier(.16,1,.3,1);
+}
+@keyframes modalIn{from{transform:scale(.94) translateY(-16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-top{
+  background:linear-gradient(135deg,#be0000,#8b0000);
+  padding:20px 24px;display:flex;align-items:flex-start;gap:14px;
+}
+.modal-alert-icon{
+  width:40px;height:40px;border-radius:10px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.modal-alert-icon svg{width:22px;height:22px;fill:#fff;}
+.modal-heading{color:#fff;}
+.modal-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.8;margin-bottom:4px;}
+.modal-title{font-size:18px;font-weight:700;line-height:1.2;}
+.modal-sub{font-size:12px;opacity:.85;margin-top:4px;}
+.modal-body{padding:20px 24px;}
+.modal-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr);}
+.modal-row:last-of-type{border-bottom:none;}
+.modal-row-label{font-size:12px;color:var(--txt2);}
+.modal-row-val{font-size:12px;font-weight:600;}
+.modal-row-val.big{font-size:18px;font-weight:700;}
+.modal-timer-row{margin:14px 0 6px;display:flex;align-items:center;gap:10px;}
+.modal-sla-label{font-size:11px;color:var(--txt2);}
+.modal-sla-bar{flex:1;height:6px;background:var(--bdr);border-radius:3px;overflow:hidden;}
+.modal-sla-fill{height:100%;width:30%;background:var(--err);border-radius:3px;animation:shrink 180s linear forwards;}
+@keyframes shrink{from{width:100%}to{width:0%}}
+.modal-footer{padding:0 24px 20px;display:flex;gap:10px;}
+.modal-btn-primary{flex:1;height:40px;border-radius:var(--r);border:none;background:var(--brand);color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;}
+.modal-btn-primary:hover{background:var(--brand-hov);}
+.modal-btn-ghost{height:40px;padding:0 16px;border-radius:var(--r);border:1px solid var(--bdr);background:transparent;color:var(--txt2);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;}
+.modal-btn-ghost:hover{background:var(--surf2);}
+
+/* ────────────────────────────────
+   STATE 2: AUTHORIZATION QUEUE
+──────────────────────────────── */
+.auth-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.auth-page-body{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:10px;}
+.queue-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.queue-meta-left{font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;}
+.queue-meta-right{display:flex;align-items:center;gap:8px;}
+/* Filter row */
+.filter-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.filter-input{
+  height:32px;border:1px solid var(--bdr);border-radius:var(--r);padding:0 10px 0 32px;
+  font-size:12px;font-family:inherit;outline:none;background:var(--surf);width:200px;color:var(--txt);
+}
+.filter-input:focus{border-color:var(--bdr-f);}
+.filter-input-wrap{position:relative;}
+.filter-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);width:13px;height:13px;fill:var(--txt2);}
+.seg-ctrl{display:flex;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;}
+.seg-btn{padding:0 12px;height:32px;font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;background:var(--surf);border:none;font-family:inherit;transition:all .1s;}
+.seg-btn+.seg-btn{border-left:1px solid var(--bdr);}
+.seg-btn.on{background:var(--brand);color:#fff;}
+/* Case card (full width) */
+.case-card-full{
+  background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);
+  cursor:pointer;transition:all .12s;overflow:hidden;
+}
+.case-card-full:hover{border-color:#9cbde8;box-shadow:var(--sh-md);}
+.case-card-full.urg{border-left:4px solid var(--err);}
+.ccf-body{padding:14px 16px;display:flex;align-items:flex-start;gap:16px;}
+.ccf-main{flex:1;}
+.ccf-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.ccf-name{font-size:13px;font-weight:600;}
+.ccf-meta{font-size:11px;color:var(--txt2);margin-top:1px;}
+.ccf-chips{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0;}
+.ccf-right{text-align:right;flex-shrink:0;}
+.ccf-amount{font-size:18px;font-weight:700;}
+.ccf-type{font-size:11px;color:var(--txt2);margin-top:2px;}
+.ccf-footer{
+  padding:8px 16px;border-top:1px solid var(--bdr);background:var(--surf2);
+  display:flex;align-items:center;gap:16px;
+}
+.ccf-f-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt2);}
+.ccf-f-item svg{width:11px;height:11px;fill:currentColor;}
+.ccf-f-item.urg{color:var(--err);font-weight:600;}
+.ccf-action{margin-left:auto;}
+.divider-label{
+  display:flex;align-items:center;gap:10px;font-size:10px;font-weight:600;
+  color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;padding:4px 0;
+}
+.divider-label::before,.divider-label::after{content:'';flex:1;height:1px;background:var(--bdr);}
+
+/* ────────────────────────────────
+   STATE 3: CASE DETAIL
+──────────────────────────────── */
+.case-detail-page{flex:1;display:flex;overflow:hidden;}
+/* Left: detail content */
+.cdp-main{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.back-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.back-lnk{display:flex;align-items:center;gap:4px;color:var(--lnk);font-size:12px;font-weight:600;cursor:pointer;}
+.back-lnk:hover{text-decoration:underline;}
+.back-lnk svg{width:12px;height:12px;fill:currentColor;}
+.case-title-block{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:20px;}
+.case-main-name{font-size:20px;font-weight:700;margin-bottom:2px;}
+.case-main-amount{font-size:32px;font-weight:700;line-height:1;margin:6px 0;}
+.case-main-sub{font-size:12px;color:var(--txt2);}
+.case-main-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+/* Detail section card */
+.detail-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);}
+.detail-card-hdr{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px;}
+.detail-card-title{font-size:12px;font-weight:600;flex:1;}
+.detail-card-body{padding:14px 16px;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.df-label{font-size:10px;color:var(--txt2);margin-bottom:3px;}
+.df-val{font-size:12px;font-weight:600;}
+.df-val.ok{color:var(--ok);}
+.df-val.warn{color:var(--warn);}
+.df-val.err{color:var(--err);}
+/* AI analysis */
+.ai-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);}
+.ai-card-hdr{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:6px;}
+.ai-hdr-icon{width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,#cce4ff,#e4dcea);display:flex;align-items:center;justify-content:center;}
+.ai-hdr-icon svg{width:12px;height:12px;fill:#0062cc;}
+.ai-card-body{padding:4px 16px 12px;}
+.ai-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f2f4;}
+.ai-item:last-child{border-bottom:none;}
+.ai-bullet{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ai-bullet.ok{background:var(--ok);}
+.ai-bullet.warn{background:var(--warn);}
+.ai-bullet.n{background:var(--txt2);}
+.ai-content{}
+.ai-txt{font-size:12px;line-height:17px;font-weight:500;}
+.ai-sub{font-size:11px;color:var(--txt2);margin-top:2px;}
+/* Right: action panel */
+.cdp-aside{
+  width:320px;flex-shrink:0;border-left:1px solid var(--bdr);
+  background:var(--surf);display:flex;flex-direction:column;overflow:hidden;
+}
+.aside-hdr{padding:16px;border-bottom:1px solid var(--bdr);flex-shrink:0;}
+.aside-hdr-title{font-size:13px;font-weight:600;margin-bottom:2px;}
+.aside-hdr-sub{font-size:11px;color:var(--txt2);}
+.aside-timer-block{
+  margin:12px 16px;padding:12px;border-radius:var(--r);
+  background:#fff8f0;border:1px solid #fcd9b5;
+  display:flex;align-items:center;gap:10px;
+}
+.aside-timer-icon{color:var(--warn);}
+.aside-timer-icon svg{width:18px;height:18px;fill:currentColor;}
+.aside-timer-val{font-size:20px;font-weight:700;color:var(--err);font-variant-numeric:tabular-nums;}
+.aside-timer-label{font-size:11px;color:var(--warn);font-weight:600;}
+.aside-timer-sla{font-size:10px;color:var(--txt2);margin-top:1px;}
+.aside-divider{height:1px;background:var(--bdr);margin:0 16px;}
+.aside-section{padding:14px 16px;}
+.aside-section-title{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;}
+.action-btn-primary{
+  width:100%;height:36px;border-radius:var(--r);border:none;
+  background:var(--brand);color:#fff;font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:background .15s;margin-bottom:10px;
+}
+.action-btn-primary:hover{background:var(--brand-hov);}
+.action-btn-primary svg{width:15px;height:15px;fill:#fff;}
+.action-btn-row{display:flex;gap:8px;}
+.action-btn-sec{
+  flex:1;height:34px;border-radius:var(--r);border:1px solid var(--bdr);
+  background:transparent;color:var(--txt);font-size:12px;font-weight:600;
+  font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:all .15s;
+}
+.action-btn-sec:hover{background:var(--surf2);border-color:var(--bdr2);}
+.action-btn-sec.danger{color:var(--err);}
+.action-btn-sec.danger:hover{background:#fff5f5;border-color:var(--err);}
+.action-btn-sec svg{width:12px;height:12px;fill:currentColor;}
+.action-note{font-size:10px;color:var(--txt3);text-align:center;margin-top:10px;line-height:14px;}
+/* Audit trail */
+.audit-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);}
+.audit-item:last-child{border-bottom:none;}
+.audit-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
+.audit-dot{width:8px;height:8px;border-radius:50%;background:var(--bdr2);flex-shrink:0;margin-top:4px;}
+.audit-dot.brand{background:var(--brand);}
+.audit-dot.ok{background:var(--ok);}
+.audit-dot.warn{background:var(--warn);}
+.audit-line{width:1px;flex:1;background:var(--bdr);margin-top:4px;}
+.audit-txt{font-size:11px;line-height:16px;}
+.audit-time{font-size:10px;color:var(--txt3);margin-top:2px;}
+
+/* ── SNACKBAR ── */
+.snackbar{
+  position:fixed;bottom:20px;right:20px;z-index:9998;
+  background:#1e2025;color:#f7f8f8;border-radius:var(--r);
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  box-shadow:var(--sh-lg);min-width:380px;
+  animation:sup .35s cubic-bezier(.16,1,.3,1);
+}
+@keyframes sup{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sb-dot{width:8px;height:8px;border-radius:50%;background:#fca878;flex-shrink:0;animation:blink 2s infinite;}
+.sb-body{flex:1;}
+.sb-title{font-size:12px;font-weight:600;}
+.sb-sub{font-size:11px;color:#9da3aa;margin-top:2px;}
+.sb-btn{padding:6px 14px;border-radius:var(--r);background:var(--brand);border:none;color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;}
+.sb-btn:hover{background:var(--brand-hov);}
+
+/* ── STATES ── */
+.view-dashboard,.view-queue,.view-detail{display:none!important;}
+.snackbar{display:none!important;}
+
+/* State 0: calm dashboard */
+.s0 .view-dashboard{display:grid!important;}
+.s0 .nav-badge{display:none!important;}
+.s0 #cp-alert{display:none!important;}
+/* hide table urgent row highlight in state 0 */
+.s0 .main-table tr.urgent td{background:var(--surf)!important;}
+.s0 .main-table tr.urgent td:first-child{border-left:none!important;}
+.s0 .stats-row .stat-num.err{color:var(--txt)!important;}
+/* In state 0, no pending items */
+.s0 .table-card .chip.ch-r{display:none!important;}
+
+/* State 1: dashboard with auth card visible + snackbar */
+.s1 .view-dashboard{display:grid!important;}
+.s1 .snackbar{display:flex!important;}
+
+/* State 2: queue */
+.s2 .view-queue{display:flex!important;}
+.s2 [data-nav="auth"]{background:#e8f2fd;color:var(--brand);}
+.s2 [data-nav="auth"] .nav-icon{color:var(--brand);}
+
+/* State 3: case detail */
+.s3 .view-detail{display:flex!important;}
+.s3 [data-nav="auth"]{background:#e8f2fd;color:var(--brand);}
+
+/* Arrival animation for auth card */
+.auth-urgent-card.arriving{
+  animation: cardArrive .6s cubic-bezier(.16,1,.3,1);
+}
+@keyframes cardArrive{
+  from{opacity:0;transform:translateY(-12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.nav-badge.arriving{
+  animation: badgePop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes badgePop{
+  from{transform:scale(0);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#d0d5da;border-radius:3px;}
+::-webkit-scrollbar-thumb:hover{background:#b0b8c1;}
+</style>
+</head>
+<body>
+
+<!-- DEMO BAR -->
+<div class="dbar">
+  <span class="dbar-logo">⚡ Prototype</span>
+  <span class="dbar-lbl">Flow:</span>
+  <button class="dbtn on" id="b0" onclick="go(0)"><span class="n">0</span> Before</button>
+  <button class="dbtn" id="b1" onclick="triggerRequest()"><span class="n">1</span> ⚡ Request arrives</button>
+  <button class="dbtn" id="b2" onclick="go(2)"><span class="n">2</span> Queue</button>
+  <button class="dbtn" id="b3" onclick="go(3)"><span class="n">3</span> Case — Dana Levy</button>
+  <div class="dbar-right">
+    <button class="zoom-btn" onclick="zoom(.65)">65%</button>
+    <button class="zoom-btn on" id="z80" onclick="zoom(.8)">80%</button>
+    <button class="zoom-btn" onclick="zoom(1)">100%</button>
+  </div>
+</div>
+
+<!-- VIEWPORT -->
+<div class="vp-wrap"><div class="vp s0" id="vp">
+
+  <!-- APP BAR -->
+  <div class="app-bar">
+    <div class="app-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 16 16"><path d="M8 1l2 4 4.5 1-3.25 3.2.75 4.5L8 11.6l-4 2.1.75-4.5L1.5 6 6 5z"/></svg>
+      </div>
+      <span class="logo-name">Supervisor Hub</span>
+      <span class="logo-sub">by Verint</span>
+    </div>
+    <div class="app-bar-right">
+      <div class="status-pill"><span class="status-dot"></span>Shift Active · 04:26</div>
+      <div class="bar-icon">
+        <svg viewBox="0 0 16 16"><path d="M8 1.5A5.5 5.5 0 1013.5 7 5.5 5.5 0 008 1.5zM7 4.5h2V8H7zm0 4h2v2H7z"/></svg>
+        <span class="notif-badge"></span>
+      </div>
+      <div class="bar-icon">
+        <svg viewBox="0 0 16 16"><path d="M8 1a2 2 0 012 2v.5A4.5 4.5 0 0114 8v2l1 2H1l1-2V8a4.5 4.5 0 014-4.5V3a2 2 0 012-2zm-1.5 12a1.5 1.5 0 003 0z"/></svg>
+        <span class="notif-badge"></span>
+      </div>
+      <div class="avatar">YM</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="app-body">
+
+    <!-- SIDENAV -->
+    <nav class="sidenav">
+      <div class="nav-section">
+        <div class="nav-item active" data-nav="dash" onclick="go(1)">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg></div>
+          <span class="nav-item-label">Dashboard</span>
+        </div>
+        <div class="nav-item" data-nav="auth" onclick="go(2)">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><path d="M8 1l1.8 3.6L14 5.5l-3 2.9.7 4.1L8 10.4l-3.7 1.95.7-4.1L2 5.5l4.2-.9z"/></svg></div>
+          <span class="nav-item-label">Authorizations</span>
+          <span class="nav-badge">2</span>
+        </div>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-section">
+        <div class="nav-section-label">Supervision</div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><path d="M2 4a1 1 0 011-1h10a1 1 0 011 1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V4zm1 0v7h10V4H3zm1 1h3v3H4zm0 4h8v1H4zm4-4h4v1H8zm0 2h4v1H8z"/></svg></div>
+          <span class="nav-item-label">Team & Shift</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><path d="M2 12L5 4l3 6 2-3 4 5H2z"/></svg></div>
+          <span class="nav-item-label">Performance</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.75 9.5V7.25h1.5V10.5h-1.5zm0-5V4h1.5v1.5h-1.5z"/></svg></div>
+          <span class="nav-item-label">Escalations</span>
+          <span class="nav-badge warn">1</span>
+        </div>
+        <div class="nav-item">
+          <div class="nav-icon"><svg viewBox="0 0 16 16"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1zm-1 10H4V4h8v8zM6 6h4v1H6zm0 2h4v1H6zm0 2h2v1H6z"/></svg></div>
+          <span class="nav-item-label">Reports</span>
+        </div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-user nav-section">
+        <div class="nav-user-avatar">YM</div>
+        <div>
+          <div class="nav-user-name">Yosef Mizrahi</div>
+          <div class="nav-user-role">Senior Supervisor</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+      <!-- ═══════════ STATE 1: DASHBOARD ═══════════ -->
+      <div class="view-dashboard">
+
+        <!-- Stats row -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon red"><svg viewBox="0 0 16 16"><path d="M8 1l1.8 3.6L14 5.5l-3 2.9.7 4.1L8 10.4l-3.7 1.95.7-4.1L2 5.5l4.2-.9z"/></svg></div>
+            <div class="stat-body"><div class="stat-num err" id="auth-count">2</div><div class="stat-label">Pending Authorizations</div><div class="stat-delta dn">⬆ 2 new this hour</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><svg viewBox="0 0 16 16"><path d="M8 1a4 4 0 100 8A4 4 0 008 1zm-5 9.5A3.5 3.5 0 000 14h16a3.5 3.5 0 00-3.5-3.5H3z"/></svg></div>
+            <div class="stat-body"><div class="stat-num">12</div><div class="stat-label">Agents on Shift</div><div class="stat-delta up">↑ All available</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M5 8l2 2 4-4" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="stat-body"><div class="stat-num ok">84</div><div class="stat-label">Team CSAT Today</div><div class="stat-delta up">↑ +3pts vs. yesterday</div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5zm0 2.5h-1.5V9.5h1.5z"/></svg></div>
+            <div class="stat-body"><div class="stat-num">7:42</div><div class="stat-label">Avg Handle Time</div><div class="stat-delta up">↓ -18s vs. target</div></div>
+          </div>
+        </div>
+
+        <!-- Mid row: Team + Performance -->
+        <div class="mid-row">
+          <!-- Team on Shift -->
+          <div class="card">
+            <div class="card-hdr">
+              <span class="card-title">Team on Shift</span>
+              <span class="chip ch-b">12 agents</span>
+            </div>
+            <div class="card-body">
+              <div class="team-viz">
+                <!-- Donut chart (SVG) -->
+                <div class="donut-wrap">
+                  <svg viewBox="0 0 72 72">
+                    <!-- Total circle bg -->
+                    <circle cx="36" cy="36" r="28" fill="none" stroke="#dfe2e4" stroke-width="8"/>
+                    <!-- Live: 8 agents = 67% → 147deg -->
+                    <circle cx="36" cy="36" r="28" fill="none" stroke="#007c4a" stroke-width="8" stroke-dasharray="117.3 58.5" stroke-dashoffset="43.9" stroke-linecap="butt"/>
+                    <!-- Break: 2 agents = 17% → 61deg -->
+                    <circle cx="36" cy="36" r="28" fill="none" stroke="#e1631b" stroke-width="8" stroke-dasharray="29.3 146.5" stroke-dashoffset="-73.4" stroke-linecap="butt"/>
+                    <!-- Wrap: 2 agents = 17% -->
+                    <circle cx="36" cy="36" r="28" fill="none" stroke="#dfe2e4" stroke-width="8" stroke-dasharray="29.3 146.5" stroke-dashoffset="-102.7" stroke-linecap="butt"/>
+                  </svg>
+                  <div class="donut-center"><div class="donut-num">12</div><div class="donut-lbl">Total</div></div>
+                </div>
+                <div class="team-legend">
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--ok);"></span>Live<span class="legend-num" style="color:var(--ok);">8</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--warn);"></span>Break<span class="legend-num" style="color:var(--warn);">2</span></div>
+                  <div class="legend-item"><span class="legend-dot" style="background:var(--bdr2);"></span>Wrap-up<span class="legend-num">2</span></div>
+                </div>
+              </div>
+              <div class="agent-mini-row"><div class="agent-av" style="background:#cce4ff;color:#003166;">YM</div><div class="agent-name">Yosef Mizrahi</div><div class="agent-status live">● Live</div></div>
+              <div class="agent-mini-row"><div class="agent-av" style="background:#ccf5e5;color:#005232;">NS</div><div class="agent-name">Noa Shapiro</div><div class="agent-status live">● Live</div></div>
+              <div class="agent-mini-row"><div class="agent-av" style="background:#fee2d2;color:#642c0c;">RL</div><div class="agent-name">Ran Levi</div><div class="agent-status brk">● Break</div></div>
+              <div class="agent-mini-row"><div class="agent-av" style="background:#e4dcea;color:#31203c;">AM</div><div class="agent-name">Amir Matan</div><div class="agent-status wrap">Wrap-up</div></div>
+              <div class="agent-mini-row"><div class="agent-av" style="background:#efe9cc;color:#453a00;">DP</div><div class="agent-name">Dana Peretz</div><div class="agent-status live">● Live</div></div>
+            </div>
+          </div>
+          <!-- Performance -->
+          <div class="card">
+            <div class="card-hdr">
+              <span class="card-title">Performance Today</span>
+              <span class="chip ch-n">This shift</span>
+            </div>
+            <div class="card-body">
+              <div class="perf-kpis">
+                <div class="kpi-box"><div class="kpi-num ok">84</div><div class="kpi-lbl">CSAT Score</div></div>
+                <div class="kpi-box"><div class="kpi-num">38</div><div class="kpi-lbl">Closed today</div></div>
+                <div class="kpi-box"><div class="kpi-num">7:42</div><div class="kpi-lbl">Avg. Handle Time</div></div>
+                <div class="kpi-box"><div class="kpi-num warn">71%</div><div class="kpi-lbl">First Call Res.</div></div>
+              </div>
+              <div class="perf-bar-row"><span class="perf-bar-label">CSAT</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:84%;background:var(--ok);"></div></div><span class="perf-bar-val" style="color:var(--ok);">84</span></div>
+              <div class="perf-bar-row"><span class="perf-bar-label">FCR</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:71%;background:var(--warn);"></div></div><span class="perf-bar-val" style="color:var(--warn);">71%</span></div>
+              <div class="perf-bar-row"><span class="perf-bar-label">AHT vs. target</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:78%;background:var(--brand);"></div></div><span class="perf-bar-val">-18s</span></div>
+              <div class="perf-bar-row"><span class="perf-bar-label">Auth resolved</span><div class="perf-bar-track"><div class="perf-bar-fill" style="width:100%;background:var(--ok);"></div></div><span class="perf-bar-val" style="color:var(--ok);">3/3</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main requests table -->
+        <div class="table-card">
+          <div class="table-hdr">
+            <span class="table-title">All Authorization Requests</span>
+            <span class="chip ch-r">2 pending</span>
+            <span class="chip ch-y" style="margin-left:4px;">1 awaiting docs</span>
+            <button class="btn btn-ghost" style="height:26px;font-size:11px;margin-left:auto;">Export</button>
+          </div>
+          <table class="main-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Amount</th>
+                <th>Policy Type</th>
+                <th>Status</th>
+                <th>Agent</th>
+                <th>Waiting</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="urgent" onclick="go(3)">
+                <td><div class="t-name">Dana Levy</div><div class="t-sub">AUTH-2024-0847</div></td>
+                <td><div class="t-amount">$600,000</div></td>
+                <td>Term Life · 20yr</td>
+                <td><span class="chip ch-r">🔴 Pending — Urgent</span></td>
+                <td>Yosef Mizrahi</td>
+                <td><div class="t-timer urg"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5z"/></svg>7 min</div></td>
+                <td><div class="t-action"><button class="t-btn primary" onclick="event.stopPropagation();go(3)">Review →</button></div></td>
+              </tr>
+              <tr onclick="go(2)">
+                <td><div class="t-name">Michael Chen</div><div class="t-sub">AUTH-2024-0848</div></td>
+                <td><div class="t-amount">$250,000</div></td>
+                <td>Whole Life · Perm</td>
+                <td><span class="chip ch-o">⏳ Pending</span></td>
+                <td>Noa Shapiro</td>
+                <td><div class="t-timer"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5z"/></svg>2 min</div></td>
+                <td><div class="t-action"><button class="t-btn">Review</button></div></td>
+              </tr>
+              <tr>
+                <td><div class="t-name">Rachel Katz</div><div class="t-sub">AUTH-2024-0841</div></td>
+                <td><div class="t-amount">$420,000</div></td>
+                <td>Whole Life · Perm</td>
+                <td><span class="chip ch-y">📄 Awaiting Docs</span></td>
+                <td>Ran Levi</td>
+                <td style="color:var(--warn);font-weight:600;">2 days</td>
+                <td><div class="t-action"><button class="t-btn">Follow up</button></div></td>
+              </tr>
+              <tr style="opacity:.6;">
+                <td><div class="t-name">Robert Mills</div><div class="t-sub">AUTH-2024-0839</div></td>
+                <td><div class="t-amount">$180,000</div></td>
+                <td>Term Life · 10yr</td>
+                <td><span class="chip ch-g">✓ Approved</span></td>
+                <td>Yosef Mizrahi</td>
+                <td style="color:var(--txt2);">1h ago</td>
+                <td><div class="t-action"><button class="t-btn">View</button></div></td>
+              </tr>
+              <tr style="opacity:.6;">
+                <td><div class="t-name">Aisha Patel</div><div class="t-sub">AUTH-2024-0835</div></td>
+                <td><div class="t-amount">$320,000</div></td>
+                <td>Term Life · 15yr</td>
+                <td><span class="chip ch-n">✗ Rejected</span></td>
+                <td>Dana Peretz</td>
+                <td style="color:var(--txt2);">3h ago</td>
+                <td><div class="t-action"><button class="t-btn">View</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /dashboard -->
+
+      <!-- ═══════════ STATE 2: AUTHORIZATION QUEUE ═══════════ -->
+      <div class="view-queue auth-page">
+        <div class="page-hdr">
+          <div>
+            <div class="page-title">Authorizations</div>
+            <div class="page-sub">High-risk decisions requiring your approval · Real-time</div>
+          </div>
+          <div class="page-hdr-right">
+            <span class="chip ch-r" style="height:24px;font-size:11px;">2 pending</span>
+            <button class="btn btn-ghost">Export log</button>
+          </div>
+        </div>
+        <div class="auth-page-body">
+          <div class="filter-row">
+            <div class="filter-input-wrap">
+              <svg class="filter-icon" viewBox="0 0 16 16"><path d="M10.5 7.5a3 3 0 11-6 0 3 3 0 016 0zM9.97 10.03l3 3"/></svg>
+              <input class="filter-input" placeholder="Search by customer, agent...">
+            </div>
+            <div class="seg-ctrl">
+              <button class="seg-btn on">All</button>
+              <button class="seg-btn">Pending</button>
+              <button class="seg-btn">In Progress</button>
+              <button class="seg-btn">Resolved</button>
+            </div>
+            <div style="margin-left:auto;font-size:11px;color:var(--txt2);">Last updated: just now</div>
+          </div>
+
+          <div class="queue-meta">
+            <span class="queue-meta-left">Pending — Action Required</span>
+            <span style="font-size:11px;color:var(--err);font-weight:600;">⏱ SLA: 3 min per case</span>
+          </div>
+
+          <!-- Case 1 - Urgent -->
+          <div class="case-card-full urg" onclick="go(3)">
+            <div class="ccf-body">
+              <div class="ccf-main">
+                <div class="ccf-top">
+                  <div>
+                    <div class="ccf-name">Dana Levy</div>
+                    <div class="ccf-meta">Agent: Yosef Mizrahi · Life Insurance Queue · AUTH-2024-0847</div>
+                  </div>
+                </div>
+                <div class="ccf-chips">
+                  <span class="chip ch-r">🔴 Urgent — SLA exceeded</span>
+                  <span class="chip ch-o">High Risk Score: 68/100</span>
+                  <span class="chip ch-b">Coverage > $500K threshold</span>
+                  <span class="chip ch-n">ID Verified</span>
+                  <span class="chip ch-g">AML Cleared</span>
+                </div>
+              </div>
+              <div class="ccf-right">
+                <div class="ccf-amount">$600,000</div>
+                <div class="ccf-type">Term Life Insurance · 20yr</div>
+              </div>
+            </div>
+            <div class="ccf-footer">
+              <div class="ccf-f-item urg">
+                <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5zm0 2.5h-1.5V9.5h1.5z"/></svg>
+                Waiting 7 min · SLA exceeded by 4 min
+              </div>
+              <div class="ccf-f-item">
+                <svg viewBox="0 0 16 16"><path d="M8 1a4 4 0 100 8A4 4 0 008 1zm-5 9.5A3.5 3.5 0 000 14h16a3.5 3.5 0 00-3.5-3.5H3z"/></svg>
+                Submitted by AI Agent · 09:47 AM
+              </div>
+              <div class="ccf-action">
+                <button class="btn btn-primary" style="height:28px;font-size:11px;">Review case →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Case 2 -->
+          <div class="case-card-full">
+            <div class="ccf-body">
+              <div class="ccf-main">
+                <div class="ccf-top">
+                  <div>
+                    <div class="ccf-name">Michael Chen</div>
+                    <div class="ccf-meta">Agent: Noa Shapiro · Life Insurance Queue · AUTH-2024-0848</div>
+                  </div>
+                </div>
+                <div class="ccf-chips">
+                  <span class="chip ch-y">⚠ Medium Risk Score: 52/100</span>
+                  <span class="chip ch-b">Coverage > $250K threshold</span>
+                  <span class="chip ch-n">ID Verified</span>
+                </div>
+              </div>
+              <div class="ccf-right">
+                <div class="ccf-amount">$250,000</div>
+                <div class="ccf-type">Whole Life Insurance · Perm</div>
+              </div>
+            </div>
+            <div class="ccf-footer">
+              <div class="ccf-f-item">
+                <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5zm0 2.5h-1.5V9.5h1.5z"/></svg>
+                Waiting 2 min
+              </div>
+              <div class="ccf-f-item">
+                <svg viewBox="0 0 16 16"><path d="M8 1a4 4 0 100 8A4 4 0 008 1zm-5 9.5A3.5 3.5 0 000 14h16a3.5 3.5 0 00-3.5-3.5H3z"/></svg>
+                Submitted by AI Agent · 09:52 AM
+              </div>
+              <div class="ccf-action">
+                <button class="btn btn-ghost" style="height:28px;font-size:11px;">Review →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider-label" style="margin:8px 0;">Resolved today</div>
+
+          <div class="case-card-full" style="opacity:.55;">
+            <div class="ccf-body">
+              <div class="ccf-main">
+                <div class="ccf-top"><div><div class="ccf-name">Robert Mills</div><div class="ccf-meta">Agent: Ran Levi</div></div></div>
+                <div class="ccf-chips"><span class="chip ch-g">✓ Approved</span><span class="chip ch-n">Term Life · $180K</span></div>
+              </div>
+              <div class="ccf-right"><div class="ccf-amount" style="font-size:15px;">$180,000</div></div>
+            </div>
+            <div class="ccf-footer">
+              <div class="ccf-f-item">Resolved 1h 22min ago · Decision time: 1m 48s</div>
+              <div class="ccf-f-item">by Yosef Mizrahi</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══════════ STATE 3: CASE DETAIL ═══════════ -->
+      <div class="view-detail case-detail-page">
+
+        <!-- LEFT: Detail content -->
+        <div class="cdp-main">
+          <div class="back-row">
+            <div class="back-lnk" onclick="go(2)">
+              <svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg>
+              Back to Authorization Queue
+            </div>
+          </div>
+
+          <div class="case-title-block">
+            <div class="case-main-name">Dana Levy</div>
+            <div style="font-size:12px;color:var(--txt2);">AUTH-2024-0847 · Submitted 09:47 AM by AI Agent · Agent: Yosef Mizrahi</div>
+            <div class="case-main-amount">$600,000</div>
+            <div class="case-main-sub">Term Life Insurance · 20 Years · Policy TL-2024-88271</div>
+            <div class="case-main-chips">
+              <span class="chip ch-r">🔴 Urgent</span>
+              <span class="chip ch-o">High Risk Score: 68/100</span>
+              <span class="chip ch-b">Exceeds $500K auto-approval threshold</span>
+              <span class="chip ch-n">ID Verified</span>
+              <span class="chip ch-g">AML Cleared</span>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-card-hdr">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--txt2)"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1z"/></svg>
+              <span class="detail-card-title">Policy & Applicant Details</span>
+            </div>
+            <div class="detail-card-body">
+              <div class="detail-grid">
+                <div><div class="df-label">Customer</div><div class="df-val">Dana Levy</div></div>
+                <div><div class="df-label">Date of Birth</div><div class="df-val">Mar 12, 1982 (Age 42)</div></div>
+                <div><div class="df-label">Coverage Amount</div><div class="df-val" style="font-size:14px;">$600,000</div></div>
+                <div><div class="df-label">Policy Term</div><div class="df-val">20 Years</div></div>
+                <div><div class="df-label">Monthly Premium</div><div class="df-val">$188.00</div></div>
+                <div><div class="df-label">Beneficiary</div><div class="df-val">Spouse (Primary)</div></div>
+                <div><div class="df-label">Health Declaration</div><div class="df-val ok">✓ Passed</div></div>
+                <div><div class="df-label">Identity Verification</div><div class="df-val ok">✓ Verified</div></div>
+                <div><div class="df-label">AML / Fraud Check</div><div class="df-val ok">✓ Cleared</div></div>
+                <div><div class="df-label">Trigger Reason</div><div class="df-val warn">Above $500K threshold</div></div>
+                <div><div class="df-label">Risk Score</div><div class="df-val warn">68 / 100 (Medium-High)</div></div>
+                <div><div class="df-label">Auto-Approve Limit</div><div class="df-val">$500,000</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-card">
+            <div class="ai-card-hdr">
+              <div class="ai-hdr-icon"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="none" stroke="#0062cc" stroke-width="1.5"/><path d="M8 5v4M8 10.5v.5" stroke="#0062cc" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+              <span class="detail-card-title">AI Copilot Analysis</span>
+              <span style="font-size:11px;color:var(--txt2);margin-left:auto;">Confidence: High</span>
+            </div>
+            <div class="ai-card-body">
+              <div class="ai-item"><span class="ai-bullet ok"></span><div><div class="ai-txt">All required documents submitted — no gaps detected</div><div class="ai-sub">Health declaration, ID, beneficiary all confirmed</div></div></div>
+              <div class="ai-item"><span class="ai-bullet ok"></span><div><div class="ai-txt">Income-to-coverage ratio: 8.2× — within healthy range</div><div class="ai-sub">Standard underwriting guidelines satisfied</div></div></div>
+              <div class="ai-item"><span class="ai-bullet warn"></span><div><div class="ai-txt">Coverage exceeds automated approval limit of $500K</div><div class="ai-sub">Manual supervisor sign-off required per policy SEC-112</div></div></div>
+              <div class="ai-item"><span class="ai-bullet n"></span><div><div class="ai-txt">Comparable applications: 94% approval rate</div><div class="ai-sub">Based on 180 similar cases in the past 12 months</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Action aside (multi-step) -->
+        <div class="cdp-aside">
+
+          <!-- ── STEP 0: Choose decision ── -->
+          <div class="decision-step active" id="step-choose">
+            <div class="aside-hdr">
+              <div class="aside-hdr-title">Supervisor Decision</div>
+              <div class="aside-hdr-sub">Select an action — all decisions are permanent</div>
+            </div>
+            <div class="aside-timer-block">
+              <div class="aside-timer-icon"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm.75 7.5h-1.5V4h1.5zm0 2.5h-1.5V9.5h1.5z"/></svg></div>
+              <div>
+                <div class="aside-timer-val">07:14</div>
+                <div class="aside-timer-label">Waiting for decision</div>
+                <div class="aside-timer-sla">SLA target: 3 min — exceeded by 4 min</div>
+              </div>
+            </div>
+            <div class="aside-divider"></div>
+            <div class="aside-section">
+              <div class="aside-section-title">Decision</div>
+              <button class="action-btn-primary" onclick="showDecision('approve')">
+                <svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5 6.5-7"/></svg>
+                Approve — $600,000
+              </button>
+              <div class="action-btn-row">
+                <button class="action-btn-sec" onclick="showDecision('docs')">
+                  <svg viewBox="0 0 16 16"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1z"/></svg>
+                  Request Docs
+                </button>
+                <button class="action-btn-sec danger" onclick="showDecision('reject')">
+                  <svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+                  Reject
+                </button>
+              </div>
+              <div class="action-note">All decisions are logged, audited, and cannot be undone</div>
+            </div>
+            <div class="aside-divider"></div>
+            <div class="aside-section" style="flex:1;overflow-y:auto;">
+              <div class="aside-section-title">Activity Log</div>
+              <div class="audit-item"><div class="audit-dot-wrap"><div class="audit-dot brand"></div><div class="audit-line"></div></div><div><div class="audit-txt"><strong>Authorization request created</strong><br>AI Agent submitted case for supervisor review</div><div class="audit-time">09:47 AM today</div></div></div>
+              <div class="audit-item"><div class="audit-dot-wrap"><div class="audit-dot brand"></div><div class="audit-line"></div></div><div><div class="audit-txt"><strong>Push notification sent</strong><br>Yosef Mizrahi notified via Supervisor Hub</div><div class="audit-time">09:47 AM today</div></div></div>
+              <div class="audit-item"><div class="audit-dot-wrap"><div class="audit-dot warn"></div><div class="audit-line"></div></div><div><div class="audit-txt"><strong>SLA exceeded</strong><br>3-minute target passed without decision</div><div class="audit-time">09:50 AM today</div></div></div>
+              <div class="audit-item"><div class="audit-dot-wrap"><div class="audit-dot"></div></div><div><div class="audit-txt"><strong>Case opened by supervisor</strong><br>Yosef Mizrahi reviewing now</div><div class="audit-time">09:54 AM today</div></div></div>
+            </div>
+          </div>
+
+          <!-- ── STEP A: Approve confirmation ── -->
+          <div class="decision-step" id="step-approve">
+            <div class="confirm-hdr approve">
+              <div class="confirm-icon approve"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5 6.5-7"/></svg></div>
+              <div class="confirm-title">Approving Policy — $600,000</div>
+              <div class="confirm-sub">Dana Levy · Term Life · 20yr · AUTH-2024-0847</div>
+            </div>
+            <div class="rationale-wrap">
+              <div class="rationale-label">Decision Rationale</div>
+              <div class="copilot-suggestion">
+                <div class="copilot-suggestion-tag">✦ Copilot suggestion</div>
+                Approving this application as all underwriting criteria are satisfied. Risk score 68 is within the acceptable range for Term Life coverage at this level. Income-to-coverage ratio of 8.2× is healthy. Identity, AML, and health declaration checks all passed. Based on 180 comparable cases, 94% were approved.
+              </div>
+              <div class="rationale-edit-label">Your rationale <a onclick="useAsSuggestion()">Use Copilot text ↑</a></div>
+              <textarea class="rationale-textarea" id="approve-rationale" placeholder="Edit or write your own rationale..."></textarea>
+            </div>
+            <div class="confirm-footer">
+              <button class="confirm-submit approve" onclick="completeDecision('approve')">
+                ✓ Confirm Approval &amp; Submit
+              </button>
+              <span class="cancel-link" onclick="showDecision('choose')">← Back to decisions</span>
+            </div>
+          </div>
+
+          <!-- ── STEP B: Reject confirmation ── -->
+          <div class="decision-step" id="step-reject">
+            <div class="confirm-hdr reject">
+              <div class="confirm-icon reject"><svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg></div>
+              <div class="confirm-title">Rejecting Policy — $600,000</div>
+              <div class="confirm-sub">Dana Levy · Term Life · 20yr · AUTH-2024-0847</div>
+            </div>
+            <div class="rationale-wrap">
+              <div class="rationale-label">Rejection Rationale</div>
+              <div class="copilot-suggestion">
+                <div class="copilot-suggestion-tag">✦ Copilot suggestion</div>
+                Rejecting this application due to risk score of 68 exceeding the acceptable threshold for automated approval at this coverage level. Additional medical underwriting review required before a final decision can be made. Applicant may reapply following a full underwriting assessment.
+              </div>
+              <div class="rationale-edit-label">Your rationale <a onclick="useRejectSuggestion()">Use Copilot text ↑</a></div>
+              <textarea class="rationale-textarea" id="reject-rationale" placeholder="Edit or write your own rationale..."></textarea>
+            </div>
+            <div class="confirm-footer">
+              <button class="confirm-submit reject" onclick="completeDecision('reject')">
+                ✗ Confirm Rejection &amp; Submit
+              </button>
+              <span class="cancel-link" onclick="showDecision('choose')">← Back to decisions</span>
+            </div>
+          </div>
+
+          <!-- ── STEP C: Request Documents ── -->
+          <div class="decision-step" id="step-docs">
+            <div class="docs-hdr">
+              <div class="docs-title">Request Documents</div>
+              <div class="docs-sub">Select required documents · Agent will be notified</div>
+            </div>
+            <div class="docs-search-wrap">
+              <svg class="docs-search-icon" viewBox="0 0 16 16"><path d="M10.5 7.5a3 3 0 11-6 0 3 3 0 016 0zM9.97 10.03l3 3"/></svg>
+              <input class="docs-search" placeholder="Search documents..." oninput="filterDocs(this.value)">
+            </div>
+            <div class="docs-list" id="docs-list">
+              <div class="doc-group-label">Medical</div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Medical examination report</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Attending physician's statement</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Lab results (last 12 months)</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Health declaration amendment</span></div>
+              <div class="doc-group-label">Financial</div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Income verification (last 3 months)</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Bank statements (last 3 months)</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Employment letter</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Tax returns (last 2 years)</span></div>
+              <div class="doc-group-label">Identity &amp; Policy</div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Government-issued ID (copy)</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Beneficiary declaration form</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Previous policy cancellation letter</span></div>
+              <div class="doc-item" onclick="toggleDoc(this)"><div class="doc-checkbox"><svg viewBox="0 0 10 10"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div><span class="doc-name">Power of attorney (if applicable)</span></div>
+            </div>
+            <div class="docs-footer">
+              <div class="docs-selected-count" id="docs-count">0 documents selected</div>
+              <button class="docs-send-btn" id="docs-send" disabled onclick="completeDecision('docs')">Send Request to Agent</button>
+              <span class="cancel-link" onclick="showDecision('choose')">← Back to decisions</span>
+            </div>
+          </div>
+
+          <!-- ── STEP D: Completed ── -->
+          <div class="completed-state" id="step-done">
+            <div class="completed-icon ok" id="done-icon"><svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5 6.5-7"/></svg></div>
+            <div class="completed-title" id="done-title">Decision submitted</div>
+            <div class="completed-sub" id="done-sub">Your rationale has been logged. The agent and customer will be notified.</div>
+            <button class="completed-back" onclick="go(2)">← Back to queue</button>
+          </div>
+
+        </div>
+
+      </div><!-- /case detail -->
+
+    </div><!-- /main -->
+
+    <!-- COPILOT RAIL (always right) -->
+    <div class="copilot-rail">
+      <div class="cp-rail-hdr">
+        <div class="cp-rail-icon"><svg viewBox="0 0 16 16"><path d="M8 1.5A5.5 5.5 0 1013.5 7 5.5 5.5 0 008 1.5zM7 4.5h2V8H7zm0 4h2v2H7z"/></svg></div>
+        <span class="cp-rail-title">Copilot</span>
+        <div class="icon-btn"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <div class="cp-body">
+        <!-- Urgent alert (state 1+) -->
+        <div class="cp-alert auth-urgent-card" id="cp-alert" style="display:none;">
+          <div class="cp-alert-title">⚡ Authorization pending</div>
+          <div class="cp-alert-sub">Dana Levy · $600K Term Life · SLA exceeded. Review immediately.</div>
+          <button class="cp-alert-cta" onclick="go(3)">Open case →</button>
+        </div>
+        <!-- Shift summary -->
+        <div class="cp-card">
+          <div class="cp-card-hdr">
+            <svg width="12" height="12" fill="var(--ok)" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/></svg>
+            <span class="cp-card-htitle">Shift summary</span>
+            <span style="font-size:10px;color:var(--txt2);">▲</span>
+          </div>
+          <div class="cp-card-body">
+            <div class="cp-insight"><span class="cp-insight-dot ok"></span>12 agents active, all within SLA targets</div>
+            <div class="cp-insight"><span class="cp-insight-dot warn"></span>FCR at 71% — below 75% target. Consider coaching Ran Levi (3 repeat calls today).</div>
+            <div class="cp-insight"><span class="cp-insight-dot n"></span>Rachel Katz docs pending 2 days — follow-up recommended before end of shift.</div>
+          </div>
+        </div>
+        <!-- Authorization insight -->
+        <div class="cp-card">
+          <div class="cp-card-hdr">
+            <svg width="12" height="12" fill="var(--warn)" viewBox="0 0 16 16"><path d="M8 1l1.8 3.6L14 5.5l-3 2.9.7 4.1L8 10.4l-3.7 1.95.7-4.1L2 5.5z"/></svg>
+            <span class="cp-card-htitle">Authorization insights</span>
+          </div>
+          <div class="cp-card-body">
+            <div class="cp-insight"><span class="cp-insight-dot ok"></span>3 of 3 cases resolved today. Avg. decision time: 2m 14s.</div>
+            <div class="cp-insight"><span class="cp-insight-dot warn"></span>2 cases pending — Dana Levy SLA exceeded by 4 min.</div>
+            <div class="cp-insight"><span class="cp-insight-dot n"></span>94% approval rate for similar $500K+ Term Life cases in past 30 days.</div>
+          </div>
+        </div>
+      </div>
+      <div class="cp-search-wrap">
+        <input class="cp-input" placeholder="Ask Copilot anything...">
+        <button class="cp-send-btn"><svg viewBox="0 0 16 16"><path d="M14 2L2 7l4.5 2.5 5-4-3.5 4.5L10 14l4-12z"/></svg></button>
+      </div>
+    </div>
+
+  </div><!-- /app-body -->
+
+  <!-- INTERRUPT MODAL -->
+  <div class="modal-overlay" id="modal" style="display:none;">
+    <div class="modal">
+      <div class="modal-top">
+        <div class="modal-alert-icon">
+          <svg viewBox="0 0 16 16"><path d="M8 1l1.8 3.6L14 5.5l-3 2.9.7 4.1L8 10.4l-3.7 1.95.7-4.1L2 5.5l4.2-.9z"/></svg>
+        </div>
+        <div class="modal-heading">
+          <div class="modal-tag">Authorization Required — Immediate Action</div>
+          <div class="modal-title">New approval request<br>requires your decision</div>
+          <div class="modal-sub">AI Agent submitted a high-risk policy for supervisor sign-off</div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-row"><span class="modal-row-label">Customer</span><span class="modal-row-val">Dana Levy</span></div>
+        <div class="modal-row"><span class="modal-row-label">Coverage Amount</span><span class="modal-row-val big">$600,000</span></div>
+        <div class="modal-row"><span class="modal-row-label">Policy Type</span><span class="modal-row-val">Term Life Insurance · 20 Years</span></div>
+        <div class="modal-row"><span class="modal-row-label">Risk Score</span><span class="modal-row-val" style="color:var(--warn);">68/100 — Medium-High</span></div>
+        <div class="modal-row"><span class="modal-row-label">Handling Agent</span><span class="modal-row-val">Yosef Mizrahi</span></div>
+        <div class="modal-timer-row">
+          <span class="modal-sla-label">SLA: 3 minutes remaining</span>
+          <div class="modal-sla-bar"><div class="modal-sla-fill"></div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn-primary" onclick="closeModal(3)">Review Case Now →</button>
+        <button class="modal-btn-ghost" onclick="closeModal(1)">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+</div></div><!-- /vp, vp-wrap -->
+
+<!-- SNACKBAR -->
+<div class="snackbar" id="snack">
+  <span class="sb-dot"></span>
+  <div class="sb-body">
+    <div class="sb-title">Authorization Required — Urgent</div>
+    <div class="sb-sub">Dana Levy · $600K Term Life · SLA exceeded · Waiting 7 min</div>
+  </div>
+  <button class="sb-btn" onclick="go(2)">Open Hub →</button>
+</div>
+
+<script>
+const vp = document.getElementById('vp');
+const snack = document.getElementById('snack');
+
+function go(n) {
+  vp.className = 'vp s' + n;
+  [0,1,2,3].forEach(i => {
+    const b = document.getElementById('b'+i);
+    if(b) b.classList.toggle('on', i===n);
+  });
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  if(n<=1) document.querySelector('[data-nav="dash"]')?.classList.add('active');
+  if(n>=2) document.querySelector('[data-nav="auth"]')?.classList.add('active');
+}
+
+// ── SCREENSHOT MODE ──
+// Add ?screen=1 (dashboard), ?screen=2 (queue), ?screen=3 (case), ?screen=4 (approve rationale)
+// to get a clean full-viewport screenshot-ready view
+(function() {
+  const p = new URLSearchParams(location.search);
+  const s = p.get('screen');
+  if (!s) return;
+
+  // Hide demo bar, expand viewport
+  const dbar = document.querySelector('.dbar');
+  const vpWrap = document.querySelector('.vp-wrap');
+  if (dbar) dbar.style.display = 'none';
+  if (vpWrap) {
+    vpWrap.style.marginTop = '0';
+    vpWrap.style.padding = '0';
+    vpWrap.style.background = 'var(--bg)';
+  }
+  vp.style.borderRadius = '0';
+  vp.style.boxShadow = 'none';
+  vp.style.transform = 'none';
+  vp.style.width = '100vw';
+  vp.style.height = '100vh';
+
+  const n = parseInt(s);
+  if (n === 1) { go(1); } // Dashboard with notification
+  else if (n === 2) { go(2); } // Authorization queue
+  else if (n === 3) { go(3); } // Case drilldown
+  else if (n === 4) {
+    // Approve rationale step
+    go(3);
+    setTimeout(() => {
+      if (typeof showDecision === 'function') showDecision('approve');
+    }, 200);
+  }
+})();
+
+function triggerRequest() {
+  // Step 1: show dashboard first (state 1)
+  go(1);
+
+  // Step 2: show copilot alert
+  const cpAlert = document.getElementById('cp-alert');
+  if(cpAlert) { cpAlert.style.display = 'block'; }
+
+  // Step 3: flash nav badge
+  const badge = document.querySelector('[data-nav="auth"] .nav-badge');
+  if(badge) { badge.classList.remove('arriving'); void badge.offsetWidth; badge.classList.add('arriving'); }
+
+  // Step 4: flash notification bell
+  const bells = document.querySelectorAll('.bar-icon .notif-badge');
+  bells.forEach(b => { b.style.transform='scale(2)'; setTimeout(()=>b.style.transform='',400); });
+
+  // Step 5: interrupt modal appears after 600ms
+  setTimeout(() => {
+    document.getElementById('modal').style.display = 'flex';
+  }, 600);
+
+  document.getElementById('b1').classList.add('on');
+}
+
+function closeModal(toState) {
+  document.getElementById('modal').style.display = 'none';
+  if(toState) go(toState);
+}
+
+// Decision flow
+function showDecision(step) {
+  ['choose','approve','reject','docs'].forEach(s => {
+    const el = document.getElementById('step-' + s);
+    if(el) { el.classList.remove('active'); }
+  });
+  document.getElementById('step-done')?.classList.remove('active');
+  const target = document.getElementById('step-' + step);
+  if(target) target.classList.add('active');
+}
+
+function useAsSuggestion() {
+  const suggestion = "Approving this application as all underwriting criteria are satisfied. Risk score 68 is within the acceptable range for Term Life coverage at this level. Income-to-coverage ratio of 8.2× is healthy. Identity, AML, and health declaration checks all passed. Based on 180 comparable cases, 94% were approved.";
+  document.getElementById('approve-rationale').value = suggestion;
+}
+function useRejectSuggestion() {
+  const suggestion = "Rejecting this application due to risk score of 68 exceeding the acceptable threshold for automated approval at this coverage level. Additional medical underwriting review required before a final decision can be made. Applicant may reapply following a full underwriting assessment.";
+  document.getElementById('reject-rationale').value = suggestion;
+}
+
+function completeDecision(type) {
+  const doneIcon = document.getElementById('done-icon');
+  const doneTitle = document.getElementById('done-title');
+  const doneSub = document.getElementById('done-sub');
+  if(type === 'approve') {
+    doneIcon.className = 'completed-icon ok';
+    doneIcon.innerHTML = '<svg viewBox="0 0 16 16"><path d="M3 8l3.5 3.5 6.5-7"/></svg>';
+    doneTitle.textContent = 'Policy Approved ✓';
+    doneSub.textContent = 'Dana Levy notified. AUTH-2024-0847 closed. Rationale logged in audit trail.';
+  } else if(type === 'reject') {
+    doneIcon.className = 'completed-icon err';
+    doneIcon.innerHTML = '<svg viewBox="0 0 16 16"><path d="M4 4l8 8M12 4l-8 8"/></svg>';
+    doneTitle.textContent = 'Policy Rejected';
+    doneSub.textContent = 'Agent Yosef Mizrahi notified. Dana Levy will be informed. Rationale logged.';
+  } else if(type === 'docs') {
+    const count = document.querySelectorAll('.doc-item.checked').length;
+    doneIcon.className = 'completed-icon blue';
+    doneIcon.innerHTML = '<svg viewBox="0 0 16 16"><path d="M13 2H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1V3a1 1 0 00-1-1z"/></svg>';
+    doneTitle.textContent = 'Document Request Sent';
+    doneSub.textContent = count + ' document' + (count!==1?'s':'') + ' requested from agent Yosef Mizrahi. Case moved to "In Progress".';
+  }
+  ['choose','approve','reject','docs'].forEach(s => {
+    const el = document.getElementById('step-' + s);
+    if(el) el.classList.remove('active');
+  });
+  document.getElementById('step-done').classList.add('active');
+}
+
+// Docs checklist
+function toggleDoc(el) {
+  el.classList.toggle('checked');
+  const count = document.querySelectorAll('.doc-item.checked').length;
+  document.getElementById('docs-count').textContent = count + ' document' + (count!==1?'s':'') + ' selected';
+  document.getElementById('docs-send').disabled = count === 0;
+}
+function filterDocs(val) {
+  const q = val.toLowerCase();
+  document.querySelectorAll('.doc-item').forEach(item => {
+    const name = item.querySelector('.doc-name').textContent.toLowerCase();
+    item.style.display = name.includes(q) ? '' : 'none';
+  });
+}
+
+function zoom(s) {
+  document.querySelector('.vp').style.transform = `scale(${s})`;
+  document.querySelectorAll('.zoom-btn').forEach(b => b.classList.remove('on'));
+  const map = {0.65:'65%',0.8:'80%',1:'100%'};
+  document.querySelectorAll('.zoom-btn').forEach(b => { if(b.textContent===map[s]) b.classList.add('on'); });
+}
+
+// Init
+go(0);
+zoom(0.8);
+</script>
+</body>
+</html>
